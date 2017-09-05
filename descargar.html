@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>jQuery Mobile Bootstrap Theme</title>
+	<link rel="stylesheet" href="themes/Bootstrap.css">
+	<link rel="stylesheet" href="css/jquery.mobile.structure-1.4.4.min.css" />
+	<link rel="stylesheet" href="themes/jquery.mobile.icons.min.css" />
+	<script src="js/jquery-1.9.1.min.js"></script>
+	<script src="js/jquery.mobile-1.4.4.min.js"></script>
+	<script src="js/valida.js"></script>
+</head>
+<body>
+<div data-role="page" data-theme="a">
+		<div data-role="header" data-position="inline">
+			<h1>GOBERNACIÓN CUNDINAMARCA - Inventariosa</h1>
+			<a href="salir.html" target="_top" data-icon="power">Salir</a>
+			<div data-role="navbar">
+				<ul>
+					<li><a href="nuevo_encargado.html" target="_top" data-icon="user" class="ui-btn-active">Personal</a></li>
+					<li><a href="nuevo_elemento.html" target="_top" data-icon="grid">Elemento</a></li>
+					<li><a href="p1_elemento_buscar.html" target="_top" data-icon="bullets">Registro Inv</a></li>
+					<li><a href="consultar.html" target="_top" data-icon="search">Consulta</a></li>
+					<li><a href="mnu_sincronizar.html" target="_top" data-icon="recycle">Sincronizar</a></li>
+				</ul>
+			</div>
+		</div>
+		
+		<div id="container">
+			    <br>Seguro que deseas descargar la Información?, recuerda que perderas el trabajo realizado desde la última descarga<br><br>
+				<a id="btn_si" data-theme="b" data-role="button" data-inline="true">SI</a>
+				<a id="btn_no" data-theme="a" data-role="button" data-inline="true">NO</a>
+		</div>	    
+		<div data-role="footer" data-theme="none"><h3>Sistema Inventarios</h3></div>
+
+	<script src="js/bdactualizar_parametros.js"></script>
+	<script src="js/actualizar_parametros.js"></script>
+</div>
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!doctype html>
+<head>
+
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<title>jQuery Mobile Bootstrap Theme</title>
+	<link rel="stylesheet" href="themes/Bootstrap.css">
+	<link rel="stylesheet" href="css/jquery.mobile.structure-1.4.4.min.css" />
+	<link rel="stylesheet" href="themes/jquery.mobile.icons.min.css" />
+	<script src="js/jquery-1.9.1.min.js"></script>
+	<script src="js/jquery.mobile-1.4.4.js"></script>
+        
+	<!-- JAVASCRIPT		-->
+	<script type="text/javascript" src="js/conexion_servidor.js"></script>
+	<!-- <script type="text/javascript" src="js/jquery.min.js"></script>
+	<script type="text/javascript" src="phonegap.js"></script>-->
+	<script type="text/javascript" src="js/bdLocal.js"></script>
+	<script type="text/javascript" src="js/logueo.js"></script>
+</head>
+	<!-- Main HTML -->
+<body>
+	<div data-role="page" data-theme="a">
+			<div data-role="header" data-position="inline">
+				<h1>GOBERNACIÓN CUNDINAMARCA - Inventarios</h1>
+			</div>
+			<div id="container">
+				<h1><div id ="equivocado" align="center" class="notificacion"></div></h1>
+				<div data-role="fieldcontain"><label for="login">Usuario:</label><input type="text" name="login" id="login" placeholder="Usuario"></div>
+				<div data-role="fieldcontain"><label for="password">Clave:</label><input type="password" name="password" id="password" placeholder="Clave"></div>
+				
+				<div id="lower">
+					<!-- <input type="checkbox" id ="conectado"><label class="check" for="checkbox">Permanecer conectado</label> -->
+					<input type="button" id="submit" value="Ingresar">
+				</div>
+			</div><br>
+		    <div data-role="footer" data-theme="none"><h3>Sistema Inventarios</h3></div>
+	</div>
+</body>
+</html>

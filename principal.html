@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width,initial-scale=1">
+		<title>jQuery Mobile Bootstrap Theme</title>
+		<link rel="stylesheet" href="themes/Bootstrap.css">
+		<link rel="stylesheet" href="css/jquery.mobile.structure-1.4.4.min.css" />
+		<link rel="stylesheet" href="themes/jquery.mobile.icons.min.css" />
+		<script src="js/jquery-1.9.1.min.js"></script>
+		<script src="js/jquery.mobile-1.4.4.min.js"></script>
+	</head>
+
+	<body>
+		<div data-role="page" data-theme="a">
+			<div data-role="header" data-position="inline">
+				<h1>GOBERNACIÓN CUNDINAMARCA - Inventarios</h1>
+				<a href="salir.html" target="_top" data-icon="power">Salir</a>
+				<div data-role="navbar">
+					<ul>
+						<li><a href="nuevo_encargado.html" target="_top" data-icon="user" class="ui-btn-active">Personal</a></li>
+						<li><a href="nuevo_elemento.html" target="_top" data-icon="grid">Elemento</a></li>
+						<li><a href="p1_elemento_buscar.html" target="_top" data-icon="bullets">Registro Inv</a></li>
+						<li><a href="consultar.html" target="_top" data-icon="search">Consulta</a></li>
+						<li><a href="mnu_sincronizar.html" target="_top" data-icon="recycle">Sincronizar</a></li>
+						
+					</ul>
+				</div>
+			</div>
+			<div id="container">
+				<nav>
+					<p id="nom_empresa" align="center"></p>
+					
+					<p>Sistema de Gestión de inventarios mediante codificación QR y Codigos de barras.</p>
+					<div data-role="fieldcontain" class="ui-field-contain" id="items">
+						<label for="empresa">Empresa:</label>
+						<select name="empresa" id="empresa" class="form-control" required>
+							<option value="">Seleccione...</option>
+						</select>
+					</div>
+				</nav>
+			</div>
+			<div data-role="footer" data-theme="none"><h3>Sistema Inventarios</h3></div>
+		</div>
+		
+	<script src="js/valida_bd.js"></script>
+	<script src="js/seleccionar_empresa.js"></script>
+	
+	</body>
+</html>

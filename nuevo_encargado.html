@@ -4,11 +4,17 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width,initial-scale=1">
 		<title>jQuery Mobile Bootstrap Theme</title>
-		<link rel="stylesheet" href="themes/Bootstrap.css">
-		<link rel="stylesheet" href="css/jquery.mobile.structure-1.4.4.min.css" />
+		<link rel="stylesheet" href="themes/theme-classic.css">
+		<link rel="stylesheet" href="css/jquery.mobile.structure-1.4.5.min.css" />
 		<link rel="stylesheet" href="themes/jquery.mobile.icons.min.css" />
-		<script src="js/jquery-1.9.1.min.js"></script>
-		<script src="js/jquery.mobile-1.4.4.min.js"></script>
+		<script src="js/jquery.min.js"></script>
+		<script src="js/jquery.mobile-1.4.5.min.js"></script>
+		<script src="js/valida.js"></script>
+		<script src="js/valida_bd.js"></script>
+		
+	<!-- INICIALIZA CORDOVA ------------------------>
+		<script type="text/javascript" src="cordova.js"></script>
+		<script type="text/javascript" src="js/index.js"></script>
 	</head>
 
 <body>
@@ -34,23 +40,23 @@
 
 			<div data-role="fieldcontain" class="ui-field-contain">
 				<label for="cc">CC: </label>
-				<input type="text" name="cc" id="cc" value="" required onkeypress="if (event.keyCode< 48 || event.keyCode > 57) event.returnValue = false;">
+				<input type="text" name="cc" id="cc" value="" data-theme="b" required onkeypress="if (event.keyCode< 48 || event.keyCode > 57) event.returnValue = false;">
 			</div>		
 			<div data-role="fieldcontain" class="ui-field-contain">
 				<label for="nombres">Nombres: </label>
-				<input type="text" name="nombres" id="nombres" value="" required>
+				<input type="text" name="nombres" id="nombres" value="" data-theme="b" required>
 			</div>	
 			<div data-role="fieldcontain" class="ui-field-contain">
 				<label for="apellidos">Apellidos: </label>
-				<input type="text" name="apellidos" id="apellidos" value="" required>
+				<input type="text" name="apellidos" id="apellidos" value="" data-theme="b" required>
 			</div>	
 			<div data-role="fieldcontain" class="ui-field-contain">
 				<label for="telefonos">Telefonos: </label>
-				<input type="text" name="telefonos" id="telefonos" value="" >
+				<input type="text" name="telefonos" id="telefonos" value="" data-theme="b" >
 			</div>
 			<div data-role="fieldcontain" class="ui-field-contain">
 				<label for="correo">Correo: </label>
-				<input type="email" pattern="[^ @]*@[^ @]*" name="correo" id="correo" value="" >
+				<input type="email" pattern="[^ @]*@[^ @]*" name="correo" id="correo" value="" data-theme="b" >
 			</div>
 
 			<div data-role="navbar" data-iconpos="left" align="center">

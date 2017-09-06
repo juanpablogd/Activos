@@ -52,6 +52,7 @@ function MuestraItems(tx, results) {
 			  "</a>" +
 			  "</li>";
     }
+    if(encontrados==0) alert("No hay elementos Encontrados");
     //console.log(li); //alert(li);
 	$("ul#lista").empty().append(li).listview("refresh");
 	

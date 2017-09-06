@@ -23,7 +23,7 @@ function CargarListado(tx) {
 /* RESULTADO DE LA TABLA ELEMENTO*/
 function MuestraItems(tx, results) {
     var li = "";								//li += '<li data-role="searchpage-list">Resultados </li>';				//<span class="ui-li-count">2</span>
-	var encontrados = results.rows.length;		console.log('Encontrados:'+encontrados);
+	var encontrados = results.rows.length;		console.log('Encontrados: '+encontrados);
     for (var i=0;i<encontrados;i++)
 	{
 
@@ -52,13 +52,12 @@ function MuestraItems(tx, results) {
 	$("ul#lista").empty().append(li).listview("refresh");
 	localStorage.consulta = null;
 	if(encontrados==0) alert("No hay elementos Encontrados");
-
 }
 
 $(document).ready(function() {
     $("#lista").on( "listviewbeforefilter", function ( e, data ) {
         var $ul = $( this ),	$input = $( data.input ),	value = $input.val(),	html = "";
-        $ul.html( "" );
+        $ul.html( "" );	//console.log(value); console.log(value.length);
         if ( value && value.length > 4 ) {
 			//console.log("encontrados: " + $("#lista li").size());
             localStorage.consulta=$input.val();
@@ -77,3 +76,13 @@ $(document).ready(function() {
 	});
       
 });
+
+console.log("Valor ELEMENTO: "+localStorage.elemento_valor);
+if(localStorage.elemento_valor != ""){
+	var elemento_valor = localStorage.elemento_valor; //console.log(elemento_valor);
+	if(elemento_valor !== undefined){
+		var res = elemento_valor.split('@');
+		localStorage.consulta = res[1];
+		db.transaction(CargarListado);
+	}
+}

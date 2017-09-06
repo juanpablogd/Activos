@@ -11,24 +11,36 @@
 	<meta name="author" content="Sofytek" />
  	<meta name="viewport" content="width=device-width" />
  	<meta name="viewport" content="initial-scale=1.0" />
-	<link rel="stylesheet" href="css/jquery.mobile-1.4.4.min.css" />
+	<link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css" />
 	<link rel="stylesheet" href="css/barra.css" />
 	<link href="css/crear.css" rel="stylesheet">
 	<style>
-			.ui-screen-hidden {
-		    display:block !important;   
+		.ui-select .ui-btn {
+			width: 87% !important;
+		}
+		.ui-screen-hidden {
+	    	display:block !important;   
+		}
+		.ui-bar-a, .ui-page-theme-a .ui-bar-inherit, html .ui-bar-a .ui-bar-inherit, html .ui-body-a .ui-bar-inherit, html body .ui-group-theme-a .ui-bar-inherit {
+		    background-color: #1f1f1f !important;   
+		    color: #f6f6f6 !important;   
+		}
+		.ui-overlay-a, .ui-panel-wrapper {
+		    background-color: #1f1f1f !important;   
+		    color: #f6f6f6 !important;
+		    text-shadow: 0 1px 0 black !important;
 		}
 	</style>
 	
-	<script src="js/jquery-1.11.1.min.js"></script>
-	<script src="js/jquery.mobile-1.4.4.min.js"></script>
+	<script src="js/jquery.min.js"></script>
+	<script src="js/jquery.mobile-1.4.5.min.js"></script>
 
 	  <!-- Replace favicon.ico & apple-touch-icon.png in the root of your domain and delete these references -->
 	<link rel="shortcut icon" href="/favicon.ico" />
 	<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 	<script src="js/valida_bd.js"></script>
 	
-<!-- INICIALIZA CORDOVA ------------------------>
+<!-- INICIALIZA CORDOVA  -->
 	<script type="text/javascript" src="cordova.js"></script>
 	<script type="text/javascript" src="js/index.js"></script>
 	<script src="js/bd_elemento_consulta.js"></script>
@@ -37,10 +49,11 @@
 </head>
 
 <body>
-	<div id="custom-format-page" data-role="page">
+	<div id="custom-format-page" data-role="page" data-theme="b">
 		
 			<div data-role="header" data-position="inline">
 				<h1>GOBERNACIÓN CUNDINAMARCA - Inventarios</h1>
+				<a href="salir.html" target="_top" data-icon="power">Salir</a>
 				<div data-role="navbar">
 					<ul>
 						<li><a href="nuevo_encargado.html" target="_top" data-icon="user" >Personal</a></li>
@@ -59,7 +72,7 @@
 		
 		<div data-role="content">
 			<button class="ui-btn ui-shadow" onClick="leer()">Scanear</button>
-			<ul id="lista" data-role="listview" data-filter="true" data-filter-placeholder="Buscar Elemento..."></ul>
+			<ul id="lista" data-role="listview" data-filter="true" data-filter-placeholder="Buscar Elemento..." data-theme="a"></ul>
 		</div>
 		
 		

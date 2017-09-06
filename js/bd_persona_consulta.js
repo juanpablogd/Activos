@@ -42,6 +42,7 @@ function MuestraItems(tx, results) {
 			  + "</li>";
 		
     }
+    if(encontrados==0) alert("No se encontró la persona");
 	$("ul#lista").empty().append(li).listview("refresh");
 	//localStorage.consulta = null;
 
@@ -70,12 +71,12 @@ $(document).ready(function() {
 		
 });
 
-	console.log("Valor Persona: "+localStorage.persona_valor);
-	if(localStorage.persona_valor != ""){
-		var cedula = localStorage.persona_valor; console.log(cedula);
-		if(cedula !== undefined){
-			var res = cedula.split('@');
-			localStorage.consulta = res[0];			
-		}
+console.log("Valor Persona: "+localStorage.persona_valor);
+if(localStorage.persona_valor != ""){
+	var cedula = localStorage.persona_valor; console.log(cedula);
+	if(cedula !== undefined){
+		var res = cedula.split('@');
+		localStorage.consulta = res[0];
 		db.transaction(CargarListado);
 	}
+}

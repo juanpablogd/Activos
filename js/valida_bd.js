@@ -16,4 +16,4 @@ function CargarListado(tx) {
 function MuestraItems(tx, results) {
 }
 
-db.transaction(CargarListado);
+//db.transaction(CargarListado);

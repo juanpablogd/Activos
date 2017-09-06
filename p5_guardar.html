@@ -11,30 +11,45 @@
 	<meta name="author" content="Sofytek" />
  	<meta name="viewport" content="width=device-width" />
  	<meta name="viewport" content="initial-scale=1.0" />
-	<link rel="stylesheet" href="css/jquery.mobile-1.4.4.min.css" />
+	<link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css" />
 
-	<script src="js/jquery-1.9.1.min.js"></script>
-	<script src="js/jquery.mobile-1.4.4.min.js"></script>
+	<script src="js/jquery.min.js"></script>
+	<script src="js/jquery.mobile-1.4.5.min.js"></script>
 
     <!-- Replace favicon.ico & apple-touch-icon.png in the root of your domain and delete these references  -->
 	<link rel="shortcut icon" href="/favicon.ico" />
 	<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 
 	<style>
-		.ui-content{
-			padding: 0 !important; 
+		.ui-select .ui-btn {
+			width: 87% !important;
 		}
-		
-		 .ui-btn {
-			width: 90% !important;
+		.ui-screen-hidden {
+	    	display:block !important;   
 		}
-	</style> 
+		.ui-bar-a, .ui-page-theme-a .ui-bar-inherit, html .ui-bar-a .ui-bar-inherit, html .ui-body-a .ui-bar-inherit, html body .ui-group-theme-a .ui-bar-inherit {
+		    background-color: #1f1f1f !important;   
+		    color: #f6f6f6 !important;   
+		}
+		.ui-overlay-a, .ui-panel-wrapper {
+		    background-color: #1f1f1f !important;   
+		    color: #f6f6f6 !important;
+		    text-shadow: 0 1px 0 black !important;
+		}
+	</style>
+	<script src="js/valida.js"></script>
+	<script src="js/valida_bd.js"></script>
+	
+<!-- INICIALIZA CORDOVA  -->
+	<script type="text/javascript" src="cordova.js"></script>
+	<script type="text/javascript" src="js/index.js"></script>
 </head>
 
 <body>
-	<div id="custom-format-page" data-role="page" >
-		
-			<div data-role="header" data-position="inline" data-theme="d">
+	<div id="custom-format-page" data-role="page" data-theme="b">
+			<div data-role="header" data-position="inline">
+				<h1>GOBERNACIÓN CUNDINAMARCA - Inventarios</h1>
+				<a href="salir.html" target="_top" data-icon="power">Salir</a>
 				<div data-role="navbar">
 					<ul>
 						<li><a href="nuevo_elemento.html" target="_top" data-icon="grid">Actualizaciones</a></li>
@@ -82,7 +97,7 @@
 					</div>
 					<div data-role="fieldcontain" class="ui-field-contain">
 						<label for="observaciones" class="select">Observaciones:</label>
-							<textarea type="text" name="observaciones" id="observaciones" value="" data-clear-btn="true" rows="3"> </textarea>
+							<textarea type="text" name="observaciones" id="observaciones" value="" data-clear-btn="true" rows="3" data-theme="a"> </textarea>
 						</select>
 					</div>
 					

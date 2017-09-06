@@ -9,7 +9,9 @@ function leer(ident){
 	console.log(ident);
 	cordova.plugins.barcodeScanner.scan(
 		function(result) {
-			ident.value = result.text;
+			if(result.text != ""){
+				ident.value = result.text;	
+			}
 			//$("#"+ident).textinput();					
 		},
 		function (error){
@@ -66,9 +68,9 @@ function MuestraItems(tx, results) {
 			        "<p>Ref: "+referencia+"</p>"+
 			        "<p>Serie: "+numero_serie_af+"</p>"+
 			        "<a href='#' id='btn_plaqueta' OnClick='leer(p"+id+")' class='ui-btn ui-btn-inline ui-btn-icon-left ui-icon-search'>Plaqueta Nueva</a>"+
-			        "<input type='text' name='p"+id+"' id='p"+id+"' value='"+plaqueta_af+"'>"+
-			        "<a href='#' id='btn_plaqueta_anterior' class='ui-btn ui-btn-inline ui-btn-icon-left ui-icon-search'>Plaqueta Anterior</a>"+
-			        "<input type='text' name='pa"+id+"' OnClick='leer(pa"+id+")' id='pa"+id+"' value='"+plaqueta_anterior1_af+"'>"+
+			        "<input type='text' name='p"+id+"' id='p"+id+"' value='"+plaqueta_af+"' data-theme='a'>"+
+			        "<a href='#' id='btn_plaqueta_anterior' OnClick='leer(pa"+id+")' class='ui-btn ui-btn-inline ui-btn-icon-left ui-icon-search'>Plaqueta Anterior</a>"+
+			        "<input type='text' name='pa"+id+"' id='pa"+id+"' value='"+plaqueta_anterior1_af+"' data-theme='a'>"+
 				"</div>"+  
 			  ""
 			  + "</li>";  

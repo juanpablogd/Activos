@@ -105,8 +105,14 @@ function MuestraItems(tx, results) {
 				if(localStorage.firma != "" && firma_defecto != localStorage.firma){
 						console.log("GUARDAR");
 						db.transaction(function(tx) {
-							console.log('UPDATE publicinventario SET firma = "'+localStorage.firma+'" where cc_responsable = "'+res[0]+'"');
-							tx.executeSql('UPDATE publicinventario SET firma = "'+localStorage.firma+'" where cc_responsable = "'+res[0]+'"');
+							  console.log('UPDATE publicinventario SET firma = "'+localStorage.firma+'",id_envio = "'+id_envio+"-"+id+'" where cc_responsable = "'+res[0]+'" and id_envio = ""');
+							tx.executeSql('UPDATE publicinventario SET firma = "'+localStorage.firma+'",id_envio = "'+id_envio+"-"+id+'" where cc_responsable = "'+res[0]+'" and id_envio = ""');
+						}, function errorCB(err) {	alert("Error processing SQL: "+err.code); }
+						,function successCB() {	localStorage.firma = ""; }
+						);
+						db.transaction(function(tx) {
+							  console.log('UPDATE publicinventario SET firma = "'+localStorage.firma+'" where cc_responsable = "'+res[0]+'" and id_envio != ""');
+							tx.executeSql('UPDATE publicinventario SET firma = "'+localStorage.firma+'" where cc_responsable = "'+res[0]+'" and id_envio != ""');
 						}, function errorCB(err) {	alert("Error processing SQL: "+err.code); }
 						,function successCB() {	localStorage.firma = ""; }
 						);

@@ -27,8 +27,8 @@ function CargarListado(tx) {
 			var order = "art.nombre";
 		}
 		$.mobile.loading( 'show', { text: 'Buscando... ', textVisible: true, theme: 'b', html: "" }); 
-		console.log('SELECT idinventariodet,sub.nombre sublinea,art.nombre,art.referencia,art.numero_serie_af,observacion,asignacion,art.idarticulo,plaqueta_af,art.rowid,id_envio_art FROM publicinventario inv inner join publicinventario_det inv_det on ((inv.idinventario = inv_det.idinventario) or (inv.id_envio = inv_det.id_envio and inv.id_envio != "")) inner join publicarticulos art on ((art.idarticulo  = inv_det.idarticulo and (inv.id_envio = "" or inv_det.id_envio_art ="")) or (CAST(art.id_envio as text) = CAST(inv_det.id_envio_art as text) and art.id_envio != "")) left join publicsublineas sub on sub.idslinea = art.idslinea where inv.cc_responsable ="'+res[0]+'" order by ' + order);		  
-	    tx.executeSql('SELECT idinventariodet,sub.nombre sublinea,art.nombre,art.referencia,art.numero_serie_af,observacion,asignacion,art.idarticulo,plaqueta_af,art.rowid,id_envio_art FROM publicinventario inv inner join publicinventario_det inv_det on ((inv.idinventario = inv_det.idinventario) or (inv.id_envio = inv_det.id_envio and inv.id_envio != "")) inner join publicarticulos art on ((art.idarticulo  = inv_det.idarticulo and (inv.id_envio = "" or inv_det.id_envio_art ="")) or (CAST(art.id_envio as text) = CAST(inv_det.id_envio_art as text) and art.id_envio != "")) left join publicsublineas sub on sub.idslinea = art.idslinea where inv.cc_responsable ="'+res[0]+'" order by ' + order, [], MuestraItems);
+		console.log('SELECT idinventariodet,sub.nombre sublinea,art.nombre,art.referencia,art.numero_serie_af,observacion,asignacion,art.idarticulo,plaqueta_af,art.rowid,id_envio_art FROM publicinventario inv inner join publicinventario_det inv_det on ((inv.idinventario = inv_det.idinventario) or (inv.id_envio = inv_det.id_envio and inv.id_envio != "")) inner join publicarticulos art on ((art.idarticulo  = inv_det.idarticulo) or (CAST(art.id_envio as text) = CAST(inv_det.id_envio_art as text) and art.id_envio != "")) left join publicsublineas sub on sub.idslinea = art.idslinea where inv.cc_responsable ="'+res[0]+'" order by ' + order);		  
+	    tx.executeSql('SELECT idinventariodet,sub.nombre sublinea,art.nombre,art.referencia,art.numero_serie_af,observacion,asignacion,art.idarticulo,plaqueta_af,art.rowid,id_envio_art FROM publicinventario inv inner join publicinventario_det inv_det on ((inv.idinventario = inv_det.idinventario) or (inv.id_envio = inv_det.id_envio and inv.id_envio != "")) inner join publicarticulos art on ((art.idarticulo  = inv_det.idarticulo) or (CAST(art.id_envio as text) = CAST(inv_det.id_envio_art as text) and art.id_envio != "")) left join publicsublineas sub on sub.idslinea = art.idslinea where inv.cc_responsable ="'+res[0]+'" order by ' + order, [], MuestraItems);
 	}
 }
 
@@ -105,17 +105,32 @@ function MuestraItems(tx, results) {
 				if(localStorage.firma != "" && firma_defecto != localStorage.firma){
 						console.log("GUARDAR");
 						db.transaction(function(tx) {
-							  console.log('UPDATE publicinventario SET firma = "'+localStorage.firma+'",id_envio = "'+id_envio+"-"+id+'" where cc_responsable = "'+res[0]+'" and id_envio = ""');
-							tx.executeSql('UPDATE publicinventario SET firma = "'+localStorage.firma+'",id_envio = "'+id_envio+"-"+id+'" where cc_responsable = "'+res[0]+'" and id_envio = ""');
-						}, function errorCB(err) {	alert("Error processing SQL: "+err.code); }
-						,function successCB() {	localStorage.firma = ""; }
-						);
-						db.transaction(function(tx) {
-							  console.log('UPDATE publicinventario SET firma = "'+localStorage.firma+'" where cc_responsable = "'+res[0]+'" and id_envio != ""');
-							tx.executeSql('UPDATE publicinventario SET firma = "'+localStorage.firma+'" where cc_responsable = "'+res[0]+'" and id_envio != ""');
-						}, function errorCB(err) {	alert("Error processing SQL: "+err.code); }
-						,function successCB() {	localStorage.firma = ""; }
-						);
+							tx.executeSql('SELECT rowid,id_envio FROM publicinventario inv where inv.cc_responsable ="'+res[0]+'"', [], 
+								function rsp(tx, resultado){	//console.log(resultado.rows.length);	//results.rows.length
+									var num_found = resultado.rows.length;
+									var have_idenvio = false;
+									var last_rowid=999999;
+									for (var l=0;l<num_found;l++){
+										if(resultado.rows.item(l).id_envio!= "") have_idenvio=true;
+										if((l+1)==num_found) last_rowid = resultado.rows.item(l).rowid;
+									}
+									if(have_idenvio){
+										db.transaction(function(tx) {
+											  console.log('UPDATE publicinventario SET firma = "'+localStorage.firma+'" where rowid = "'+last_rowid+'"');
+											tx.executeSql('UPDATE publicinventario SET firma = "'+localStorage.firma+'" where rowid = "'+last_rowid+'"');
+										}, function errorCB(err) {	alert("Error processing SQL: "+err.code); }
+										,function successCB() {	localStorage.firma = ""; }
+										);
+									}else{
+										db.transaction(function(tx) {
+									  		  console.log('UPDATE publicinventario SET firma = "'+localStorage.firma+'",id_envio = "'+id_envio+"-"+id+'" where rowid = "'+last_rowid+'"');
+											tx.executeSql('UPDATE publicinventario SET firma = "'+localStorage.firma+'",id_envio = "'+id_envio+"-"+id+'" where rowid = "'+last_rowid+'"');
+										}, function errorCB(err) {	alert("Error processing SQL: "+err.code); }
+										,function successCB() {	localStorage.firma = ""; }
+										);
+									}
+								});
+						});
 						var last_id;
 						var j =0;
 						   $(':input').each(function () {	console.log("valor:" + $(this).val() + " id: " + $(this).attr('id'));

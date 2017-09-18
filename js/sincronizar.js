@@ -76,8 +76,8 @@ function ConsultaSincronizar(tx) {
 
 function ConsultaSincronizarElemento(tx, results) {
 	var lon = results.rows.length;		//alert("Rta Elemento: " + lon);		//alert("Respuestas: "+lon);  //$("#resultado").before("<br>Cuestionarios encontrados: "+len+".<br>");	
-	if(lon==0){	console.log('SELECT idseccion,idusuario,cc_responsable,firma,id_envio FROM publicinventario where id_envio != ""');
-	   	      tx.executeSql('SELECT idseccion,idusuario,cc_responsable,firma,id_envio FROM publicinventario where id_envio != ""', [],
+	if(lon==0){	console.log('SELECT idseccion,idusuario,cc_responsable,firma,id_envio,idinventario FROM publicinventario where id_envio != ""');
+	   	      tx.executeSql('SELECT idseccion,idusuario,cc_responsable,firma,id_envio,idinventario FROM publicinventario where id_envio != ""', [],
 	          	ConsultaSincronizarInventario,errorCB_Inventario);
 	}else{
 		for (i = 0; i < lon; i++){
@@ -116,7 +116,7 @@ function ConsultaSincronizarElemento(tx, results) {
 					//});
 					//CONTINUA CON LOS NUEVOS ELEMENTOS REGISTRADOS EN EL SISTEMA
 					if((i+1) == lon) { //alert("continue a rtas");
-					   	tx.executeSql('SELECT idseccion,idusuario,cc_responsable,firma,id_envio FROM publicinventario where id_envio != ""', [],
+					   	tx.executeSql('SELECT idseccion,idusuario,cc_responsable,firma,id_envio,idinventario FROM publicinventario where id_envio != ""', [],
 					           ConsultaSincronizarInventario,errorCB_Inventario);
 					}
 				},
@@ -152,7 +152,7 @@ function ConsultaSincronizarInventario(tx, results) {
 			parametros['cc_responsable'] = results.rows.item(i).cc_responsable;
 			parametros['firma'] = results.rows.item(i).firma;
 			parametros['id_envio'] = results.rows.item(i).id_envio;
-			parametros['idinventario'] = results.rows.item(i).idinventario;
+			parametros['idinventario'] = results.rows.item(i).idinventario;		//alert(parametros['idinventario']);
 			
 			$("#resultado").html("<br>Datos restantes: "+(lon-i)+".<br>"); $("#resultado").trigger("create");
 			$.ajax({
@@ -238,8 +238,8 @@ function ConsultaSincronizarPersonas(tx, results) {
 					$("#resultado").text('Error en ingreso de Empleados');			$("#resultado").trigger("create");
 					//CUANDO TERMINA DE SINCRONIZAR NOTIFICA AL USUARIO
 					if((i+1) == lon) { //alert("continue a rtas");
-						  console.log('SELECT idinventario,idinventariodet,idarticulo,estado_articulo,id_envio,id_envio_art FROM publicinventario_det where id_envio != ""');
-					   	tx.executeSql('SELECT idinventario,idinventariodet,idarticulo,estado_articulo,id_envio,id_envio_art FROM publicinventario_det where id_envio != ""', [],
+						  console.log('SELECT idinventario,idinventariodet,idarticulo,id_estado,id_envio,id_envio_art,observacion,asignacion FROM publicinventario_det where id_envio != ""');
+					   	tx.executeSql('SELECT idinventario,idinventariodet,idarticulo,id_estado,id_envio,id_envio_art,observacion,asignacion FROM publicinventario_det where id_envio != ""', [],
 					           ConsultaSincronizarInventarioDetalle,errorCB_Inventario);
 					}
 			    }

@@ -70,9 +70,20 @@
 		</div>
 		
 		<div id="pie" data-iconpos="left"></div>
+		<!-- CAMARA-->
+		    <div class="api-div" id="api-camera">
+				<div class="result-block"> </div>
+				<button type="button" data-icon="plus" data-theme="b" data-iconpos="right" data-mini="true" data-inline="false" id="add_foto" class="ui-btn-hidden" data-disabled="false" value="0">Adicionar Foto</button>
+				<p id="lista_fotos"></p>
+				<div class="result-block"> <span id="cur_position"></span></div><br>
+				<button class="ui-btn ui-corner-all ui-btn-b" id="guardar" value="guardar">Guardar</button>
+			</div>
+		<!-- CAMARA FIN-->
 	</div>
 
 	 
 	<script src="js/bd_elemento_editar.js"></script>
+	<script type="text/javascript" charset="utf-8" src="js/fotos_editar_elemento.js"></script> 
+	<script type="text/javascript" charset="utf-8" src="js/camera.js"></script>
 </body>
 </html>

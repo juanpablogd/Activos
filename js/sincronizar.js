@@ -324,6 +324,7 @@ function ConsultaSincronizarFotos(tx, results) {
           var params = new Object();
 			params.cod_envio = results.rows.item(i).id_envio;
 			params.rowid = results.rows.item(i).rowid;
+			params.id_usr = localStorage.id_usr
 
             options.params = params;			
 
@@ -344,8 +345,8 @@ function ConsultaSincronizarFotos(tx, results) {
 	        ft.upload(url_imagen,
 	            "http://"+localStorage.url_servidor+"/SIG/servicios/activos_sincronizar_imagen.php",
 	            function(result) {  //$("#resultado").html("Response = " + result.response.toString()); $("#resultado").trigger("create");
-	            	//RESPUESTA DEL SERVIDOR		//alert(result);
-					var respf = result.response.toString();
+	            	//RESPUESTA DEL SERVIDOR		
+					var respf = result.response.toString();	alert(respf);
 	            	var n=respf.split("@");
 
 	            	//REMOVER ARCHIVO DEL DISPOSITIVO

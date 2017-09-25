@@ -77,8 +77,8 @@ function MuestraItems(tx, results) {
     }
     
     if(encontrados>0 ){
-
-    	$("#pie").append('<button class="ui-btn ui-corner-all ui-btn-b" id="guardar" value="guardar">Guardar</button>');
+    	db.transaction(CargarFotos);
+    	//$("#pie").append('<button class="ui-btn ui-corner-all ui-btn-b" id="guardar" value="guardar">Guardar</button>');
     	$("#guardar").click(function(){
     		var id = res[3];
 			if(comprobarCamposRequired()){
@@ -101,9 +101,9 @@ function MuestraItems(tx, results) {
 										console.log(localStorage.elemento_valor);
 									   alert("Registro Almacenado correctamente");
 									   	if(localStorage.persona_valor != ""){
-									   		window.location = "persona_verificar.html";
+									   		//window.location = "persona_verificar.html";
 										}else{
-											window.location = "principal.html";
+											//window.location = "principal.html";
 										}
 								    }
 								}
@@ -115,14 +115,29 @@ function MuestraItems(tx, results) {
 				    				  	console.log('UPDATE publicarticulos SET plaqueta_af = "'+texto_plaqueta+'",plaqueta_anterior1_af = "'+texto_plaquetanterior+'" WHERE rowid = "'+id+'"');
 										tx.executeSql('UPDATE publicarticulos SET plaqueta_af = "'+texto_plaqueta+'",plaqueta_anterior1_af = "'+texto_plaquetanterior+'" WHERE rowid = "'+id+'"');				    					
 				    				}
-
-									
 								}, errorCBU, successCBU
 								);
 				    			last_id = id;			    				
 			    			}
 			    		}
 				   });
+				   db.transaction(function(tx) {
+				   	tx.executeSql('DELETE FROM publicinventario_fotos WHERE id_envio = "'+res[0]+'"');
+				   });
+					//GUARDA FOTOS
+					if(localStorage.Fotos != null && localStorage.Fotos != "" && localStorage.Fotos !== undefined && localStorage.Fotos != "undefined"){
+						//CARGA FOTOS
+						var data = JSON.parse(localStorage.getItem('Fotos')); console.log(data);
+						$.each(data, function(i, item) {	
+							db.transaction(function(tx) {	//alert(item);
+								//console.log('INSERT INTO publicinventario_fotos (url,id_envio) values ("'+item+'","'+res[0]+'")');
+								tx.executeSql('INSERT INTO publicinventario_fotos (url,id_envio) values ("'+item+'","'+res[0]+'")');
+							});
+						});
+						data.length=0;
+						localStorage.Fotos = "";				
+					}
+
 			}else{
 				alert("Complete todos los campos");
 			}
@@ -144,6 +159,60 @@ function MuestraItems(tx, results) {
 	$("ul#lista").trigger("create");
 }
 
+function CargarFotos(tx) {
+	console.log("SELECT url,id_envio FROM publicinventario_fotos where id_envio ='"+res[0]+"'");
+    tx.executeSql("SELECT url,id_envio FROM publicinventario_fotos where id_envio ='"+res[0]+"'", [], MuestraFotos);
+}
+function MuestraFotos(tx, results) {
+    var li = "";
+    var habilitado ="";
+	 	//li += '<li data-role="searchpage-list">Resultados </li>';				//<span class="ui-li-count">2</span>
+	var encontrados = results.rows.length;		console.log(encontrados);
+	
+	//FECHA - ID_ENVIO
+	var now = new Date();
+	var fecha_captura = now.getFullYear()+'-'+(1+now.getMonth())+'-'+now.getDate()+'-'+now.getHours()+'_'+now.getMinutes()+'_'+now.getSeconds();
+	var id_envio = fecha_captura+'-'+localStorage.id_usr;
+
+    var arr_tmp_fotos = new Array();				//CREA NUEVO ARRAY PARA LAS FOTOS
+    if(localStorage.getItem('Fotos')!=""){ var arr_tmp_fotos = JSON.parse(localStorage.getItem('Fotos'));}
+
+    for (var i=0;i<encontrados;i++){
+    	var src = results.rows.item(i).url;
+		//VERIFICA SI EXISTEN ELEMENTOS IMG, SI HAY VERIFICA SI HAY DISPONIBILIDAD PARA CAPTURA DE FOTOGRAFÍA
+		var img_disponible = false;
+		//ARRAY DE FOTOS
+		$("img").each(function() {
+			if($(this).attr('src')=="" || $(this).attr('src')==null){
+				NomIdimage=$(this).attr('id');
+				img_disponible = true;
+				return false; 											//Espacio Disponible
+			}
+		});																	//	alert(img_disponible);
+		//SI NO EXISTE CREA EL ELEMENTO IMG PARA ALMACENAR LA FOTO
+		if(img_disponible==false){
+			$("#lista_fotos").append('<div id="bloque'+i_foto+'"><img id="cameraImage'+i_foto+'" src="" width="320" height="210" align="center"/><button onclick="elimina_foto('+i_foto+')" id="btn_elimina'+i_foto+'" data-theme="a" data-icon="arrow-u" data-mini="true" data-iconpos="left" value="0">Eliminar Foto</button></div>');
+				//$('#btn_elimina'+i_foto+'').button();
+			NomIdimage = "cameraImage"+i_foto;
+			i_foto++;
+		}
+	
+	    image = document.getElementById(NomIdimage);
+	    image.style.display = 'block';	//alert(imageData);
+	    image.src = src;				//alert(imageData);
+
+	    arr_tmp_fotos.push(src); 									//guarda URL de la imagen en array
+    }
+
+    localStorage.setItem('Fotos', JSON.stringify(arr_tmp_fotos));
+    arr_tmp_fotos.length=0;		//alert(localStorage.Fotos);
+			
+	$("#api-camera").trigger("create");
+	$("#lista_fotos").trigger("create");
+	$("#"+NomIdimage).trigger("create");	
+
+}
+
 
 $(document).ready(function() {
 	$("#seleccionado").html('<h4 align="center"> '+res[0]+"  - "+res[1]+'</h4>');
@@ -157,7 +226,7 @@ $(document).ready(function() {
 function comprobarCamposRequired(){
 	var correcto=true;
 	if(correcto==true){
-	   $(':input').each(function () {	//console.log("valor:" + $(this).val() + " id: " + $(this).attr('id'));
+	   $(':input').each(function () {	console.log("valor:" + $(this).val() + " id: " + $(this).attr('id'));
 		      if($(this).val() =='' || $(this).val() === ""){		//console.log("Entró");
 		         correcto=false;
 		         var currentId = $(this).attr('id');	//console.log(currentId);

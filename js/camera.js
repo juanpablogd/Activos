@@ -11,7 +11,7 @@ if(localStorage.foto_calidad=="" || localStorage.foto_calidad == undefined){
 }	//alert(foto_calidad);
 
 
-function elimina_foto(num){
+function elimina_foto(num){											console.log(num);
 	if($("#cameraImage"+num).attr('src') != "" && $("#cameraImage"+num).attr('src') != undefined){
 		var str = $("#cameraImage"+num).attr('src'); //LLAMA LA URL DE LA IMAGEN 
 		$("#cameraImage"+num).attr('src')=="";		//LIMPIA EL CUADRO DE IMAGEN
@@ -19,9 +19,10 @@ function elimina_foto(num){
 				var arr_tmp_fotos = JSON.parse(localStorage.getItem('Fotos'));
 				var index = 0;
 				//BUSCA LA IMAGEN SELECCIONADA
-					$.each(arr_tmp_fotos, function(i, item) {		//alert(data[i]);
-					    var arr_str = arr_tmp_fotos[i].substring(arr_tmp_fotos[i].length-20,arr_tmp_fotos[i].length); //alert(str+" "+arr_str);
-					    if(str==arr_str){
+					$.each(arr_tmp_fotos, function(i, item) {		console.log(i);		console.log(item);
+					    var arr_str = arr_tmp_fotos[i];				//arr_tmp_fotos[i].substring(arr_tmp_fotos[i].length-20,arr_tmp_fotos[i].length); 
+					    console.log(str+" "+arr_str);
+					    if(str==arr_str){ console.log("iguales");
 					    	return false;
 					    }
 					    index++;
@@ -64,7 +65,7 @@ function onPhotoDataSuccess(imageData) {
 	});																	
 	//SI NO EXISTE CREA EL ELEMENTO IMG PARA ALMACENAR LA FOTO
 	if(img_disponible==false){
-		$("#lista_fotos").append('<div id="bloque'+i_foto+'"><img id="cameraImage'+i_foto+'" src="" width="320" height="210" align="center"/><button onclick="elimina_foto('+i_foto+')" id="btn_elimina'+i_foto+'" data-theme="a" data-icon="arrow-u" data-mini="true" data-iconpos="left">Eliminar Foto</button></div>');
+		$("#lista_fotos").append('<div id="bloque'+i_foto+'"><img id="cameraImage'+i_foto+'" src="" width="320" height="210" align="center"/><button onclick="elimina_foto('+i_foto+')" id="btn_elimina'+i_foto+'" data-theme="a" data-icon="arrow-u" data-mini="true" data-iconpos="left" value="0">Eliminar Foto</button></div>');
 		$("#api-camera").trigger("create");
 		$("#lista_fotos").trigger("create");
 		$("#"+NomIdimage).trigger("create");							//alert('Calidad: '+foto_calidad+' FTW: ' + foto_tamano); */

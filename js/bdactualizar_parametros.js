@@ -24,7 +24,10 @@ function TablaGuardarExe(tx) {
 	for(var fil = 0; fil < arr_ListaTabla.length; fil++) {																	//alert('Registro: '+fil+': '+arr_ListaTabla[fil]);				
 		$.mobile.loading( 'show', { text: 'Creando '+arr_ListaTabla[fil][0], textVisible: true, theme: 'a', html: "" });	//alert('DROP TABLE IF EXISTS '+arr_ListaTabla[fil][0]+';');
 		tx.executeSql('DROP TABLE IF EXISTS '+arr_ListaTabla[fil][0]);														//console.log('CREATE TABLE IF NOT EXISTS '+arr_ListaTabla[fil][0]+' ('+arr_ListaTabla[fil][1]+')');
-		tx.executeSql('CREATE TABLE IF NOT EXISTS '+arr_ListaTabla[fil][0]+' ('+arr_ListaTabla[fil][1]+')');				
+		tx.executeSql('CREATE TABLE IF NOT EXISTS '+arr_ListaTabla[fil][0]+' ('+arr_ListaTabla[fil][1]+')');
+		if(arr_ListaTabla[fil][0] == "publicinventario"){
+			tx.executeSql('CREATE INDEX idx_inv_publicinventario_cc_responsable ON publicinventario (cc_responsable);');	
+		}
 	}																														//alert("Longitud: "+arr_tabla.length);
 	
 	$.mobile.loading( 'show', { text: 'Ingresando datos... ', textVisible: true, theme: 'a', html: "" });

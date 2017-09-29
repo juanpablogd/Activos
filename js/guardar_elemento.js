@@ -2,7 +2,7 @@ var db = window.openDatabase("bdactivos", "1.0", "Proyecto SFK Activos", 3355443
 // Start with the map page
 $(window).load(function () {
 		var elemento_valor = localStorage.elemento_valor;		 	
-		if (elemento_valor == null || elemento_valor == "") window.location = "p1_elemento_buscar.html";
+		if (elemento_valor == null || elemento_valor == "") window.location = "p2_elemento_buscar.html";
 		 /* db.transaction(AlmacenaUsr);
 		db.transaction(CargarAtletas); */
 		

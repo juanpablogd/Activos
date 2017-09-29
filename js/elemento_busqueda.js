@@ -26,16 +26,28 @@ $(document).ready(function() {
 	localStorage.busqueda = "";
 	
 	//HABILITA BOTON 2 - ELEMENTO
-	var elemento_valor = localStorage.elemento_valor; console.log(elemento_valor); 
-	if(elemento_valor != "" && elemento_valor != undefined && elemento_valor != null && elemento_valor != "null" )
+	var persona_valor = localStorage.persona_valor; 	console.log(persona_valor); 
+	if(persona_valor != "" && persona_valor != undefined && persona_valor != null && persona_valor != "null" )
 	{
+		$val = localStorage.persona_valor;				console.log(localStorage.persona_valor);
+		var res_persona = $val.split("@");
+
+		var elemento_valor = localStorage.elemento_valor;
 		var res = elemento_valor.split("@");	//alert(res[1]);
-		$("#seleccionado").html('<h4 align="center">'+res[1]+" -  "+res[2]+'</h4>');
+		if(elemento_valor != "" && elemento_valor != undefined && elemento_valor != null && elemento_valor != "null" )
+		{
+			$("#seleccionado").html('<h4 align="center">'+res_persona[1]+" "+res_persona[2]+" - "+'Ref: '+res[1]+" -  "+res[2]+'</h4>');
+		} else{
+			$("#seleccionado").html('<h4 align="center">'+res_persona[1]+" "+res_persona[2]+" - "+' Busque un elemento por favor</h4>');			
+		}
 		$("#btn2").removeAttr("disabled");
 		$("#btn3").removeAttr("disabled");
 		if(res[1] == "" ){
 			alert("Registre la plaqueta por favor");
 			window.location = "elemento_editar.html";			
+		}if(res[0] != "" ){
+			localStorage.busqueda=res[1];
+			db.transaction(CargarListado);
 		}
 	}
 	//HABILITA BOTON 3 - PERSONA RESPONSABLE
@@ -65,7 +77,7 @@ $(document).ready(function() {
 	        $ul.html( "" );
 	        if ( value && value.length > 3 ) {
 				console.log("encontrados: " + $("#lista li").size());
-	            localStorage.busqueda=$input.val();
+	            localStorage.busqueda=$input.val().trim();
 		    	db.transaction(CargarListado);
 	            $ul.listview( "refresh" );
 	            $ul.trigger( "updatelayout"); 
@@ -76,8 +88,8 @@ $(document).ready(function() {
 	//EVENTO CLICK DE LA LISTA DE ARTICULOS
 	$('#lista').on('click', 'li', function(){
 		var $this = $(this);
-		console.log("Valor" + $this.attr('value'));
-		console.log($this.text() + ' \nIndex ' + $this.index());
+		//console.log("Valor" + $this.attr('value'));
+		//console.log($this.text() + ' \nIndex ' + $this.index());
 		
 		$val = $this.attr('value'); //id@referencia@nombre
 		localStorage.elemento_valor = $val; 
@@ -95,11 +107,11 @@ $(document).ready(function() {
 	
 	//DIRECCIONA OPCION FOTO
 	$('#btn2').click(function() {
-		window.location= 'p2_foto.html';
+		window.location= 'p2_elemento_buscar.html';
 	});
 	//DIRECCIONA SELECCIONAR PERSONA
 	$('#btn3').click(function() {
-		window.location= 'p3_persona_buscar.html';
+		window.location= 'p3_foto.html';
 	});
 	//DIRECCIONA OPCION PERSONA
 	$('#btn4').click(function() {

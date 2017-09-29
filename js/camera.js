@@ -87,4 +87,3 @@ function onPhotoDataSuccess(imageData) {
 	$("#"+NomIdimage).trigger("create");							//alert('Calidad: '+foto_calidad+' FTW: ' + foto_tamano); */
 	return false;
 }
-

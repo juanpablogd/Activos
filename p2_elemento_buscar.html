@@ -11,6 +11,7 @@
 	<meta name="author" content="Sofytek" />
  	<meta name="viewport" content="width=device-width" />
  	<meta name="viewport" content="initial-scale=1.0" />
+
 	<link rel="stylesheet" href="css/jquery.mobile-1.4.5.min.css" />
 	<link rel="stylesheet" href="css/barra.css" />
 	<link href="css/crear.css" rel="stylesheet">
@@ -31,7 +32,7 @@
 	<script src="js/jquery.min.js"></script>
 	<script src="js/jquery.mobile-1.4.5.min.js"></script>
 
-	<!-- Replace favicon.ico & apple-touch-icon.png in the root of your domain and delete these references -->
+	  <!-- Replace favicon.ico & apple-touch-icon.png in the root of your domain and delete these references -->
 	<link rel="shortcut icon" href="/favicon.ico" />
 	<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 	<script src="js/valida.js"></script>
@@ -40,47 +41,48 @@
 <!-- INICIALIZA CORDOVA  -->
 	<script type="text/javascript" src="cordova.js"></script>
 	<script type="text/javascript" src="js/index.js"></script>
-
 </head>
 
 <body>
 	<div id="custom-format-page" data-role="page" data-theme="b">
 		
-			<div data-role="header" data-position="inline" >
+			<div data-role="header" data-position="inline">
 				<h1>GOBERNACIÓN CUNDINAMARCA - Inventarios</h1>
-				<a href="salir.html" target="_top" data-icon="power">Salir</a>
+				<a href="salir.html" target="_top" data-icon="power" data-theme="b">Salir</a>
 				<div data-role="navbar">
 					<ul>
-						<li><a href="nuevo_elemento.html" target="_top" data-icon="grid">Actualizaciones</a></li>
-						<li><a href="p1_elemento_buscar.html" target="_top" data-icon="bullets">Registro Inv</a></li>
-						<li><a href="consultar.html" target="_top" data-icon="search">Consulta</a></li>
-						<li><a href="mnu_sincronizar.html" target="_top" data-icon="recycle">Sincronizar</a></li>
+						<li><a href="p1_persona_buscar.html" target="_top" data-icon="bullets" class="ui-btn-active">Registro Inv</a></li>
+						<li><a href="consultar.html" target="_top" data-icon="search" data-theme="b">Consulta</a></li>
+						<li><a href="mnu_sincronizar.html" target="_top" data-icon="recycle" data-theme="b">Sincronizar</a></li>
 					</ul>
 				</div>
+			</div>
+		<div id="container">
 				<div class="ui-body-b ui-body">
 			    <div data-role="navbar" data-iconpos="left"> 
 			        <ul>
-			            <li><a href="p1_elemento_buscar.html" target="_top" id="btn1" data-icon="arrow-r" data-theme="a">1</a></li>
-			            <li><a href="p2_foto.html" target="_top" id="btn2" data-icon="arrow-r" data-theme="a">2</a></li>
-			            <li><a href="#" id="btn3" data-icon="arrow-r" data-theme="a">3</a></li>
+			            <li><a href="p1_persona_buscar.html" target="_top" id="btn1" data-icon="arrow-r" data-theme="a">1</a></li>
+			            <li><a href="p2_elemento_buscar.html" target="_top" id="btn2" data-icon="arrow-r" data-theme="a">2</a></li>
+			            <li><a href="#" id="btn3" data-icon="arrow-r">3</a></li>
 			            <!-- <li><button disabled="" id="btn4" data-icon="arrow-r">4</button></li> -->
 			            <li><button disabled="" id="btn5" data-icon="arrow-r">Ok</button></li>
 			        </ul>
 			    </div><!-- /navbar -->
 			</div><!-- /container -->	
-
-				<div id="seleccionado"></div>
+			<div id="seleccionado"></div>
 			</div>
 		
 		<div data-role="content">
-			<ul id="lista" data-role="listview" data-filter="true"  data-filter-placeholder="Buscar Persona..." data-theme="a"></ul>
+			<button class="ui-btn ui-shadow" id="escanear">Scanear</button>
+			
+			<ul id="lista" data-role="listview" data-filter="true" data-filter-placeholder="Buscar Elemento..." data-theme="a"></ul>
 		</div>
 		
-		<div data-role="footer" data-iconpos="left">
 		
-		</div>
 	</div>
-	<script src="js/bd_persona_busqueda.js"></script>
-	<script src="js/persona_busqueda.js"></script>
+
+	<script src="js/bd_elemento_busqueda.js"></script>
+	<script src="js/elemento_busqueda.js"></script>	
+
 </body>
 </html>

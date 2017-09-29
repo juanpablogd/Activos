@@ -44,31 +44,31 @@
 <body>
 	<div id="custom-format-page" data-role="page" data-theme="b">
 		
-			<div data-role="header" data-position="inline">
-				<h1>GOBERNACIÓN CUNDINAMARCA - Inventarios</h1>
-				<a href="salir.html" target="_top" data-icon="power">Salir</a>
-				<div data-role="navbar">
-					<ul>
-						<li><a href="nuevo_encargado.html" target="_top" data-icon="user" >Personal</a></li>
-						<li><a href="nuevo_elemento.html" target="_top" data-icon="grid">Elemento</a></li>
-						<li><a href="p1_elemento_buscar.html" target="_top" data-icon="bullets" >Registro Inv</a></li>
-						<li><a href="consultar.html" target="_top" data-icon="search" class="ui-btn-active">Consulta</a></li>
-						<li><a href="mnu_sincronizar.html" target="_top" data-icon="recycle">Sincronizar</a></li>
-					</ul>
-				</div>
+		<div data-role="header" data-position="inline">
+			<h1>GOBERNACIÓN CUNDINAMARCA - Inventarios</h1>
+			<a href="salir.html" target="_top" data-icon="power">Salir</a>
+			<div data-role="navbar">
+				<ul>
+					<li><a href="p1_persona_buscar.html" target="_top" data-icon="bullets" >Registro Inv</a></li>
+					<li><a href="consultar.html" target="_top" data-icon="search" class="ui-btn-active">Consulta</a></li>
+					<li><a href="mnu_sincronizar.html" target="_top" data-icon="recycle">Sincronizar</a></li>
+				</ul>
 			</div>
-		<div id="container">
-				<div class="ui-body-b ui-body">
-			</div><!-- /container -->	
-			<div id="seleccionado"></div>
-			</div>
-		
+		</div>
 		<div data-role="content">
+			<div id="container">
+					<div class="ui-body-b ui-body">
+				</div><!-- /container -->	
+				<div id="seleccionado"></div>
+			</div>
 			<ul id="lista" data-role="listview" data-filter="true" data-filter-placeholder="Buscar Persona..." data-theme="a"></ul>
 		</div>
 		
 		<div data-role="footer" data-iconpos="left"></div>
+
 	</div>
+
+
 	<script type="text/javascript" src="js/index.js"></script>
 	<script type="text/javascript">	app.initialize();	</script> 
 	<script src="js/bd_persona_consulta.js"></script>    

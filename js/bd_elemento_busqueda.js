@@ -3,6 +3,11 @@
  **/
 var db = window.openDatabase("bdactivos", "1.0", "Proyecto SFK Activos", 33554432);
 
+function editarElemento(cod){	console.log(cod);
+	localStorage.elemento_valor = cod;
+	window.location = "elemento_editar.html";
+}
+
 function errorCB(err) {
 	// Esto se puede ir a un Log de Error dir�a el purista de la oficina, pero como este es un ejemplo pongo el MessageBox.Show :P
 	if (err.code != "undefined" && err.message != "undefined"){
@@ -18,8 +23,8 @@ function CargarListado(tx) {
 	var busqueda=localStorage.busqueda;				//alert("Busqueda: "+busqueda+"!"); //console.log("SELECT el.idarticulo id,el.referencia,el.plaqueta,el.nombre,se.nombre seccion,sl.nombre clasificacion FROM publicarticulos el inner join publicsecciones se on se.idseccion = el.idseccion inner join publicsublineas sl on sl.idslinea = el.idslinea where numero_serie like '%"+busqueda+"%' or plaqueta like '%"+busqueda+"%' or plaqueta_anterior like '%"+busqueda+"%' or el.nombre like '%"+busqueda+"%' order by el.nombre");
 	
 	if(busqueda!=null){
-		  console.log("SELECT el.idarticulo id,el.referencia,el.plaqueta_af,el.nombre,se.nombre seccion,sl.nombre clasificacion,el.id_envio FROM publicarticulos el inner join publicsecciones se on se.idseccion = el.idseccion inner join publicsublineas sl on sl.idslinea = el.idslinea where numero_serie_af like '%"+busqueda+"%' or plaqueta_af like '%"+busqueda+"%' or plaqueta_anterior1_af like '%"+busqueda+"%' or el.nombre like '%"+busqueda+"%' order by el.nombre limit 250");
-	    tx.executeSql("SELECT el.idarticulo id,el.referencia,el.plaqueta_af,el.nombre,se.nombre seccion,sl.nombre clasificacion,el.id_envio FROM publicarticulos el inner join publicsecciones se on se.idseccion = el.idseccion inner join publicsublineas sl on sl.idslinea = el.idslinea where numero_serie_af like '%"+busqueda+"%' or plaqueta_af like '%"+busqueda+"%' or plaqueta_anterior1_af like '%"+busqueda+"%' or el.nombre like '%"+busqueda+"%' order by el.nombre limit 250", [], MuestraItems);
+		  console.log("SELECT el.idarticulo id,el.referencia,el.plaqueta_af,el.nombre,se.nombre seccion,sl.nombre clasificacion,el.id_envio,el.rowid FROM publicarticulos el inner join publicsecciones se on se.idseccion = el.idseccion inner join publicsublineas sl on sl.idslinea = el.idslinea where numero_serie_af like '%"+busqueda+"%' or plaqueta_af like '%"+busqueda+"%' or plaqueta_anterior1_af like '%"+busqueda+"%' or el.nombre like '%"+busqueda+"%' order by el.nombre limit 250");
+	    tx.executeSql("SELECT el.idarticulo id,el.referencia,el.plaqueta_af,el.nombre,se.nombre seccion,sl.nombre clasificacion,el.id_envio,el.rowid FROM publicarticulos el inner join publicsecciones se on se.idseccion = el.idseccion inner join publicsublineas sl on sl.idslinea = el.idslinea where numero_serie_af like '%"+busqueda+"%' or plaqueta_af like '%"+busqueda+"%' or plaqueta_anterior1_af like '%"+busqueda+"%' or el.nombre like '%"+busqueda+"%' order by el.nombre limit 250", [], MuestraItems);
    }
 }
 /* RESULTADO DE LA TABLA ELEMENTO*/
@@ -40,19 +45,23 @@ function MuestraItems(tx, results) {
 	 	var seccion = results.rows.item(i).seccion;
 	 	var clasificacion = results.rows.item(i).clasificacion;
 	 	var id_envio_art = results.rows.item(i).id_envio;
+	 	var rowid = results.rows.item(i).rowid;
 	 	
-	    li += "<li value='"+id+"@"+plaqueta+"@"+nombre+"@"+id_envio_art+"'>"+
-			"<a href='#'>"+ 
-			    	"<div class='ui-block'>"+
-				        "<h2>"+nombre+"</h2>"+
-				        "<p>Ref: "+referencia+"</p>"+
-				        "<p>"+seccion+" - "+plaqueta+"</p>"+
-				        "<h2>"+clasificacion+"</h2>"+
-					"</div>"+  
-			  "</a>" +
+	    li += "<li value='"+id+"@"+plaqueta+"@"+nombre+"@"+rowid+"'>"+
+		    	"<div class='ui-block'>"+
+			        "<h2>"+nombre+"</h2>"+
+			        "<p>Ref: "+referencia+"</p>"+
+			        "<p>"+seccion+" - "+plaqueta+"</p>"+
+			        "<h2>"+clasificacion+"</h2>"+
+			        "<a href='#' onclick=\"editarElemento('"+id+"@"+plaqueta+"@"+nombre+"@"+rowid+"');\"><h2>Editar</h2></a>"+
+				"</div>"+  
 			  "</li>";
     }
-    if(encontrados==0) alert("No hay elementos Encontrados");
+    if(encontrados==0){
+    	if (confirm("No se encontró el ELEMENTO!! Desea crear uno nuevo?") == true) {
+		    window.location="nuevo_elemento.html";
+		}
+    }
     //console.log(li); //alert(li);
 	$("ul#lista").empty().append(li).listview("refresh");
 	

@@ -33,7 +33,8 @@ function successCB() {
 
 /* BUSQUEDA EN LA TABLA PERSONA*/
 function CargarListado(tx) {
-	if(busqueda!=null){	console.log("SELECT sub.nombre sublinea,art.nombre,art.referencia,art.numero_serie_af,plaqueta_af,plaqueta_anterior1_af,art.id_envio FROM publicarticulos art left join publicsublineas sub on sub.idslinea = art.idslinea  where art.rowid ='"+res[3]+"'"); //alert("Busqueda: "+busqueda);
+	if(busqueda!=null){	
+	      console.log("SELECT sub.nombre sublinea,art.nombre,art.referencia,art.numero_serie_af,plaqueta_af,plaqueta_anterior1_af,art.id_envio FROM publicarticulos art left join publicsublineas sub on sub.idslinea = art.idslinea  where art.rowid ='"+res[3]+"'"); //alert("Busqueda: "+busqueda);
 	    tx.executeSql("SELECT sub.nombre sublinea,art.nombre,art.referencia,art.numero_serie_af,plaqueta_af,plaqueta_anterior1_af,art.id_envio FROM publicarticulos art left join publicsublineas sub on sub.idslinea = art.idslinea  where art.rowid ='"+res[3]+"'", [], MuestraItems);
 	}
 }

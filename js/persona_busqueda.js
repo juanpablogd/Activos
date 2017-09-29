@@ -12,23 +12,13 @@ $(window).load(function () {
 
 $(document).ready(function() {
 	//SI YA ESTÁ REGISTRADO EL ELEMENTO Y LA PERSONA ENTONCES HABILITA LA OPCIÓN DE LA FIRMA
-	if(localStorage.elemento_valor !=  "" && localStorage.elemento_valor !=  undefined && localStorage.elemento_valor !=  "null" && localStorage.persona_valor !=  "" && localStorage.persona_valor !=  undefined && localStorage.persona_valor !=  "null" )
-	{
-		$val = localStorage.elemento_valor; 
-		var res = $val.split("@");
-		$val = localStorage.persona_valor; 
-		var res_persona = $val.split("@");
-		//$("#seleccionado").html('<h4 align="center">'+res_persona[1]+" "+res_persona[2]+" - "+res[1]+" -  "+res[2]+'</h4>');
-		$("#seleccionado").html('<h4 align="center">'+res_persona[1]+" "+res_persona[2]+" - "+'Ref: '+res[2]+'</h4>');
-		$("#btn5").removeAttr("disabled");
-	}
-	
-/*	//HABILITA BOTON GUARDAR
-	var firma = localStorage.firma;
-	if(firma != "" && firma != undefined && firma != "null"){
-		$("#btn5").removeAttr("disabled");
-	}	*/
-	
+	$val = localStorage.persona_valor;	console.log(localStorage.persona_valor);
+	var res_persona = $val.split("@");
+	//$("#seleccionado").html('<h4 align="center">'+res_persona[1]+" "+res_persona[2]+" - "+res[1]+" -  "+res[2]+'</h4>');
+	$("#seleccionado").html('<h4 align="center">'+res_persona[1]+" "+res_persona[2]+'</h4>');
+	$("#btn2").removeAttr("disabled");
+	localStorage.busqueda = res_persona[0];
+	db.transaction(CargarListado);
 	
     $("#bcerrar_sesion").click(function(){
     	db.transaction(EliminaUsr);
@@ -41,9 +31,9 @@ $(document).ready(function() {
             value = $input.val(),
             html = "";
         $ul.html( "" );
-        if ( value && value.length > 3 ) {
+        if ( value && value.length > 5 ) {
 			console.log("encontrados: " + $("#lista li").size());
-            localStorage.busqueda=$input.val();
+            localStorage.busqueda=$input.val().trim();
 	    	db.transaction(CargarListado);
             $ul.listview( "refresh" );
             $ul.trigger( "updatelayout");
@@ -65,15 +55,13 @@ $(document).ready(function() {
 		var res_persona = $val.split("@");
 		
 		//$("#seleccionado").html('<h4 align="center">'+res_persona[1]+" "+res_persona[2]+" - "+res[1]+'</h4>');
-		$("#seleccionado").html('<h4 align="center">'+res_persona[1]+" "+res_persona[2]+" - "+'Ref: '+res[2]+'</h4>');
+		$("#seleccionado").html('<h4 align="center">'+res_persona[1]+" "+res_persona[2]+'</h4>');
 		$("#btn4").removeAttr("disabled");
-		
-		
-
 	});
 	
-	$('#btn5').click(function() {
-		window.location= 'p5_guardar.html';
+	$('#btn2').click(function() {
+		window.location= 'p2_elemento_buscar.html';
 	});
+	
 });
 

@@ -44,7 +44,11 @@ function MuestraItems(tx, results) {
 		
     }
 	$("ul#lista").empty().append(li).listview("refresh");
-	if(encontrados==1){
+    if(encontrados==0){
+    	if (confirm("No se encontró la persona!! Desea crear una nueva PERSONA") == true) {
+		    window.location="nuevo_encargado.html";
+		}
+    }else if(encontrados==1){
 		console.log("Seleccionar:" + $('#lista li').attr('value'));
 
 		$val = localStorage.elemento_valor;		//id@referencia@nombre
@@ -54,8 +58,8 @@ function MuestraItems(tx, results) {
 		localStorage.persona_valor = $val; 
 		var res_persona = $val.split("@");
 		
-		$("#seleccionado").html('<h4 align="center">'+res_persona[1]+" "+res_persona[2]+" - "+'Ref: '+res[2]+'</h4>');
-		$("#btn5").removeAttr("disabled");
+		$("#seleccionado").html('<h4 align="center">'+res_persona[1]+" "+res_persona[2]+'</h4>');
+		$("#btn2").removeAttr("disabled");
 		
 	}
 

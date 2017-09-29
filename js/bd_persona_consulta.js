@@ -42,7 +42,11 @@ function MuestraItems(tx, results) {
 			  + "</li>";
 		
     }
-    if(encontrados==0) alert("No se encontró la persona");
+    if(encontrados==0){
+    	if (confirm("No se encontró la persona!! Desea crear una nueva PERSONA") == true) {
+		    window.location="nuevo_encargado.html";
+		}
+    }
 	$("ul#lista").empty().append(li).listview("refresh");
 	//localStorage.consulta = null;
 
@@ -68,7 +72,8 @@ $(document).ready(function() {
 		localStorage.persona_valor = $val;				console.log(localStorage.persona_valor);
 		window.location = "persona_verificar.html";		//console.log('<h4 align="center">'+res[1]+" -  "+res[2]+'</h4>');	//$("#btn2").removeAttr("disabled");	//$("#btn3").removeAttr("disabled");
 	});
-		
+	
+	
 });
 
 console.log("Valor Persona: "+localStorage.persona_valor);

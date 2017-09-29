@@ -26,7 +26,6 @@ function MuestraItems(tx, results) {
 	var encontrados = results.rows.length;		console.log('Encontrados: '+encontrados);
     for (var i=0;i<encontrados;i++)
 	{
-
 	 	var id = results.rows.item(i).id;
 	 	var idarticulo = results.rows.item(i).idarticulo;
 	 	var referencia = results.rows.item(i).referencia;
@@ -51,7 +50,11 @@ function MuestraItems(tx, results) {
     }
 	$("ul#lista").empty().append(li).listview("refresh");
 	localStorage.consulta = null;
-	if(encontrados==0) alert("No hay elementos Encontrados");
+    if(encontrados==0){
+    	if (confirm("No se encontró el ELEMENTO!! Desea crear uno nuevo?") == true) {
+		    window.location="nuevo_elemento.html";
+		}
+    }
 }
 
 $(document).ready(function() {

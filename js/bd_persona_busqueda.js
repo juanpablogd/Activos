@@ -50,10 +50,10 @@ function MuestraItems(tx, results) {
 		}
     }else if(encontrados==1){
 		console.log("Seleccionar:" + $('#lista li').attr('value'));
-
-		$val = localStorage.elemento_valor;		//id@referencia@nombre
-		var res = $val.split("@");
-
+		if(localStorage.elemento_valor !== undefined){
+			$val = localStorage.elemento_valor;		//id@referencia@nombre
+			var res = $val.split("@");
+		}
 		$val = $('#lista li').attr('value'); //id@nombres@apellidos
 		localStorage.persona_valor = $val; 
 		var res_persona = $val.split("@");

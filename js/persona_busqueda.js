@@ -12,13 +12,15 @@ $(window).load(function () {
 
 $(document).ready(function() {
 	//SI YA ESTÁ REGISTRADO EL ELEMENTO Y LA PERSONA ENTONCES HABILITA LA OPCIÓN DE LA FIRMA
-	$val = localStorage.persona_valor;	console.log(localStorage.persona_valor);
-	var res_persona = $val.split("@");
-	//$("#seleccionado").html('<h4 align="center">'+res_persona[1]+" "+res_persona[2]+" - "+res[1]+" -  "+res[2]+'</h4>');
-	$("#seleccionado").html('<h4 align="center">'+res_persona[1]+" "+res_persona[2]+'</h4>');
-	$("#btn2").removeAttr("disabled");
-	localStorage.busqueda = res_persona[0];
-	db.transaction(CargarListado);
+	$val = localStorage.persona_valor;	console.log($val);
+	if($val !== undefined){
+		var res_persona = $val.split("@");
+		//$("#seleccionado").html('<h4 align="center">'+res_persona[1]+" "+res_persona[2]+" - "+res[1]+" -  "+res[2]+'</h4>');
+		$("#seleccionado").html('<h4 align="center">'+res_persona[1]+" "+res_persona[2]+'</h4>');
+		$("#btn2").removeAttr("disabled");
+		localStorage.busqueda = res_persona[0];
+		db.transaction(CargarListado);		
+	}
 	
     $("#bcerrar_sesion").click(function(){
     	db.transaction(EliminaUsr);
@@ -46,10 +48,10 @@ $(document).ready(function() {
 		var $this = $(this);
 		console.log("Valor" + $this.attr('value'));
 		console.log($this.text() + ' \nIndex ' + $this.index());
-		
-		$val = localStorage.elemento_valor;		//id@referencia@nombre
-		var res = $val.split("@");
-
+		if(localStorage.elemento_valor !== undefined){
+			$val = localStorage.elemento_valor;		console.log($val);
+			var res = $val.split("@");
+		}	
 		$val = $this.attr('value'); 			//id@referencia@nombre
 		localStorage.persona_valor = $val; 
 		var res_persona = $val.split("@");

@@ -122,7 +122,7 @@ function MuestraItems(tx, results) {
     	$("#guardar").click(function(){		//console.log(comprobarCamposRequired());
 			if(comprobarCamposRequired()){
 				if($('#div_firma').is(':visible')){
-					if(!(localStorage.firma != "" && firma_defecto != localStorage.firma)){
+					if(!(localStorage.firma != "" && localStorage.firma !== undefined && firma_defecto != localStorage.firma)){
 						alert("Debe registrar una Firma antes de continuar");
 						return false;
 					}	

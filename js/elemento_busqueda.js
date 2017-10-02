@@ -31,9 +31,10 @@ $(document).ready(function() {
 	{
 		$val = localStorage.persona_valor;				console.log(localStorage.persona_valor);
 		var res_persona = $val.split("@");
-
-		var elemento_valor = localStorage.elemento_valor;
-		var res = elemento_valor.split("@");	//alert(res[1]);
+		if(localStorage.elemento_valor !== undefined){
+			var elemento_valor = localStorage.elemento_valor;
+			var res = elemento_valor.split("@");	//alert(res[1]);
+		}
 		if(elemento_valor != "" && elemento_valor != undefined && elemento_valor != null && elemento_valor != "null" )
 		{
 			$("#seleccionado").html('<h4 align="center">'+res_persona[1]+" "+res_persona[2]+" - "+'Ref: '+res[1]+" -  "+res[2]+'</h4>');
@@ -42,12 +43,14 @@ $(document).ready(function() {
 		}
 		$("#btn2").removeAttr("disabled");
 		$("#btn3").removeAttr("disabled");
-		if(res[1] == "" ){
-			alert("Registre la plaqueta por favor");
-			window.location = "elemento_editar.html";			
-		}if(res[0] != "" ){
-			localStorage.busqueda=res[1];
-			db.transaction(CargarListado);
+		if(localStorage.elemento_valor !== undefined){
+			if(res[1] == "" ){
+				alert("Registre la plaqueta por favor");
+				window.location = "elemento_editar.html";			
+			}else if(res[0] != "" ){
+				localStorage.busqueda=res[1];
+				db.transaction(CargarListado);
+			}
 		}
 	}
 	//HABILITA BOTON 3 - PERSONA RESPONSABLE

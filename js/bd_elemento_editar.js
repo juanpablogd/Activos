@@ -34,8 +34,8 @@ function successCB() {
 /* BUSQUEDA EN LA TABLA PERSONA*/
 function CargarListado(tx) {
 	if(busqueda!=null){	
-	      console.log("SELECT sub.nombre sublinea,art.nombre,art.referencia,art.numero_serie_af,plaqueta_af,plaqueta_anterior1_af,art.id_envio FROM publicarticulos art left join publicsublineas sub on sub.idslinea = art.idslinea  where art.rowid ='"+res[3]+"'"); //alert("Busqueda: "+busqueda);
-	    tx.executeSql("SELECT sub.nombre sublinea,art.nombre,art.referencia,art.numero_serie_af,plaqueta_af,plaqueta_anterior1_af,art.id_envio FROM publicarticulos art left join publicsublineas sub on sub.idslinea = art.idslinea  where art.rowid ='"+res[3]+"'", [], MuestraItems);
+	      console.log("SELECT sub.nombre sublinea,art.nombre,art.referencia,art.numero_serie_af,plaqueta_af,plaqueta_anterior1_af,art.id_enviom,marca_af FROM publicarticulos art left join publicsublineas sub on sub.idslinea = art.idslinea  where art.rowid ='"+res[3]+"'"); //alert("Busqueda: "+busqueda);
+	    tx.executeSql("SELECT sub.nombre sublinea,art.nombre,art.referencia,art.numero_serie_af,plaqueta_af,plaqueta_anterior1_af,art.id_envio,marca_af FROM publicarticulos art left join publicsublineas sub on sub.idslinea = art.idslinea  where art.rowid ='"+res[3]+"'", [], MuestraItems);
 	}
 }
 /* RESULTADO DE LA TABLA PERSONA*/
@@ -60,18 +60,21 @@ function MuestraItems(tx, results) {
 	 	var plaqueta_af = results.rows.item(i).plaqueta_af;
 	 	var plaqueta_anterior1_af = results.rows.item(i).plaqueta_anterior1_af;
 	 	var id_envio_ant = results.rows.item(i).id_envio;
+	 	var marca_af = results.rows.item(i).marca_af;
 	 	
 	    li += "<li value='"+res[3]+"'>"+
 			""+
 		    	"<div class='ui-block'>"+
 			        "<h2>"+nombre+"</h2>"+
 			        "<p>"+sublinea+"</p>"+
-			        "<p>Ref: "+referencia+"</p>"+
-			        "<p>Serie: "+numero_serie_af+"</p>"+
 			        "<a href='#' id='btn_plaqueta' OnClick='leer(p"+id+")' class='ui-btn ui-btn-inline ui-btn-icon-left ui-icon-search'>Plaqueta Nueva</a>"+
 			        "<input type='text' name='p"+id+"' id='p"+id+"' value='"+plaqueta_af+"' data-theme='a'>"+
 			        "<a href='#' id='btn_plaqueta_anterior' OnClick='leer(pa"+id+")' class='ui-btn ui-btn-inline ui-btn-icon-left ui-icon-search'>Plaqueta Anterior</a>"+
 			        "<input type='text' name='pa"+id+"' id='pa"+id+"' value='"+plaqueta_anterior1_af+"' data-theme='a'>"+
+			        "<h3>Marca</h3><input type='text' name='mr"+id+"' id='mr"+id+"' value='"+marca_af+"' data-theme='a'>"+
+			        "<h3>Referencia</h3><input type='text' name='rf"+id+"' id='rf"+id+"' value='"+referencia+"' data-theme='a'>"+
+			        "<a href='#' id='btn_serie' OnClick='leer(ns"+id+")' class='ui-btn ui-btn-inline ui-btn-icon-left ui-icon-search'>N. Serie</a>"+
+			        "<input type='text' name='ns"+id+"' id='ns"+id+"' value='"+numero_serie_af+"' data-theme='a'>"+
 				"</div>"+  
 			  ""
 			  + "</li>";  
@@ -92,6 +95,9 @@ function MuestraItems(tx, results) {
 			    		if(last_id != id){
 			    			var texto_plaqueta = $("#p"+id).val();
 			    			var texto_plaquetanterior = $("#pa"+id).val();
+			    			var marca_af = $("#mr"+id).val();
+			    			var referencia = $("#rf"+id).val();
+			    			var numero_serie_af = $("#ns"+id).val();
 			    			if(texto_plaqueta != undefined && texto_plaquetanterior != undefined){
 								function errorCBU(err) {	alert("Error al Guardar: "+err);	}
 								function successCBU() {
@@ -102,7 +108,7 @@ function MuestraItems(tx, results) {
 										console.log(localStorage.elemento_valor);
 									   alert("Registro Almacenado correctamente");
 									   	if(localStorage.persona_valor != ""){
-									   		//window.location = "persona_verificar.html";
+									   		window.location = "p2_elemento_buscar.html";
 										}else{
 											//window.location = "principal.html";
 										}
@@ -110,11 +116,11 @@ function MuestraItems(tx, results) {
 								}
 				    			db.transaction(function(tx) {
 				    				if (id_envio_ant == "" || id_envio_ant == null){
-				    				  	console.log('UPDATE publicarticulos SET plaqueta_af = "'+texto_plaqueta+'",plaqueta_anterior1_af = "'+texto_plaquetanterior+'",id_envio = "'+id_envio+'" WHERE rowid = "'+id+'"');
-										tx.executeSql('UPDATE publicarticulos SET plaqueta_af = "'+texto_plaqueta+'",plaqueta_anterior1_af = "'+texto_plaquetanterior+'",id_envio = "'+id_envio+'" WHERE rowid = "'+id+'"');				    					
+				    				  	  console.log('UPDATE publicarticulos SET plaqueta_af = "'+texto_plaqueta+'",plaqueta_anterior1_af = "'+texto_plaquetanterior+'",id_envio = "'+id_envio+'",marca_af = "'+marca_af+'",referencia = "'+referencia+'",numero_serie_af = "'+numero_serie_af+'" WHERE rowid = "'+id+'"');
+										tx.executeSql('UPDATE publicarticulos SET plaqueta_af = "'+texto_plaqueta+'",plaqueta_anterior1_af = "'+texto_plaquetanterior+'",id_envio = "'+id_envio+'",marca_af = "'+marca_af+'",referencia = "'+referencia+'",numero_serie_af = "'+numero_serie_af+'" WHERE rowid = "'+id+'"');				    					
 				    				}else{
-				    				  	console.log('UPDATE publicarticulos SET plaqueta_af = "'+texto_plaqueta+'",plaqueta_anterior1_af = "'+texto_plaquetanterior+'" WHERE rowid = "'+id+'"');
-										tx.executeSql('UPDATE publicarticulos SET plaqueta_af = "'+texto_plaqueta+'",plaqueta_anterior1_af = "'+texto_plaquetanterior+'" WHERE rowid = "'+id+'"');				    					
+				    				  	  console.log('UPDATE publicarticulos SET plaqueta_af = "'+texto_plaqueta+'",plaqueta_anterior1_af = "'+texto_plaquetanterior+'",marca_af = "'+marca_af+'",referencia = "'+referencia+'",numero_serie_af = "'+numero_serie_af+'" WHERE rowid = "'+id+'"');
+										tx.executeSql('UPDATE publicarticulos SET plaqueta_af = "'+texto_plaqueta+'",plaqueta_anterior1_af = "'+texto_plaquetanterior+'",marca_af = "'+marca_af+'",referencia = "'+referencia+'",numero_serie_af = "'+numero_serie_af+'" WHERE rowid = "'+id+'"');				    					
 				    				}
 								}, errorCBU, successCBU
 								);

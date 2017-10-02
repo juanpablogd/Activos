@@ -1,6 +1,6 @@
 /**
- * @author LONJA
- * @Fecha 20140218
+ * |author LONJA
+ * |Fecha 20140218
  */
 var id_usuario = window.localStorage.id_usr;
 

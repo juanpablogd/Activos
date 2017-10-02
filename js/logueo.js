@@ -1,4 +1,4 @@
-/** * @author DGJP * @Fecha 2014-02 */
+/** * |author DGJP * |Fecha 2014-02 */
 $(window).load(function () {	db.transaction(BuscaUsuarioLogueado);
 });
 $(document).ready(function(){

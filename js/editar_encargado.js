@@ -42,9 +42,13 @@ function GuardaElemento(tx) {
 /* BUSQUEDA EN LA TABLA PERSONA*/
 function consultaPersona(tx) {
 	var busqueda=localStorage.busqueda;
-	console.log("Busqueda: "+busqueda+"!"); //alert("Busqueda: "+busqueda);	3084556|EDGAR ARNULFO|SANABRIA ALDANA
-	//if(busqueda!=null){
-	    tx.executeSql("SELECT cc,nombres,apellidos FROM publicusuarios where cc = '"+busqueda+"'", [], resultadoCC);
+	var persona = localStorage.persona_valor;
+	if (persona === undefined){
+		window.location = "p1_persona_buscar.html";
+	}
+	var res = persona.split("|");
+	console.log("Busqueda: "+busqueda+" - RowID: "+res[5] ); //alert("Busqueda: "+busqueda);	3084556|EDGAR ARNULFO|SANABRIA ALDANA
+	    tx.executeSql("SELECT cc,nombres,apellidos,telefono,correo,rowid FROM publicusuarios where cc = '"+busqueda+"' and rowid != "+res[5], [], resultadoCC);
 	//}
 }
 /* RESULTADO DE LA TABLA PERSONA*/
@@ -54,7 +58,6 @@ function resultadoCC(tx, results) { console.log('MuestraItems');
 	 	var id = results.rows.item(0).cc;
 	 	var nombres = results.rows.item(0).nombres;					//alert( "nombre = " + sessionStorage.getItem("nombre"));
 	 	var apellidos = results.rows.item(0).apellidos;
-		localStorage.persona_valor = id+"|"+nombres+"|"+apellidos;
 		alert("Número de cédula ya existe: " +nombres+" "+apellidos );
 	}else{
 		if(tipo=='guarda'){
@@ -71,16 +74,19 @@ function resultadoCC(tx, results) { console.log('MuestraItems');
 			var telefonos = $( "#telefonos" ).val();
 			//OBTIENE EL ID DEL CORREO
 			var correo = $( "#correo" ).val();
+			//OBTIENE EL ROWID DEL ELEMENTO A EDITAR
+			var persona = localStorage.persona_valor;
+			var res = persona.split("|");
+			var rowid = res[5];
 			//FECHA - ID_ENVIO
 			var now = new Date();
 			var fecha_captura = now.getFullYear()+'-'+(1+now.getMonth())+'-'+now.getDate()+'-'+now.getHours()+'_'+now.getMinutes()+'_'+now.getSeconds();
 			var id_envio = fecha_captura+'-'+id_usr;
-			
-			console.log('INSERT INTO publicusuarios (cc,nombres,apellidos,telefono,correo,id_envio) values ("'+cc+'","'+nombres+'","'+apellidos+'","'+telefonos+'","'+correo+'","'+id_envio+'")');
-			tx.executeSql('INSERT INTO publicusuarios (cc,nombres,apellidos,telefono,correo,id_envio) values ("'+cc+'","'+nombres+'","'+apellidos+'","'+telefonos+'","'+correo+'","'+id_envio+'")');
-			localStorage.persona_valor = cc+"|"+nombres+"|"+apellidos;
+			  console.log('UPDATE publicusuarios SET cc="'+cc+'",nombres="'+nombres+'",apellidos="'+apellidos+'",telefono="'+telefonos+'",correo="'+correo+'",id_envio="'+id_envio+'" WHERE rowid ="'+rowid+'"');
+			tx.executeSql('UPDATE publicusuarios SET cc="'+cc+'",nombres="'+nombres+'",apellidos="'+apellidos+'",telefono="'+telefonos+'",correo="'+correo+'",id_envio="'+id_envio+'" WHERE rowid ="'+rowid+'"');
+			localStorage.persona_valor = cc+"|"+nombres+"|"+apellidos+"|"+telefonos+"|"+correo+"|"+rowid;
 			alert("Persona registrada exitosamente");
-			window.location = "principal.html";
+			window.location = "p1_persona_buscar.html";
 		}
 	}
 }
@@ -98,5 +104,16 @@ $(document).ready(function() {
 			db.transaction(consultaPersona);
 		}
 	});
+
+	var persona = localStorage.persona_valor;
+	if (persona === undefined){
+		window.location = "p1_persona_buscar.html";
+	}
+	var res = persona.split("|");
+	$("#cc").val(res[0]);
+	$("#nombres").val(res[1]);
+	$("#apellidos").val(res[2]);
+	$("#telefonos").val(res[3]);
+	$("#correo").val(res[4]);
 });
 

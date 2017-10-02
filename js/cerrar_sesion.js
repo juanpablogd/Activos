@@ -1,7 +1,7 @@
 /**
- * @author LONJA
- * @Fecha 20130831
- * @Fecha 20130930
+ * |author LONJA
+ * |Fecha 20130831
+ * |Fecha 20130930
  */
 var db = window.openDatabase("bdactivos", "1.0", "Proyecto SFK Activos", 33554432);
 var nombre = window.localStorage.nombre;

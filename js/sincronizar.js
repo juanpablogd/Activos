@@ -106,7 +106,7 @@ function ConsultaSincronizarElemento(tx, results) {
 				success: function(responser){	//alert("Articulo:"+responser);
 					//db.transaction(function(tx) {
 						var respr = responser.trim();		//alert(respr);	
-						var res=respr.split("@");			//res[0]=>Id del Elemento en el servidor	res[1]=>Id Envío	res[2]=>Id temporal en la base de datos Local
+						var res=respr.split("|");			//res[0]=>Id del Elemento en el servidor	res[1]=>Id Envío	res[2]=>Id temporal en la base de datos Local
 							console.log('update publicarticulos set idarticulo = "'+res[0]+'" where id_envio = "'+res[1]+'"');			
 						tx.executeSql('update publicarticulos set idarticulo = "'+res[0]+'" where id_envio = "'+res[1]+'"');		//tx.executeSql('DELETE from publicp_elemento where id_envio = "'+res+'"');
 							console.log('update publicinventario_det set idarticulo = "'+res[0]+'" where id_envio_art = "'+res[1]+'"');
@@ -164,9 +164,9 @@ function ConsultaSincronizarInventario(tx, results) {
             	complete: function() { $("#resultado").html('<br>Carga Completa....'+(lon-i)+'.<br>'); $("#resultado").trigger("create"); },
 				success: function(responser){	//alert("Inventario: "+responser);
 					//db.transaction(function(tx) {
-						var respr = responser.trim();		//alert(respr);	//var res=respr.split("@");
+						var respr = responser.trim();		//alert(respr);	//var res=respr.split("|");
 						
-						var res=respr.split("@");
+						var res=respr.split("|");
 						tx.executeSql('UPDATE publicinventario SET idinventario = "'+res[1]+'" where id_envio = "'+res[0]+'"');		//tx.executeSql('DELETE from publicp_elemento where id_envio = "'+res+'"');
 						tx.executeSql('UPDATE publicinventario SET id_envio = "" where id_envio = "'+res[0]+'"');
 							
@@ -281,9 +281,9 @@ function ConsultaSincronizarInventarioDetalle(tx, results) {
             	complete: function() { $("#resultado").html('<br>Carga Completa....'+(lon-i)+'.<br>'); $("#resultado").trigger("create"); },
 				success: function(responser){	//alert(responser);
 					//db.transaction(function(tx) {
-						var respr = responser.trim();		//alert("Inv Detalle: "+respr);	//var res=respr.split("@");	alert('delete from publicinventario_det where id_envio = "'+respr+'"');
+						var respr = responser.trim();		//alert("Inv Detalle: "+respr);	//var res=respr.split("|");	alert('delete from publicinventario_det where id_envio = "'+respr+'"');
 
-						var res=respr.split("@");
+						var res=respr.split("|");
 						tx.executeSql('UPDATE publicinventario_det SET idinventario = "'+res[1]+'",idinventariodet = "'+res[2]+'" where id_envio = "'+res[0]+'"');		//tx.executeSql('DELETE from publicp_elemento where id_envio = "'+res+'"');
 						tx.executeSql('UPDATE publicinventario_det SET id_envio = "" where id_envio = "'+res[0]+'"');
 					//});
@@ -347,7 +347,7 @@ function ConsultaSincronizarFotos(tx, results) {
 	            function(result) {  //$("#resultado").html("Response = " + result.response.toString()); $("#resultado").trigger("create");
 	            	//RESPUESTA DEL SERVIDOR		
 					var respf = result.response.toString();	alert(respf);
-	            	var n=respf.split("@");
+	            	var n=respf.split("|");
 
 	            	//REMOVER ARCHIVO DEL DISPOSITIVO
 	            	function eliminafotodb(tx) { //alert('DELETE from publicinventario_fotos where id_envio = "'+n[0]+'" and rowid = "'+n[1]+'"');

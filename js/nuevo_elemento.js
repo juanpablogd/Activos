@@ -176,7 +176,7 @@ function GuardaElemento(tx) {
 	tx.executeSql('select rowid from publicarticulos where id_envio = "'+id_envio+'"', [], 
 		           function(tx,rs){
 		           		var p = rs.rows.item(0);
-						localStorage.elemento_valor = p.rowid+"@"+plaqueta+"@"+nombre+"@"+id_envio;		console.log(localStorage.elemento_valor);	//alert(localStorage.elemento_valor);
+						localStorage.elemento_valor = p.rowid+"|"+plaqueta+"|"+nombre+"|"+id_envio;		console.log(localStorage.elemento_valor);	//alert(localStorage.elemento_valor);
 									//Actualiza columna Id si tiene valor nulo
 									console.log('UPDATE publicarticulos set idarticulo = rowid where idarticulo is null');
 								tx.executeSql('UPDATE publicarticulos set idarticulo = rowid where idarticulo is null');
@@ -192,9 +192,9 @@ function GuardaElemento(tx) {
 $(document).ready(function() {
 	
 /*	$val = localStorage.elemento_valor; 
-	var res = $val.split("@");
+	var res = $val.split("|");
 	$val = localStorage.persona_valor; 
-	var res_persona = $val.split("@");
+	var res_persona = $val.split("|");
 	$("#seleccionado").html('<h4 align="center">'+res_persona[1]+" "+res_persona[2]+'<br>'+'Ref: '+res[1]+" -  "+res[2]+'</h4>'); */
 	
 	$("#btn_ok").click(function(){

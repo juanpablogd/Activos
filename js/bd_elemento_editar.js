@@ -1,9 +1,9 @@
 /**
- * @author LONJA
+ * |author LONJA
  **/
 var db = window.openDatabase("bdactivos", "1.0", "Proyecto SFK Activos", 33554432);
 var busqueda=localStorage.elemento_valor;
-var res = busqueda.split("@");
+var res = busqueda.split("|");
 
 function leer(ident){
 	console.log(ident);
@@ -97,8 +97,8 @@ function MuestraItems(tx, results) {
 								function successCBU() {
 								    count++;	console.log("Contador:"+count);
 								    if(count==encontrados){
-										//idarticulo+"@"+plaqueta_af+"@"+nombre+"@"+id
-										localStorage.elemento_valor = res[0]+"@"+texto_plaqueta+"@"+res[2]+"@"+res[3];
+										//idarticulo+"|"+plaqueta_af+"|"+nombre+"|"+id
+										localStorage.elemento_valor = res[0]+"|"+texto_plaqueta+"|"+res[2]+"|"+res[3];
 										console.log(localStorage.elemento_valor);
 									   alert("Registro Almacenado correctamente");
 									   	if(localStorage.persona_valor != ""){

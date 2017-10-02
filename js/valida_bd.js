@@ -1,5 +1,5 @@
 /**
- * @author LONJA
+ * |author LONJA
  **/
 var db = window.openDatabase("bdactivos", "1.0", "Proyecto SFK Activos", 33554432);
 

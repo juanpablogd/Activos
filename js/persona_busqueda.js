@@ -14,7 +14,7 @@ $(document).ready(function() {
 	//SI YA ESTÁ REGISTRADO EL ELEMENTO Y LA PERSONA ENTONCES HABILITA LA OPCIÓN DE LA FIRMA
 	$val = localStorage.persona_valor;	console.log($val);
 	if($val !== undefined){
-		var res_persona = $val.split("@");
+		var res_persona = $val.split("|");
 		//$("#seleccionado").html('<h4 align="center">'+res_persona[1]+" "+res_persona[2]+" - "+res[1]+" -  "+res[2]+'</h4>');
 		$("#seleccionado").html('<h4 align="center">'+res_persona[1]+" "+res_persona[2]+'</h4>');
 		$("#btn2").removeAttr("disabled");
@@ -50,11 +50,11 @@ $(document).ready(function() {
 		console.log($this.text() + ' \nIndex ' + $this.index());
 		if(localStorage.elemento_valor !== undefined){
 			$val = localStorage.elemento_valor;		console.log($val);
-			var res = $val.split("@");
+			var res = $val.split("|");
 		}	
-		$val = $this.attr('value'); 			//id@referencia@nombre
+		$val = $this.attr('value'); 			//id|referencia|nombre
 		localStorage.persona_valor = $val; 
-		var res_persona = $val.split("@");
+		var res_persona = $val.split("|");
 		
 		//$("#seleccionado").html('<h4 align="center">'+res_persona[1]+" "+res_persona[2]+" - "+res[1]+'</h4>');
 		$("#seleccionado").html('<h4 align="center">'+res_persona[1]+" "+res_persona[2]+'</h4>');

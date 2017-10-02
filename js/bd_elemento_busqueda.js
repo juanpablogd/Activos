@@ -1,5 +1,5 @@
 /**
- * @author LONJA
+ * |author LONJA
  **/
 var db = window.openDatabase("bdactivos", "1.0", "Proyecto SFK Activos", 33554432);
 
@@ -47,13 +47,13 @@ function MuestraItems(tx, results) {
 	 	var id_envio_art = results.rows.item(i).id_envio;
 	 	var rowid = results.rows.item(i).rowid;
 	 	
-	    li += "<li value='"+id+"@"+plaqueta+"@"+nombre+"@"+rowid+"'>"+
+	    li += "<li value='"+id+"|"+plaqueta+"|"+nombre+"|"+rowid+"'>"+
 		    	"<div class='ui-block'>"+
 			        "<h2>"+nombre+"</h2>"+
 			        "<p>Ref: "+referencia+"</p>"+
 			        "<p>"+seccion+" - "+plaqueta+"</p>"+
 			        "<h2>"+clasificacion+"</h2>"+
-			        "<a href='#' onclick=\"editarElemento('"+id+"@"+plaqueta+"@"+nombre+"@"+rowid+"');\"><h2>Editar</h2></a>"+
+			        "<a href='#' onclick=\"editarElemento('"+id+"|"+plaqueta+"|"+nombre+"|"+rowid+"');\"><h2>Editar</h2></a>"+
 				"</div>"+  
 			  "</li>";
     }
@@ -67,9 +67,9 @@ function MuestraItems(tx, results) {
 	
 		if(encontrados==1){
 			console.log("Seleccionar:" + $('#lista li').attr('value'));
-			$val = $('#lista li').attr('value'); //id@referencia@nombre
+			$val = $('#lista li').attr('value'); //id|referencia|nombre
 			localStorage.elemento_valor = $val; 
-			var res = $val.split("@");
+			var res = $val.split("|");
 			$("#seleccionado").html('<h4 align="center"> '+res[2]+" -  "+res[1]+'</h4>');
 			$("#btn2").removeAttr("disabled");
 			$("#btn3").removeAttr("disabled");

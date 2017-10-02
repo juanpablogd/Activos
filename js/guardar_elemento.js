@@ -83,11 +83,11 @@ function GuardaElemento(tx) {
 	//OBTIENE EL ID DE LA PERSONA
 	$val = localStorage.persona_valor;
 	var id_usr = localStorage.id_usr; 
-	var cc = $val.split("@");
+	var cc = $val.split("|");
 	
 	//OBTIENE EL ELEMENTO A MOSTRAR
 	$val = localStorage.elemento_valor; 
-	var id_elemento = $val.split("@");
+	var id_elemento = $val.split("|");
 	
 	//OBTIENE EL ID DE LA SECCION//
 	var seccion = $( "#seccion" ).val();
@@ -105,7 +105,7 @@ function GuardaElemento(tx) {
 
 	//OBTIENE LA FIRMA 
 	if(localStorage.firma != null && localStorage.firma != ""){
-		var firma = localStorage.firma; 	//alert(Firma);				//Firma = Firma.replace('/""/g','@');	alert(Firma);	seccion	dependencia
+		var firma = localStorage.firma; 	//alert(Firma);				//Firma = Firma.replace('/""/g','|');	alert(Firma);	seccion	dependencia
 	}
 
 	//INFO GENERAL DEL ELEMENTO		
@@ -148,7 +148,7 @@ function GuardaElemento(tx) {
 			function MuestraItems(tx, results) {
 				var encontrados = results.rows.length; console.log("Encontrados: " + encontrados);
 				if(encontrados>0) {
-					window.location = "principal.html";
+					window.location = "p1_persona_buscar.html";
 					alert("Elemento Guardado exitosamente");
 				}else
 				{
@@ -167,9 +167,9 @@ function GuardaElemento(tx) {
 $(document).ready(function() {
 	//INICIALIZACION DE LA PAGINA
 	$val = localStorage.elemento_valor; 
-	var res = $val.split("@");
+	var res = $val.split("|");
 	$val = localStorage.persona_valor; 
-	var res_persona = $val.split("@");
+	var res_persona = $val.split("|");
 	$("#seleccionado").html('<h4 align="center">'+res_persona[1]+" "+res_persona[2]+'<br>'+res[1]+" - "+res[2]+'</h4>');
 	
 	//EVENTO CUANDO SE SELECCIONA ALGUNA DEPENDENCIA

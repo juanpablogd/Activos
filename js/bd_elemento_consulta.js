@@ -1,5 +1,5 @@
 /**
- * @author LONJA
+ * |author LONJA
  **/
 var db = window.openDatabase("bdactivos", "1.0", "Proyecto SFK Activos", 33554432);
 
@@ -16,8 +16,8 @@ function successCB() {
 /* BUSQUEDA EN LA TABLA ELEMENTO*/
 function CargarListado(tx) {
 	var busqueda=localStorage.consulta; //console.log("Busqueda: "+busqueda+"!"); //alert("Busqueda: "+busqueda); alert("SELECT * FROM publicp_elemento where referencia like '%"+busqueda+"%'");
-	if(busqueda!=null){ console.log("SELECT el.idarticulo,el.rowid as id,el.referencia,el.numero_serie_af,plaqueta_af,plaqueta_anterior1_af,el.nombre,te.nombres||' '||te.apellidos as responsable FROM publicarticulos el left join publicusuarios te on el.cc_responsable_af = te.cc where referencia like '%"+busqueda+"%' or nombre like '%"+busqueda+"%' or numero_serie_af like '%"+busqueda+"%' or plaqueta_af like '%"+busqueda+"%' or plaqueta_anterior1_af like '%"+busqueda+"%'");
-	    tx.executeSql("SELECT el.idarticulo,el.rowid as id,el.referencia,el.numero_serie_af,plaqueta_af,plaqueta_anterior1_af,el.nombre,te.nombres||' '||te.apellidos as responsable FROM publicarticulos el left join publicusuarios te on el.cc_responsable_af = te.cc where referencia like '%"+busqueda+"%' or nombre like '%"+busqueda+"%' or numero_serie_af like '%"+busqueda+"%' or plaqueta_af like '%"+busqueda+"%' or plaqueta_anterior1_af like '%"+busqueda+"%'", [], MuestraItems);
+	if(busqueda!=null){ console.log("SELECT el.idarticulo,el.rowid as id,el.referencia,el.numero_serie_af,plaqueta_af,plaqueta_anterior1_af,el.nombre,te.nombres||' '||te.apellidos as responsable FROM publicarticulos el left join publicusuarios te on el.cc_responsable_af = te.cc where referencia like '%"+busqueda+"%' or nombre like '%"+busqueda+"%' or numero_serie_af like '%"+busqueda+"%' or plaqueta_af like '%"+busqueda+"%' or plaqueta_anterior1_af like '%"+busqueda+"%' limit 200");
+	    tx.executeSql("SELECT el.idarticulo,el.rowid as id,el.referencia,el.numero_serie_af,plaqueta_af,plaqueta_anterior1_af,el.nombre,te.nombres||' '||te.apellidos as responsable FROM publicarticulos el left join publicusuarios te on el.cc_responsable_af = te.cc where referencia like '%"+busqueda+"%' or nombre like '%"+busqueda+"%' or numero_serie_af like '%"+busqueda+"%' or plaqueta_af like '%"+busqueda+"%' or plaqueta_anterior1_af like '%"+busqueda+"%' limit 200", [], MuestraItems);
    }
 }
 /* RESULTADO DE LA TABLA ELEMENTO*/
@@ -35,7 +35,7 @@ function MuestraItems(tx, results) {
 	 	var plaqueta_af = results.rows.item(i).plaqueta_af;
 	 	var plaqueta_anterior1_af = results.rows.item(i).plaqueta_anterior1_af;
 
-	    li += "<li value='"+idarticulo+"@"+plaqueta_af+"@"+nombre+"@"+id+"'>"+
+	    li += "<li value='"+idarticulo+"|"+plaqueta_af+"|"+nombre+"|"+id+"'>"+
 			"<a href='#'>"+
 			    	"<div class='ui-block'>"+
 				        "<h2>"+nombre+"</h2>"+
@@ -73,7 +73,7 @@ $(document).ready(function() {
 	//EVENTO CLICK DE LA LISTA DE ARTICULOS
 	$('#lista').on('click', 'li', function(){
 		var $this = $(this);							//console.log("Valor: " + $this.attr('value'));	//console.log($this.text() + ' \nIndex ' + $this.index());
-		$val = $this.attr('value'); 					//id@referencia@nombre
+		$val = $this.attr('value'); 					//id|referencia|nombre
 		localStorage.elemento_valor = $val;				console.log(localStorage.persona_valor);
 		window.location = "elemento_editar.html";		//console.log('<h4 align="center">'+res[1]+" -  "+res[2]+'</h4>');	//$("#btn2").removeAttr("disabled");	//$("#btn3").removeAttr("disabled");
 	});
@@ -84,7 +84,7 @@ console.log("Valor ELEMENTO: "+localStorage.elemento_valor);
 if(localStorage.elemento_valor != ""){
 	var elemento_valor = localStorage.elemento_valor; //console.log(elemento_valor);
 	if(elemento_valor !== undefined){
-		var res = elemento_valor.split('@');
+		var res = elemento_valor.split('|');
 		localStorage.consulta = res[1];
 		db.transaction(CargarListado);
 	}

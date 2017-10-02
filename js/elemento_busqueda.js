@@ -13,7 +13,7 @@ $(document).ready(function() {
     app.initialize();
 	function leer(){
 		cordova.plugins.barcodeScanner.scan(
-			function(result) {			//$val = result.text; alert($val); //var res = $val.split("@");
+			function(result) {			//$val = result.text; alert($val); //var res = $val.split("|");
 				localStorage.busqueda = result.text; 
 				db.transaction(CargarListado);
 			},
@@ -30,10 +30,10 @@ $(document).ready(function() {
 	if(persona_valor != "" && persona_valor != undefined && persona_valor != null && persona_valor != "null" )
 	{
 		$val = localStorage.persona_valor;				console.log(localStorage.persona_valor);
-		var res_persona = $val.split("@");
+		var res_persona = $val.split("|");
 		if(localStorage.elemento_valor !== undefined){
 			var elemento_valor = localStorage.elemento_valor;
-			var res = elemento_valor.split("@");	//alert(res[1]);
+			var res = elemento_valor.split("|");	//alert(res[1]);
 		}
 		if(elemento_valor != "" && elemento_valor != undefined && elemento_valor != null && elemento_valor != "null" )
 		{
@@ -94,9 +94,9 @@ $(document).ready(function() {
 		//console.log("Valor" + $this.attr('value'));
 		//console.log($this.text() + ' \nIndex ' + $this.index());
 		
-		$val = $this.attr('value'); //id@referencia@nombre
+		$val = $this.attr('value'); //id|referencia|nombre
 		localStorage.elemento_valor = $val; 
-		var res = $val.split("@");
+		var res = $val.split("|");
 		$("#seleccionado").html('<h4 align="center">'+res[2]+" -  "+res[1]+'</h4>');
 		$("#btn2").removeAttr("disabled");
 		$("#btn3").removeAttr("disabled");

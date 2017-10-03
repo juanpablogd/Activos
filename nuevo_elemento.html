@@ -37,19 +37,6 @@
 				<div class="ui-body-b ui-body" align="center">Crear Elemento</div><!-- /container -->
 				
 				<div data-role="fieldcontain" class="ui-field-contain">
-					<label for="dependencia" class="select">Dependencia:</label>
-						<select name="dependencia" id="dependencia"  >
-						<option value="">Seleccione...</option>
-					</select>
-				</div>
-				<div data-role="fieldcontain" class="ui-field-contain">
-					<label for="seccion" class="select">Secci&oacute;n:</label>
-						<select name="seccion" id="seccion"   required>
-						<option value="">Seleccione...</option>
-					</select>
-				</div>
-				
-				<div data-role="fieldcontain" class="ui-field-contain">
 					<label for="linea" class="select">L&iacute;nea:</label>
 						<select name="linea" id="linea">
 						<option value="">Seleccione...</option>
@@ -85,6 +72,19 @@
 				<div data-role="fieldcontain" class="ui-field-contain">
 					<a href="#" id="btn_plaqueta_anterior" class="ui-btn ui-btn-inline ui-btn-icon-left ui-icon-search">Plaqueta Anterior</a>
 					<input type="text" name="plaqueta_anterior" id="plaqueta_anterior" data-theme="b" value="">
+				</div>
+				<div id="items" data-role="fieldcontain">
+				    <label for="select-native-1" class="select">Estado del Elemento</label>
+				    <div class="ui-select">
+					    <select name="select-native-1" id="select-native-1" class="form-control" >
+					        <option value="0" >Seleccione..</option>
+					    </select>
+					</div>
+				</div>
+				<div data-role="fieldcontain" class="ui-field-contain">
+					<label for="observaciones" class="select">Observaciones:</label>
+						<textarea type="text" name="observaciones" id="observaciones" value="" data-clear-btn="true" rows="3" data-theme="a"> </textarea>
+					</select>
 				</div>
 				
 			<div data-role="navbar" data-iconpos="left" align="center">

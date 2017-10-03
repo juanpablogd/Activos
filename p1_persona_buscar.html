@@ -67,16 +67,30 @@
 			        </ul>
 			    </div><!-- /navbar -->
 			</div><!-- /container -->	
-
 				<div id="seleccionado"></div>
+				<div id="item_dependencia" data-role="fieldcontain" class="ui-field-contain">
+					<label for="dependencia" class="select">Dependencia:</label>
+						<select name="dependencia" id="dependencia"  tabindex="-1">
+						<option value="">Seleccione...</option>
+					</select>
+				</div>
+				<div id="item_seccion" data-role="fieldcontain" class="ui-field-contain">
+					<label for="seccion" class="select">Secci&oacute;n:</label>
+						<select name="seccion" id="seccion"  tabindex="-1" required>
+						<option value="">Seleccione...</option>
+					</select>
+				</div>
 			</div>
 		
 		<div data-role="content">
 			<ul id="lista" data-role="listview" data-filter="true"  data-filter-placeholder="Buscar Persona..." data-theme="a"></ul>
 		</div>
-		
-		<div data-role="footer" data-iconpos="left">
-		
+		</br>
+		<div data-role="footer" style="overflow:hidden;" align="center"></div>
+			<div data-role="navbar"align="center"><ul><li>
+				<button id="btn_ok" class="ui-btn ui-btn-b ui-icon-check ui-btn-icon-left">Seleccionar</button>
+				</ul></li>
+			</div>
 		</div>
 	</div>
 	<script src="js/bd_persona_busqueda.js"></script>

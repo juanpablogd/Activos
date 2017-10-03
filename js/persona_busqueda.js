@@ -64,6 +64,44 @@ $(document).ready(function() {
 	$('#btn2').click(function() {
 		window.location= 'p2_elemento_buscar.html';
 	});
+	//EVENTO CUANDO SE SELECCIONA ALGUNA DEPENDENCIA
+	$("#dependencia").change(function() {
+		var nombre = $("#dependencia option:selected").text();
+		var id = $(this).val();
+		localStorage.busqueda = id;
+		// CARGAR ITEMS SECCIONES SEGÚN DEPENDENCIAS
+		db.transaction(ConsultaSecciones);
+	});
+	// CARGAR ITEMS DE LA BASE DE DATOS
+	db.transaction(ConsultaItems);
+
+	//GUARDAR FORMULARIO
+	$('#btn_ok').click(function() {
+		if ($( "#seccion" ).val()==0){
+			alert("Seleccione una Dependencia/Sección por favor");
+			$("#seccion").focus();
+			return false;
+		}
+		
+		if(localStorage.persona_valor == undefined || localStorage.persona_valor == ""){
+			alert("Busque una persona por favor!");
+			$("input[data-type='search']").focus();
+			return false;
+		}
+		localStorage.iddependencia = $( "#dependencia" ).val(); 
+		localStorage.idseccion = $( "#seccion" ).val();
+		console.log(localStorage.iddependencia);
+		console.log(localStorage.idseccion);
+		console.log(localStorage.persona_valor);
+		console.log("GUARDAR");
+		window.location = "p2_elemento_buscar.html";
+/*		if ($( "#select-native-1" ).val()==0){
+			alert("Seleccione un estado por favor");
+			$("#select-native-1").focus();
+			return false;
+		}
+		db.transaction(GuardaElemento); */
+	});
 	
 });
 

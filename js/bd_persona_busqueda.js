@@ -17,13 +17,58 @@ function editarPersona(cod){	console.log(cod);
 	localStorage.persona_valor = cod;
 	window.location = "editar_encargado.html";
 }
+/****************************************************************************************************************************************************************/
+/**CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS**/ 
+function ConsultaItems(tx) {	//tx.executeSql('select id,tipo from publicp_tipo_elemento order by tipo', [], ConsultaItemsCarga,errorCB);
+		tx.executeSql('select iddependencia,nombre from publicdependencias order by nombre', [], ConsultaItemsCarga,errorCB);
+}
+function ConsultaItemsCarga(tx, results) {
+	var len = results.rows.length;	//alert(len);
+	var viddependencia = localStorage.iddependencia;
+	var seleccionado;
+	for (i = 0; i < len; i++){
+		seleccionado = ""; 
+		var nombre = results.rows.item(i).nombre;
+		var id = results.rows.item(i).iddependencia;
+		if(viddependencia == id) seleccionado = "selected";
+		$('#dependencia').append('<option value="'+id+'" '+seleccionado+'>'+nombre+'</option>');
+   	}
+	/*Refresca estilo para cada uno de los controles*/
+	$("#dependencia").selectmenu('refresh'); //console.log(viddependencia);
+	if(viddependencia != ""){
+		localStorage.busqueda = viddependencia;
+		db.transaction(ConsultaSecciones);
+	}
+}
+/****************************************************************************************************************************************************************/
+/**CARGAR SECCIONES****CARGAR SECCIONES****CARGAR SECCIONES****CARGAR SECCIONES****CARGAR SECCIONES****CARGAR SECCIONES****CARGAR SECCIONES****CARGAR SECCIONES**/ 
+function ConsultaSecciones(tx) {
+		  console.log('select idseccion,nombre from publicsecciones where iddependencia = "'+localStorage.busqueda+'" order by nombre');
+		tx.executeSql('select idseccion,nombre from publicsecciones where iddependencia = "'+localStorage.busqueda+'" order by nombre', [], ConsultaSeccionesCarga,errorCB);
+}
+function ConsultaSeccionesCarga(tx, results) {
+	var len = results.rows.length;	//alert(len);
+	var vidseccion = localStorage.idseccion;
+	var seleccionado;
+	$('#seccion').empty();
+	$('#seccion').append('<option value="" >Seleccione...</option>');
+	for (i = 0; i < len; i++){
+		seleccionado = "";
+		var nombre = results.rows.item(i).nombre;
+		var id = results.rows.item(i).idseccion;
+		if(vidseccion == id) seleccionado = "selected";
+		$('#seccion').append('<option value="'+id+'" '+seleccionado+'>'+nombre+'</option>');
 
+   	}
+   	$("#seccion").selectmenu('refresh');
+}
+/****************************************************************************************************************************************************************/
 /* BUSQUEDA EN LA TABLA PERSONA*/
 function CargarListado(tx) {
 	var busqueda=localStorage.busqueda;
 	console.log("Busqueda: "+busqueda+"!"); //alert("Busqueda: "+busqueda);
 	if(busqueda!=null){
-	    tx.executeSql("SELECT cc,nombres,apellidos,telefono,correo,rowid FROM publicusuarios where cc like '%"+busqueda+"%' or nombres like '%"+busqueda+"%' or apellidos like '%"+busqueda+"%'", [], MuestraItems);
+	    tx.executeSql("SELECT cc,nombres,apellidos,telefono,correo,rowid FROM publicusuarios where cc = '"+busqueda+"' limit 1", [], MuestraItems);
    }
 }
 /* RESULTADO DE LA TABLA PERSONA*/
@@ -33,7 +78,6 @@ function MuestraItems(tx, results) {
 	var encontrados = results.rows.length;		//alert(encontrados);
     for (var i=0;i<encontrados;i++)
 	{
-
 	 	var id = results.rows.item(i).cc;
 	 	var nombres = results.rows.item(i).nombres;					//alert( "nombre = " + sessionStorage.getItem("nombre"));
 	 	var apellidos = results.rows.item(i).apellidos;

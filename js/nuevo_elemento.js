@@ -100,8 +100,8 @@ function ConsultaLineaCarga(tx, results) {
 		var nombre = results.rows.item(i).nombre;
 		var id = results.rows.item(i).idlinea;
 		$('#linea').append('<option value="'+id+'">'+nombre+'</option>');
-
    	}
+   	$('#linea').selectmenu('refresh');
 }
 /****************************************************************************************************************************************************************/
 
@@ -119,8 +119,8 @@ function ConsultaSubLineaCarga(tx, results) {
 		var nombre = results.rows.item(i).nombre;
 		var id = results.rows.item(i).idslinea;
 		$('#sublinea').append('<option value="'+id+'">'+nombre+'</option>');
-
    	}
+   	$('#sublinea').selectmenu('refresh');
 	/*Refresca estilo para cada uno de los controles*/
     //$("#items").trigger("create");
 }
@@ -199,11 +199,9 @@ function GuardaElemento(tx) {
 		           function(tx,rs){	console.log("rowidOK");
 		           		var p = rs.rows.item(0);
 						localStorage.elemento_valor = p.rowid+"|"+plaqueta+"|"+nombre+"|"+id_envio;		console.log(localStorage.elemento_valor);	//alert(localStorage.elemento_valor);
-									//Actualiza columna Id si tiene valor nulo
-									console.log('UPDATE publicarticulos set idarticulo = rowid where idarticulo is null');
-								tx.executeSql('UPDATE publicarticulos set idarticulo = rowid where idarticulo is null');
-								
-								
+								//Actualiza columna Id si tiene valor nulo
+								//	console.log('UPDATE publicarticulos set idarticulo = rowid where idarticulo is null');
+								//tx.executeSql('UPDATE publicarticulos set idarticulo = rowid where idarticulo is null');
 								//GUARDA FOTOS
 								if(localStorage.Fotos != null && localStorage.Fotos != "" && localStorage.Fotos !== undefined && localStorage.Fotos != "undefined"){
 									//CARGA FOTOS
@@ -220,7 +218,7 @@ function GuardaElemento(tx) {
 												console.log("Elemento Guardado exitosamente");
 												alert("Elemento Guardado exitosamente");
 												window.location = "p2_elemento_buscar.html";
-											}, 400);
+											}, 500);
 										}
 									});
 								}

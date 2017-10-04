@@ -1,5 +1,4 @@
 // Start with the map page
-
 $(window).load(function () {
 		/*var idcorredor = localStorage.idcorredor;		 	
 		var nombre = localStorage.nombre;
@@ -10,6 +9,7 @@ $(window).load(function () {
 });
 
 $(document).ready(function() {
+	var activo = false;
     app.initialize();
 	function leer(){
 		cordova.plugins.barcodeScanner.scan(
@@ -72,13 +72,13 @@ $(document).ready(function() {
     });
     
 	//CUANDO SE DIGITA UN CARACTER FILTRA EN LA LISTA
-    $("#lista").on( "listviewbeforefilter", function ( e, data ) {
+    $("#lista").on( "listviewbeforefilter", function ( e, data ) {	console.log("listviewbeforefilter");
 	        var $ul = $( this ),
 	            $input = $( data.input ),
 	            value = $input.val(),
 	            html = "";
 	        $ul.html( "" );
-	        if ( value && value.length > 3 ) {
+	        if ( value && value.length > 4) {
 				console.log("encontrados: " + $("#lista li").size());
 	            localStorage.busqueda=$input.val().trim();
 		    	db.transaction(CargarListado);
@@ -102,6 +102,12 @@ $(document).ready(function() {
 		//$("#btn3").removeAttr("disabled");
 
 	});
+/*	$("input[data-type='search']").keydown(function() {
+	  	activo=false; 		console.log(activo);
+		setTimeout(function() { 
+			activo=true;	console.log(activo);
+		}, 2*1000);
+	});	*/
 	
 	//Opción Escanear
     $("#escanear").click(function(){
@@ -132,9 +138,9 @@ $(document).ready(function() {
 			tx.executeSql('INSERT INTO publicinventario (idseccion,idusuario,cc_responsable,id_envio,activo) values ("'+seccion+'","'+id_usr+'","'+cc[0]+'","'+id_envio+'","1")');
 			//DETALLE DEL ELMENTO
 			console.log('INSERT INTO publicinventario_det (idarticulo,observacion,asignacion,id_estado,id_envio,id_envio_art)' + 
-			'values ("'+id_elemento[0]+'","'+observaciones+'","R","'+id_elemento[4]+'","'+id_envio+'","'+id_elemento[3]+'")');
+			'values ("'+id_elemento[0]+'","'+observaciones+'","R","'+id_elemento[4]+'","'+id_envio+'","'+id_elemento[5]+'")');
 			tx.executeSql('INSERT INTO publicinventario_det (idarticulo,observacion,asignacion,id_estado,id_envio,id_envio_art)' + 
-			'values ("'+id_elemento[0]+'","'+observaciones+'","R","'+id_elemento[4]+'","'+id_envio+'","'+id_elemento[3]+'")');
+			'values ("'+id_elemento[0]+'","'+observaciones+'","R","'+id_elemento[4]+'","'+id_envio+'","'+id_elemento[5]+'")');
 			//ASIGNA RESPONSABLE AL articulo
 			console.log('UPDATE publicarticulos set cc_responsable_af = "'+cc[0]+'" where idarticulo = '+id_elemento[0]+' and id_envio != ""');
 			console.log('UPDATE publicarticulos set cc_responsable_af = "'+cc[0]+'" where idarticulo = "'+id_elemento[0]+'" and id_envio = ""');
@@ -145,7 +151,7 @@ $(document).ready(function() {
 		console.log("GUARDAR");
 		localStorage.firma = "";
 		localStorage.elemento_valor = "";
-		//localStorage.persona_valor = "";
+		localStorage.Fotos = "";
 		localStorage.busqueda = "";
 		setTimeout(function() {
 			db.transaction(function(tx) {
@@ -154,7 +160,7 @@ $(document).ready(function() {
 					function MuestraItems(tx, results) {
 						var encontrados = results.rows.length; console.log("Encontrados: " + encontrados);
 						if(encontrados>0) {
-							window.location = "p1_persona_buscar.html";
+							window.location = "p2_elemento_buscar.html";
 							alert("Elemento Guardado exitosamente");
 						}else
 						{

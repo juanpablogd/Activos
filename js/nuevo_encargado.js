@@ -80,7 +80,9 @@ function resultadoCC(tx, results) { console.log('MuestraItems');
 			tx.executeSql('INSERT INTO publicusuarios (cc,nombres,apellidos,telefono,correo,id_envio) values ("'+cc+'","'+nombres+'","'+apellidos+'","'+telefonos+'","'+correo+'","'+id_envio+'")');
 			localStorage.persona_valor = cc+"|"+nombres+"|"+apellidos;
 			alert("Persona registrada exitosamente");
-			window.location = "principal.html";
+			setTimeout(function() {
+				window.location = "p1_persona_buscar.html";
+			}, 200);
 		}
 	}
 }

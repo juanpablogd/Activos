@@ -253,8 +253,8 @@ function ConsultaSincronizarPersonas(tx, results) {
 function ConsultaSincronizarInventarioDetalle(tx, results) {
 	var lon = results.rows.length;		//alert("InventarioDetalle: " + lon);		//alert("Respuestas: "+lon);  //$("#resultado").before("<br>Cuestionarios encontrados: "+len+".<br>");
 	if(lon==0){ //SI NO HAY INVENTARIO NOTIFICA AL USUARIO
-		  console.log('SELECT rowid,url,id_envio FROM publicarticulos_fotos');
-		tx.executeSql('SELECT rowid,url,id_envio FROM publicarticulos_fotos', [], ConsultaSincronizarFotos,errorCB_Fotos);
+		  console.log('SELECT rowid,url,id_envio,idarticulo FROM publicarticulos_fotos');
+		tx.executeSql('SELECT rowid,url,id_envio,idarticulo FROM publicarticulos_fotos', [], ConsultaSincronizarFotos,errorCB_Fotos);
 		
 	}else{
 		for (i = 0; i < lon; i++){
@@ -290,16 +290,16 @@ function ConsultaSincronizarInventarioDetalle(tx, results) {
 					//});
 					//CUANDO TERMINA DE SINCRONIZAR NOTIFICA AL USUARIO
 					if((i+1) == lon) { //alert("continue a rtas");
-						  console.log('SELECT rowid,url,id_envio FROM publicarticulos_fotos');
-					   	tx.executeSql('SELECT rowid,url,id_envio FROM publicarticulos_fotos', [], ConsultaSincronizarFotos,errorCB_Fotos);
+						  console.log('SELECT rowid,url,id_envio,idarticulo FROM publicarticulos_fotos');
+					   	tx.executeSql('SELECT rowid,url,id_envio,idarticulo FROM publicarticulos_fotos', [], ConsultaSincronizarFotos,errorCB_Fotos);
 					}
 				},
 				error: function (error) {
 					$("#resultado").text('Error en ingreso de Respuestas');	$("#resultado").trigger("create");
 					//CUANDO TERMINA DE SINCRONIZAR NOTIFICA AL USUARIO
 					if((i+1) == lon) { //alert("continue a rtas");
-						  console.log('SELECT rowid,url,id_envio FROM publicarticulos_fotos');
-					   	tx.executeSql('SELECT rowid,url,id_envio FROM publicarticulos_fotos', [], ConsultaSincronizarFotos,errorCB_Fotos);
+						  console.log('SELECT rowid,url,id_envio,idarticulo FROM publicarticulos_fotos');
+					   	tx.executeSql('SELECT rowid,url,id_envio,idarticulo FROM publicarticulos_fotos', [], ConsultaSincronizarFotos,errorCB_Fotos);
 					}
 			    }
 			});
@@ -317,7 +317,7 @@ function ConsultaSincronizarFotos(tx, results) {
 		for (i = 0; i < len; i++){
 
 			var url_imagen = results.rows.item(i).url; console.log(typeof cordova);
-			if (typeof yourvar !== 'undefined'){	
+			if (typeof cordova !== 'undefined'){
 	          	var options = new FileUploadOptions();
 	            options.fileName=url_imagen;
 	            options.mimeType="image/jpeg";
@@ -325,7 +325,8 @@ function ConsultaSincronizarFotos(tx, results) {
 	          	var params = new Object();
 				params.cod_envio = results.rows.item(i).id_envio;
 				params.rowid = results.rows.item(i).rowid;
-				params.id_usr = localStorage.id_usr
+				params.id_usr = localStorage.id_usr;
+				params.idarticulo = results.rows.item(i).idarticulo;
 
 	            options.params = params;			
 
@@ -347,12 +348,21 @@ function ConsultaSincronizarFotos(tx, results) {
 		            "http://"+localStorage.url_servidor+"/SIG/servicios/activos_sincronizar_imagen.php",
 		            function(result) {  //$("#resultado").html("Response = " + result.response.toString()); $("#resultado").trigger("create");
 		            	//RESPUESTA DEL SERVIDOR		
-						var respf = result.response.toString();	alert(respf);
+						var respf = result.response.toString();	console.log(respf);
 		            	var n=respf.split("|");
 
 		            	//REMOVER ARCHIVO DEL DISPOSITIVO
 		            	function eliminafotodb(tx) { //alert('DELETE from publicarticulos_fotos where id_envio = "'+n[0]+'" and rowid = "'+n[1]+'"');
-							tx.executeSql('DELETE from publicarticulos_fotos where id_envio = "'+n[0]+'" and rowid = "'+n[1]+'"');
+							if(n[0]!="null" && n[0] !=""){
+								//console.log('UPDATE from publicarticulos_fotos SET id_envio="",idarticulo="'+n[3]+'" where id_envio = "'+n[0]+'" and rowid = "'+n[1]+'"');
+								//tx.executeSql('UPDATE from publicarticulos_fotos SET id_envio="",idarticulo="'+n[3]+'" where id_envio = "'+n[0]+'" and rowid = "'+n[1]+'"');
+								tx.executeSql('DELETE from publicarticulos_fotos where id_envio = "'+n[0]+'" and rowid = "'+n[1]+'"');
+							}else if(n[3]!="null" && n[3] !=""){
+								//  console.log('UPDATE from publicarticulos_fotos SET id_envio="" where idarticulo = "'+n[3]+'" and rowid = "'+n[1]+'"');
+								//tx.executeSql('UPDATE from publicarticulos_fotos SET id_envio="" where idarticulo = "'+n[3]+'" and rowid = "'+n[1]+'"');
+								tx.executeSql('DELETE from publicarticulos_fotos where idarticulo = "'+n[3]+'" and rowid = "'+n[1]+'"');
+							}
+							
 						}
 		            	function sqlexitoso ()  {
 							//CONTINUA CON LOS NUEVOS ELEMENTOS REGISTRADOS EN EL SISTEMA

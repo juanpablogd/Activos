@@ -48,7 +48,7 @@ function MuestraItems(tx, results) {
 	 	var id_estado = results.rows.item(i).id_estado;
 	 	var rowid = results.rows.item(i).rowid;
 	 	
-	    li += "<li value='"+id+"|"+plaqueta+"|"+nombre+"|"+rowid+"|"+id_estado+"'>"+
+	    li += "<li value='"+id+"|"+plaqueta+"|"+nombre+"|"+rowid+"|"+id_estado+"|"+id_envio_art+"'>"+
 		    	"<div class='ui-block'>"+
 			        "<h2>"+nombre+"</h2>"+
 			        "<p>Ref: "+referencia+"</p>"+
@@ -63,8 +63,8 @@ function MuestraItems(tx, results) {
     	if (confirm("No se encontró el ELEMENTO!! Desea crear uno nuevo?") == true) {
 		    window.location="nuevo_elemento.html";
 		}
-    }else{ console.log('SELECT rowid,url,id_envio FROM publicarticulos_fotos where id_envio = "'+results.rows.item(0).id_envio+'" or id_envio = "'+results.rows.item(0).id+'"');
-    	tx.executeSql('SELECT rowid,url,id_envio FROM publicarticulos_fotos where id_envio = "'+results.rows.item(0).id_envio+'" or id_envio = "'+results.rows.item(0).id+'"', [], 
+    }else{ console.log('SELECT rowid,url,id_envio FROM publicarticulos_fotos where (id_envio = "'+results.rows.item(0).id_envio+'" and id_envio != "") or (idarticulo= "'+results.rows.item(0).id+'" and idarticulo != "null")');
+    	 tx.executeSql('SELECT rowid,url,id_envio FROM publicarticulos_fotos where (id_envio = "'+results.rows.item(0).id_envio+'" and id_envio != "") or (idarticulo= "'+results.rows.item(0).id+'" and idarticulo != "null")', [], 
     		function ConsultaSincronizarInventario(tx, resFotos) {
     			var numFotos = resFotos.rows.length;		console.log('numFotos: '+numFotos); //alert('Encontrados:'+encontrados);
 			    for (var f=0;f<numFotos;f++)

@@ -208,8 +208,8 @@ function MuestraItems(tx, results) {
 								}
 				    			db.transaction(function(tx) {
 				    				if (id_envio_ant == "" || id_envio_ant == null){
-				    				  	  console.log('UPDATE publicarticulos SET nombre = "'+nombre+'",idslinea = "'+idslinea+'",plaqueta_af = "'+texto_plaqueta+'",plaqueta_anterior1_af = "'+texto_plaquetanterior+'",id_envio = "'+id_envio+'",marca_af = "'+marca_af+'",referencia = "'+referencia+'",numero_serie_af = "'+numero_serie_af+'",id_estado = "'+id_estado+'" WHERE rowid = "'+id+'"');
-										tx.executeSql('UPDATE publicarticulos SET nombre = "'+nombre+'",idslinea = "'+idslinea+'",plaqueta_af = "'+texto_plaqueta+'",plaqueta_anterior1_af = "'+texto_plaquetanterior+'",id_envio = "'+id_envio+'",marca_af = "'+marca_af+'",referencia = "'+referencia+'",numero_serie_af = "'+numero_serie_af+'",id_estado = "'+id_estado+'" WHERE rowid = "'+id+'"');				    					
+				    				  	  console.log('UPDATE publicarticulos SET nombre = "'+nombre+'",idslinea = "'+idslinea+'",plaqueta_af = "'+texto_plaqueta+'",plaqueta_anterior1_af = "'+texto_plaquetanterior+'",marca_af = "'+marca_af+'",referencia = "'+referencia+'",numero_serie_af = "'+numero_serie_af+'",id_estado = "'+id_estado+'",id_envio = "'+id_envio+'" WHERE rowid = "'+id+'"');
+										tx.executeSql('UPDATE publicarticulos SET nombre = "'+nombre+'",idslinea = "'+idslinea+'",plaqueta_af = "'+texto_plaqueta+'",plaqueta_anterior1_af = "'+texto_plaquetanterior+'",marca_af = "'+marca_af+'",referencia = "'+referencia+'",numero_serie_af = "'+numero_serie_af+'",id_estado = "'+id_estado+'",id_envio = "'+id_envio+'" WHERE rowid = "'+id+'"');				    					
 				    				}else{
 				    				  	  console.log('UPDATE publicarticulos SET nombre = "'+nombre+'",idslinea = "'+idslinea+'",plaqueta_af = "'+texto_plaqueta+'",plaqueta_anterior1_af = "'+texto_plaquetanterior+'",marca_af = "'+marca_af+'",referencia = "'+referencia+'",numero_serie_af = "'+numero_serie_af+'",id_estado = "'+id_estado+'" WHERE rowid = "'+id+'"');
 										tx.executeSql('UPDATE publicarticulos SET nombre = "'+nombre+'",idslinea = "'+idslinea+'",plaqueta_af = "'+texto_plaqueta+'",plaqueta_anterior1_af = "'+texto_plaquetanterior+'",marca_af = "'+marca_af+'",referencia = "'+referencia+'",numero_serie_af = "'+numero_serie_af+'",id_estado = "'+id_estado+'" WHERE rowid = "'+id+'"');				    					
@@ -230,7 +230,12 @@ function MuestraItems(tx, results) {
 						$.each(data, function(i, item) {	
 							db.transaction(function(tx) {	//alert(item);
 								//console.log('INSERT INTO publicarticulos_fotos (url,id_envio) values ("'+item+'","'+res[0]+'")');
-								tx.executeSql('INSERT INTO publicarticulos_fotos (url,id_envio) values ("'+item+'","'+res[0]+'")');
+								if(res[0]!=""){
+									tx.executeSql('INSERT INTO publicarticulos_fotos (url,idarticulo) values ("'+item+'","'+res[0]+'")');	
+								}else{
+									tx.executeSql('INSERT INTO publicarticulos_fotos (url,id_envio) values ("'+item+'","'+res[0]+'")');	
+								}
+								
 							});
 						});
 						data.length=0;
@@ -260,8 +265,9 @@ function MuestraItems(tx, results) {
 }
 
 function CargarFotos(tx) {
-	  console.log("SELECT url,id_envio FROM publicarticulos_fotos where id_envio ='"+vid_envio+"' or id_envio ='"+vid_articulo+"'");
-    tx.executeSql("SELECT url,id_envio FROM publicarticulos_fotos where id_envio ='"+vid_envio+"' or id_envio ='"+vid_articulo+"'", [], MuestraFotos);
+      console.log('SELECT url,id_envio FROM publicarticulos_fotos where (id_envio = "'+vid_envio+'" and id_envio != "") or (idarticulo= "'+vid_articulo+'" and idarticulo != "null")');
+    tx.executeSql('SELECT url,id_envio FROM publicarticulos_fotos where (id_envio = "'+vid_envio+'" and id_envio != "") or (idarticulo= "'+vid_articulo+'" and idarticulo != "null")', [], MuestraFotos);
+
 }
 function MuestraFotos(tx, results) {
     var li = "";

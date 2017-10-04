@@ -27,8 +27,8 @@ function CargarListado(tx) {
 			var order = "art.nombre";
 		}
 		$.mobile.loading( 'show', { text: 'Buscando... ', textVisible: true, theme: 'b', html: "" }); 
-		  console.log('SELECT idinventariodet,sub.nombre sublinea,art.nombre,art.referencia,art.numero_serie_af,inv_det.observacion,asignacion,art.idarticulo,plaqueta_af,art.rowid,id_envio_art,inv_det.id_envio FROM publicinventario inv inner join publicinventario_det inv_det on ((inv.idinventario = inv_det.idinventario) or (inv.id_envio = inv_det.id_envio and inv.id_envio != "")) inner join publicarticulos art on ((art.idarticulo  = inv_det.idarticulo) or (CAST(art.id_envio as text) = CAST(inv_det.id_envio_art as text) and art.id_envio != "")) left join publicsublineas sub on sub.idslinea = art.idslinea where inv.cc_responsable ="'+res[0]+'" order by ' + order);		  
-	    tx.executeSql('SELECT idinventariodet,sub.nombre sublinea,art.nombre,art.referencia,art.numero_serie_af,inv_det.observacion,asignacion,art.idarticulo,plaqueta_af,art.rowid,id_envio_art,inv_det.id_envio FROM publicinventario inv inner join publicinventario_det inv_det on ((inv.idinventario = inv_det.idinventario) or (inv.id_envio = inv_det.id_envio and inv.id_envio != "")) inner join publicarticulos art on ((art.idarticulo  = inv_det.idarticulo) or (CAST(art.id_envio as text) = CAST(inv_det.id_envio_art as text) and art.id_envio != "")) left join publicsublineas sub on sub.idslinea = art.idslinea where inv.cc_responsable ="'+res[0]+'" order by ' + order, [], MuestraItems);
+		  console.log('SELECT idinventariodet,sub.nombre sublinea,art.nombre,art.referencia,art.numero_serie_af,inv_det.observacion,asignacion,art.idarticulo,plaqueta_af,art.rowid,id_envio_art,inv_det.id_envio,inv.firma FROM publicinventario inv inner join publicinventario_det inv_det on ((inv.idinventario = inv_det.idinventario) or (inv.id_envio = inv_det.id_envio and inv.id_envio != "")) inner join publicarticulos art on ((art.idarticulo  = inv_det.idarticulo) or (CAST(art.id_envio as text) = CAST(inv_det.id_envio_art as text) and art.id_envio != "")) left join publicsublineas sub on sub.idslinea = art.idslinea where inv.cc_responsable ="'+res[0]+'" order by ' + order);		  
+	    tx.executeSql('SELECT idinventariodet,sub.nombre sublinea,art.nombre,art.referencia,art.numero_serie_af,inv_det.observacion,asignacion,art.idarticulo,plaqueta_af,art.rowid,id_envio_art,inv_det.id_envio,inv.firma FROM publicinventario inv inner join publicinventario_det inv_det on ((inv.idinventario = inv_det.idinventario) or (inv.id_envio = inv_det.id_envio and inv.id_envio != "")) inner join publicarticulos art on ((art.idarticulo  = inv_det.idarticulo) or (CAST(art.id_envio as text) = CAST(inv_det.id_envio_art as text) and art.id_envio != "")) left join publicsublineas sub on sub.idslinea = art.idslinea where inv.cc_responsable ="'+res[0]+'" order by ' + order, [], MuestraItems);
 	}
 }
 
@@ -64,6 +64,15 @@ function MuestraItems(tx, results) {
 	 	var rowid = results.rows.item(i).rowid;
 	 	var id_envio_art = results.rows.item(i).id_envio_art;
 	 	var inv_det_id_envio = results.rows.item(i).id_envio;
+	 	var firma = results.rows.item(i).firma;
+		console.log($("#firma_ok").attr('src'));
+		console.log(firma);
+		if($("#firma_ok").attr('src') == undefined){	console.log("indefinido");
+			if(firma != null && firma != ""){	console.log("set firma");
+				localStorage.firma = firma;
+				console.log("firma OK");
+			}
+		}
 
 	 	habilitado = ""; if(id==null || id=="" || id===undefined ) habilitado = "disabled";
 	 	if(seleccionado == "R"){
@@ -94,17 +103,18 @@ function MuestraItems(tx, results) {
 			        "<p style='color:#"+color+"'>Plaq: "+plaqueta_af+"</p>"+
 			        "<p style='color:#"+color+"'>Serie: "+numero_serie_af+"</p>"+
 			        "<label for='t"+cod_id+"' style='color:#"+color+"'>Observación:</label><input type='text' name='t"+cod_id+"' id='t"+cod_id+"' style='color:#"+color+"' value='"+observacion+"' "+habilitado+">"+
-			        "<p style='color:#"+color+"'>Fotos actualizadas: <label id='nf"+cod_id+"''><label></p>"+
+			        "<p style='color:#"+color+"'>Fotos actualizadas: <label id='nf"+cod_id+"'><label></p>"+
 					"<label for='s"+cod_id+"'></label><select class='componentSelect' name='s"+cod_id+"' id='s"+cod_id+"' "+habilitado+"><option value=''></option><option value='N' "+selN+">No reportado</option><option value='P' "+selP+">Pendiente</option><option value='R' "+selR+">Reportado</option></select>" +
 //					'<br><input type="checkbox" name="checkbox-mini-'+cod_id+'" id="checkbox-mini-'+cod_id+'" data-mini="true">'+'<label for="checkbox-mini-'+cod_id+'">Revisado</label>'+
 				"</div>"+  
 			  ""
 			  + "</li>";
-			//console.log('SELECT count(*) as c, '+rowid+' as rowid FROM publicinventario_fotos where id_envio ="'+idarticulo+'" or id_envio ="'+inv_det_id_envio+'"');
-			tx.executeSql('SELECT count(*) as c, '+cod_id+' FROM publicinventario_fotos where id_envio ="'+idarticulo+'" or id_envio ="'+inv_det_id_envio+'"', [], 
+			  //(id_envio = "'+results.rows.item(0).id_envio+'" and id_envio != "") or (idarticulo= "'+results.rows.item(0).id+'" and idarticulo != "null")
+			  console.log('SELECT count(*) as c, "'+cod_id+'" as rowid FROM publicarticulos_fotos where (id_envio ="'+id_envio_art+'" and id_envio != "") or (idarticulo= "'+idarticulo+'" and idarticulo != "null")');
+			tx.executeSql('SELECT count(*) as c, "'+cod_id+'" as rowid FROM publicarticulos_fotos where (id_envio ="'+id_envio_art+'" and id_envio != "") or (idarticulo= "'+idarticulo+'" and idarticulo != "null")', [], 
 				function ConsultaSincronizarInventario(tx, resultnf) {
-					$("#nf"+resultnf.rows.item(0).cod_id).html(resultnf.rows.item(0).c);
-				}
+					$("#nf"+resultnf.rows.item(0).rowid).html(resultnf.rows.item(0).c);
+				}	//nf2017-10-4-11_12_29-1
 			);
 
     } //console.log("hab: " + habilitado);
@@ -180,9 +190,11 @@ function MuestraItems(tx, results) {
 								j++;
 		    					console.log("Registro: " + j + " de " + encontrados);
 		    					if(j==encontrados){
-								   alert("Registro Almacenado correctamente!");
-								   //
-								   //window.location = "principal.html";			    						
+		    						setTimeout(function() {
+								   		alert("Registro Almacenado correctamente!");
+								   		window.location = "p1_persona_buscar.html";
+								   	}, 500);
+	
 		    					}	
 							}, function errorCBU(err) {	alert("Error processing SQL: "+err.code); }
 						)

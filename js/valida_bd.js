@@ -1,5 +1,5 @@
 /**
- * |author LONJA
+ * |author Sofytek
  **/
 var db = window.openDatabase("bdactivos", "1.0", "Proyecto SFK Activos", 33554432);
 
@@ -9,11 +9,11 @@ function errorCBv(err) {
 }
 
 /* BUSQUEDA EN LA TABLA ELEMENTO*/
-function CargarListado(tx) {
-	tx.executeSql("SELECT * FROM publicarticulos limit 0", [], MuestraItems,errorCBv);
+function probarCBv(tx) {
+	tx.executeSql("SELECT * FROM publicarticulos limit 0", [], MuestraCBv,errorCBv);
 }
 /* RESULTADO DE LA TABLA ELEMENTO*/
-function MuestraItems(tx, results) {
+function MuestraCBv(tx, results) {
 }
 
-//db.transaction(CargarListado);
+db.transaction(probarCBv);

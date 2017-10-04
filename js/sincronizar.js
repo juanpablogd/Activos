@@ -60,7 +60,7 @@ function Cono_usuariosResp(tx, results) {
 }
 function Cono_inventario_detResp(tx, results) {
 	$("#no_inventario_det").html(results.rows.item(0).nreg);
-	tx.executeSql('SELECT count(*) nreg FROM publicinventario_fotos', [], Cono_fotosResp,errorCB_Fotos);
+	tx.executeSql('SELECT count(*) nreg FROM publicarticulos_fotos', [], Cono_fotosResp,errorCB_Fotos);
 }
 function Cono_fotosResp(tx, results) {
 	$("#no_fotos").html(results.rows.item(0).nreg);
@@ -69,8 +69,8 @@ function Cono_fotosResp(tx, results) {
 //--------------------------------------------------------------------------------------------------------------
 
 function ConsultaSincronizar(tx) {
-	  console.log('SELECT idarticulo,idseccion,idslinea,marca_af,nombre,referencia,numero_serie_af,plaqueta_af,plaqueta_anterior1_af,id_envio FROM publicarticulos where id_envio != ""');
-	tx.executeSql('SELECT idarticulo,idseccion,idslinea,marca_af,nombre,referencia,numero_serie_af,plaqueta_af,plaqueta_anterior1_af,id_envio FROM publicarticulos where id_envio != ""', [],
+	  console.log('SELECT idarticulo,idseccion,idslinea,marca_af,nombre,referencia,numero_serie_af,plaqueta_af,plaqueta_anterior1_af,id_envio,id_estado FROM publicarticulos where id_envio != ""');
+	tx.executeSql('SELECT idarticulo,idseccion,idslinea,marca_af,nombre,referencia,numero_serie_af,plaqueta_af,plaqueta_anterior1_af,id_envio,id_estado FROM publicarticulos where id_envio != ""', [],
 		           ConsultaSincronizarElemento,errorCB_Elemento);
 }
 
@@ -95,6 +95,7 @@ function ConsultaSincronizarElemento(tx, results) {
 			parametros['plaqueta'] = results.rows.item(i).plaqueta_af;
 			parametros['plaqueta_anterior'] = results.rows.item(i).plaqueta_anterior1_af;
 			parametros['id_envio'] = results.rows.item(i).id_envio;
+			parametros['id_estado'] = results.rows.item(i).id_estado;
 			$("#resultado").html("<br>Articulos restantes: "+(lon-i)+".<br>"); $("#resultado").trigger("create");
 			$.ajax({
 				data:  parametros,
@@ -252,8 +253,8 @@ function ConsultaSincronizarPersonas(tx, results) {
 function ConsultaSincronizarInventarioDetalle(tx, results) {
 	var lon = results.rows.length;		//alert("InventarioDetalle: " + lon);		//alert("Respuestas: "+lon);  //$("#resultado").before("<br>Cuestionarios encontrados: "+len+".<br>");
 	if(lon==0){ //SI NO HAY INVENTARIO NOTIFICA AL USUARIO
-		  console.log('SELECT rowid,url,id_envio FROM publicinventario_fotos');
-		tx.executeSql('SELECT rowid,url,id_envio FROM publicinventario_fotos', [], ConsultaSincronizarFotos,errorCB_Fotos);
+		  console.log('SELECT rowid,url,id_envio FROM publicarticulos_fotos');
+		tx.executeSql('SELECT rowid,url,id_envio FROM publicarticulos_fotos', [], ConsultaSincronizarFotos,errorCB_Fotos);
 		
 	}else{
 		for (i = 0; i < lon; i++){
@@ -289,16 +290,16 @@ function ConsultaSincronizarInventarioDetalle(tx, results) {
 					//});
 					//CUANDO TERMINA DE SINCRONIZAR NOTIFICA AL USUARIO
 					if((i+1) == lon) { //alert("continue a rtas");
-						  console.log('SELECT rowid,url,id_envio FROM publicinventario_fotos');
-					   	tx.executeSql('SELECT rowid,url,id_envio FROM publicinventario_fotos', [], ConsultaSincronizarFotos,errorCB_Fotos);
+						  console.log('SELECT rowid,url,id_envio FROM publicarticulos_fotos');
+					   	tx.executeSql('SELECT rowid,url,id_envio FROM publicarticulos_fotos', [], ConsultaSincronizarFotos,errorCB_Fotos);
 					}
 				},
 				error: function (error) {
 					$("#resultado").text('Error en ingreso de Respuestas');	$("#resultado").trigger("create");
 					//CUANDO TERMINA DE SINCRONIZAR NOTIFICA AL USUARIO
 					if((i+1) == lon) { //alert("continue a rtas");
-						  console.log('SELECT rowid,url,id_envio FROM publicinventario_fotos');
-					   	tx.executeSql('SELECT rowid,url,id_envio FROM publicinventario_fotos', [], ConsultaSincronizarFotos,errorCB_Fotos);
+						  console.log('SELECT rowid,url,id_envio FROM publicarticulos_fotos');
+					   	tx.executeSql('SELECT rowid,url,id_envio FROM publicarticulos_fotos', [], ConsultaSincronizarFotos,errorCB_Fotos);
 					}
 			    }
 			});
@@ -350,8 +351,8 @@ function ConsultaSincronizarFotos(tx, results) {
 	            	var n=respf.split("|");
 
 	            	//REMOVER ARCHIVO DEL DISPOSITIVO
-	            	function eliminafotodb(tx) { //alert('DELETE from publicinventario_fotos where id_envio = "'+n[0]+'" and rowid = "'+n[1]+'"');
-						tx.executeSql('DELETE from publicinventario_fotos where id_envio = "'+n[0]+'" and rowid = "'+n[1]+'"');
+	            	function eliminafotodb(tx) { //alert('DELETE from publicarticulos_fotos where id_envio = "'+n[0]+'" and rowid = "'+n[1]+'"');
+						tx.executeSql('DELETE from publicarticulos_fotos where id_envio = "'+n[0]+'" and rowid = "'+n[1]+'"');
 					}
 	            	function sqlexitoso ()  {
 						//CONTINUA CON LOS NUEVOS ELEMENTOS REGISTRADOS EN EL SISTEMA

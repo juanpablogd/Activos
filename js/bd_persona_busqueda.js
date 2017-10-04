@@ -111,7 +111,7 @@ function MuestraItems(tx, results) {
 		var res_persona = $val.split("|");
 		
 		$("#seleccionado").html('<h4 align="center">'+res_persona[1]+" "+res_persona[2]+'</h4>');
-		$("#btn2").removeAttr("disabled");
+		//$("#btn2").removeAttr("disabled");
 		
 	}
 

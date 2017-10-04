@@ -31,6 +31,7 @@ function errorCB(err) {
 function ConsultaItems(tx) {
 		//tx.executeSql('select id,tipo from publicp_tipo_elemento order by tipo', [], ConsultaItemsCarga,errorCB);
 		tx.executeSql('select iddependencia,nombre from publicdependencias order by nombre', [], ConsultaItemsCarga,errorCB);
+		tx.executeSql('select id_estado,nombre from publicestadoarticulo order by nombre', [], ConsultaLoadEstado,errorCB);
 }
 function ConsultaItemsCarga(tx, results) {
 	var len = results.rows.length;	//alert(len);
@@ -50,6 +51,18 @@ function ConsultaItemsCarga(tx, results) {
 		localStorage.busqueda = viddependencia;
 		db.transaction(ConsultaSecciones);
 	}
+}
+function ConsultaLoadEstado(tx, results) {
+	var len = results.rows.length;	//alert(len);
+
+	for (i = 0; i < len; i++){
+		var nombre = results.rows.item(i).nombre;
+		var id = results.rows.item(i).id_estado;
+		$('#id_estado').append('<option value="'+id+'">'+nombre+'</option>');
+   	}
+	/*Refresca estilo para cada uno de los controles*/
+	$("#id_estado").selectmenu('refresh'); //console.log(viddependencia);
+
 }
 /****************************************************************************************************************************************************************/
 
@@ -124,7 +137,7 @@ function GuardaElemento(tx) {
 	//OBTIENE EL ID DEL USUARIO
 	var id_usr = localStorage.id_usr; 
 	
-	var dependencia = $("#dependencia").val(); console.log(dependencia);
+	//var dependencia = $("#dependencia").val(); console.log(dependencia);
 	var seccion = $("#seccion").val(); console.log(seccion);
 	//var linea = $("#linea").val(); console.log(linea);
 	var sublinea = $("#sublinea").val();		 console.log("sublinea" + sublinea);
@@ -135,16 +148,14 @@ function GuardaElemento(tx) {
 	var nombre = $( "#name" ).val();	console.log(nombre);
 		//OBTIENE EL ID DE LA DEPENDENCIA O AREA
 	
-	var nserie = $("#nserie").val(); console.log(nserie);
-	var plaqueta = $("#plaqueta").val(); console.log(plaqueta);
+	var nserie = $("#nserie").val();		console.log(nserie);
+	var plaqueta = $("#plaqueta").val(); 	console.log(plaqueta);
 	var plaqueta_anterior = $("#plaqueta_anterior").val(); console.log(plaqueta_anterior);	
 
-	if(seccion.trim() == ""){
-		alert("Seleccione una Sección");
-		$("#seccion").focus();
-		
-		return false;
-	}else if(sublinea.trim() == ""){
+	var id_estado = $("#id_estado").val();	console.log(id_estado);
+	var dataf;	//datos de fotos
+	
+	if(sublinea.trim() == ""){
 		alert("Seleccione una Sublinea");
 		$("#sublinea").focus();
 		
@@ -157,34 +168,60 @@ function GuardaElemento(tx) {
 	}else if(plaqueta.trim() == ""){
 		alert("Escanee la plaqueta");
 		$("#plaqueta").focus();
-		
+		return false;
+	}else if(id_estado.trim() == 0){
+		alert("Seleccione un estado");
+		$("#id_estado").focus();
 		return false;
 	}
-	
+	if(localStorage.Fotos == "" || localStorage.Fotos == undefined){
+		alert("Debe añadir mínimo dos(2) Fotos!");
+		return false;
+	}else{
+		dataf = JSON.parse(localStorage.getItem('Fotos')); console.log(dataf.length);
+		if(dataf.length<2){
+			alert("Debe añadir mínimo dos(2) Fotos!");
+			return false;
+		}
+	}
+
 	//FECHA - ID_ENVIO
 	var now = new Date();
 	var fecha_captura = now.getFullYear()+'-'+(1+now.getMonth())+'-'+now.getDate()+'-'+now.getHours()+'_'+now.getMinutes()+'_'+now.getSeconds();
 	var id_envio = fecha_captura+'-'+id_usr;
 	
-	  console.log('INSERT INTO publicarticulos (idseccion,idslinea,marca_af,nombre,referencia,numero_serie_af,plaqueta_af,plaqueta_anterior1_af,id_envio) values ("'+seccion+'","'+sublinea+'","'+marca+'","'+nombre+'","'+referencia+'","'+nserie+'","'+plaqueta+'","'+plaqueta_anterior+'","'+id_envio+'")');
-	tx.executeSql('INSERT INTO publicarticulos (idseccion,idslinea,marca_af,nombre,referencia,numero_serie_af,plaqueta_af,plaqueta_anterior1_af,id_envio) values ("'+seccion+'","'+sublinea+'","'+marca+'","'+nombre+'","'+referencia+'","'+nserie+'","'+plaqueta+'","'+plaqueta_anterior+'","'+id_envio+'")');
-	
-	//ALMACENA DEPENDENCIA - SECCION - ELEMENTO
-	localStorage.iddependencia = dependencia;
-	localStorage.idseccion = seccion;
+	  console.log('INSERT INTO publicarticulos (idseccion,idslinea,marca_af,nombre,referencia,numero_serie_af,plaqueta_af,plaqueta_anterior1_af,id_envio,id_estado) values ("'+localStorage.idseccion+'","'+sublinea+'","'+marca+'","'+nombre+'","'+referencia+'","'+nserie+'","'+plaqueta+'","'+plaqueta_anterior+'","'+id_envio+'","'+id_estado+'")');
+	tx.executeSql('INSERT INTO publicarticulos (idseccion,idslinea,marca_af,nombre,referencia,numero_serie_af,plaqueta_af,plaqueta_anterior1_af,id_envio,id_estado) values ("'+localStorage.idseccion+'","'+sublinea+'","'+marca+'","'+nombre+'","'+referencia+'","'+nserie+'","'+plaqueta+'","'+plaqueta_anterior+'","'+id_envio+'","'+id_estado+'")');
 	
 	tx.executeSql('select rowid from publicarticulos where id_envio = "'+id_envio+'"', [], 
-		           function(tx,rs){
+		           function(tx,rs){	console.log("rowidOK");
 		           		var p = rs.rows.item(0);
 						localStorage.elemento_valor = p.rowid+"|"+plaqueta+"|"+nombre+"|"+id_envio;		console.log(localStorage.elemento_valor);	//alert(localStorage.elemento_valor);
 									//Actualiza columna Id si tiene valor nulo
 									console.log('UPDATE publicarticulos set idarticulo = rowid where idarticulo is null');
 								tx.executeSql('UPDATE publicarticulos set idarticulo = rowid where idarticulo is null');
 								
-								console.log("Elemento Guardado exitosamente");
-								alert("Elemento Guardado exitosamente");
-								window.location = "principal.html";
-												               
+								
+								//GUARDA FOTOS
+								if(localStorage.Fotos != null && localStorage.Fotos != "" && localStorage.Fotos !== undefined && localStorage.Fotos != "undefined"){
+									//CARGA FOTOS
+									
+									$.each(dataf, function(i, item) {	
+										db.transaction(function(tx) {	//alert(item);
+											  console.log('INSERT INTO publicarticulos_fotos (url,id_envio) values ("'+item+'","'+id_envio+'")');
+											tx.executeSql('INSERT INTO publicarticulos_fotos (url,id_envio) values ("'+item+'","'+id_envio+'")');
+										});	//console.log(i);
+										if((i+1)==dataf.length){
+											setTimeout(function() { 
+												dataf.length=0;
+												localStorage.Fotos = "";
+												console.log("Elemento Guardado exitosamente");
+												alert("Elemento Guardado exitosamente");
+												window.location = "p2_elemento_buscar.html";
+											}, 400);
+										}
+									});
+								}
 		           }
 		       ,errorCB);
 }

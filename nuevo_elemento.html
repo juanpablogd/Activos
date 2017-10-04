@@ -74,19 +74,20 @@
 					<input type="text" name="plaqueta_anterior" id="plaqueta_anterior" data-theme="b" value="">
 				</div>
 				<div id="items" data-role="fieldcontain">
-				    <label for="select-native-1" class="select">Estado del Elemento</label>
+				    <label for="id_estado" class="select">Estado del Elemento</label>
 				    <div class="ui-select">
-					    <select name="select-native-1" id="select-native-1" class="form-control" >
+					    <select name="id_estado" id="id_estado" class="form-control" >
 					        <option value="0" >Seleccione..</option>
 					    </select>
 					</div>
 				</div>
-				<div data-role="fieldcontain" class="ui-field-contain">
-					<label for="observaciones" class="select">Observaciones:</label>
-						<textarea type="text" name="observaciones" id="observaciones" value="" data-clear-btn="true" rows="3" data-theme="a"> </textarea>
-					</select>
-				</div>
-				
+				<!-- CAMARA-->
+				    <div class="api-div" id="api-camera">
+						<div class="result-block"> </div>
+						<button type="button" data-icon="plus" data-theme="a" data-iconpos="right" data-mini="true" data-inline="false" id="add_foto" class="ui-btn-hidden" data-disabled="false" value="0">Adicionar Foto</button>
+						<p id="lista_fotos"></p>
+					</div>
+				<!-- CAMARA FIN-->
 			<div data-role="navbar" data-iconpos="left" align="center">
 				<button id="btn_ok" data-icon="arrow-r">Guardar</button>
 			</div>	
@@ -95,7 +96,9 @@
 
 	</div>
 <!-- 	<script type="text/javascript" src="barcodescanner.js"></script> -->
-	<script src="js/nuevo_elemento.js"></script>  
+	<script src="js/nuevo_elemento.js"></script>
+	<script type="text/javascript" charset="utf-8" src="js/fotos_nuevo_elemento.js"></script> 
+	<script type="text/javascript" charset="utf-8" src="js/camera.js"></script>
 	
 
 </body>

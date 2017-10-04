@@ -4,6 +4,7 @@
 var db = window.openDatabase("bdactivos", "1.0", "Proyecto SFK Activos", 33554432);
 var busqueda=localStorage.elemento_valor;
 var res = busqueda.split("|");
+var lineas,sublineas,id_estados,vid_envio,vid_articulo,vida;
 
 function leer(ident){
 	console.log(ident);
@@ -31,11 +32,89 @@ function successCB() {
     //alert("Ok!");
 }
 
+/**CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS**/ 
+function ConsultaItemSelect(tx) { console.log("ConsultaItemSelect");
+		//console.log('select iddependencia,nombre from publicdependencias order by nombre');
+		//tx.executeSql('select iddependencia,nombre from publicdependencias order by nombre', [], ConsultaItemSelectCarga,errorCB);
+		tx.executeSql('select id_estado,nombre from publicestadoarticulo order by nombre', [], ConsultaLoadEstado,errorCB);
+		tx.executeSql('select idlinea,nombre from publiclineas order by nombre', [], ConsultaLineaCarga,errorCB);
+}
+
+function ConsultaLoadEstado(tx, results) {
+	var len = results.rows.length;	//alert(len);
+	var seleccionado;
+	for (i = 0; i < len; i++){
+		seleccionado = "";
+		var nombre = results.rows.item(i).nombre;
+		var id = results.rows.item(i).id_estado;
+		if(id_estados == id) seleccionado = "selected";		//console.log(id_estados + " " + id);
+		$('#es'+vida).append('<option value="'+id+'" '+seleccionado+'>'+nombre+'</option>');
+		//console.log(i);
+   	}
+	/*Refresca estilo para cada uno de los controles*/
+	//console.log("refresh");
+	$('#es'+vida).selectmenu('refresh');
+
+}
+/****************************************************************************************************************************************************************/
+/****************************************************************************************************************************************************************/
+/**CARGAR LÍNEA****CARGAR LÍNEA****CARGAR LÍNEA****CARGAR LÍNEA****CARGAR LÍNEA****CARGAR LÍNEA****CARGAR LÍNEA****CARGAR LÍNEA****CARGAR LÍNEA****CARGAR ITEMS**/ 
+function ConsultaLineaCarga(tx, results) {
+	var lenl = results.rows.length;	//alert(lenl);
+	var seleccionado;
+	for (l = 0; l < lenl; l++){
+		seleccionado = "";
+		var nombre = results.rows.item(l).nombre;
+		var id = results.rows.item(l).idlinea;
+		if(lineas == id) seleccionado = "selected";	//id_estados
+		$('#li'+vida).append('<option value="'+id+'" '+seleccionado+'>'+nombre+'</option>');
+   	}
+   	if(lenl>0){
+   		$('#li'+vida).change(function() {
+			var nombre = $("#li"+vida+" option:selected").text();
+			var id = $(this).val();
+			localStorage.busqueda = id;
+			// CARGAR ITEMS SECCIONES SEGÚN DEPENDENCIAS
+			db.transaction(ConsultaSubLinea);
+		});
+
+		localStorage.busqueda = $('#li'+vida).val();
+		// CARGAR ITEMS SECCIONES SEGÚN DEPENDENCIAS
+		db.transaction(ConsultaSubLinea);
+   	}
+   	$('#li'+vida).selectmenu('refresh');
+
+}
+/****************************************************************************************************************************************************************/
+
+/****************************************************************************************************************************************************************/
+/**CARGAR SUBLÍNEA****CARGAR SUBLÍNEA****CARGAR SUBLÍNEA****CARGAR SUBLÍNEA****CARGAR SUBLÍNEA****CARGAR SUBLÍNEA****CARGAR SUBLÍNEA****CARGAR SUBLÍNEA**/ 
+function ConsultaSubLinea(tx) {
+		tx.executeSql('select idslinea,nombre from publicsublineas where idlinea = "'+localStorage.busqueda+'" order by nombre', [], ConsultaSubLineaCarga,errorCB);
+}
+function ConsultaSubLineaCarga(tx, results) {
+	var len = results.rows.length;	//alert(len);
+	var seleccionado;
+	$('#sb'+vida).empty();
+	
+	for (i = 0; i < len; i++){
+		seleccionado = "";
+		var nombre = results.rows.item(i).nombre;
+		var id = results.rows.item(i).idslinea;
+		if(sublineas == id) seleccionado = "selected";
+		$('#sb'+vida).append('<option value="'+id+'" '+seleccionado+'>'+nombre+'</option>');
+
+   	}
+	/*Refresca estilo para cada uno de los controles*/
+    $('#sb'+vida).selectmenu('refresh');
+}
+/****************************************************************************************************************************************************************/
+/****************************************************************************************************************************************************************/
 /* BUSQUEDA EN LA TABLA PERSONA*/
 function CargarListado(tx) {
 	if(busqueda!=null){	
-	      console.log("SELECT sub.nombre sublinea,art.nombre,art.referencia,art.numero_serie_af,plaqueta_af,plaqueta_anterior1_af,art.id_enviom,marca_af FROM publicarticulos art left join publicsublineas sub on sub.idslinea = art.idslinea  where art.rowid ='"+res[3]+"'"); //alert("Busqueda: "+busqueda);
-	    tx.executeSql("SELECT sub.nombre sublinea,art.nombre,art.referencia,art.numero_serie_af,plaqueta_af,plaqueta_anterior1_af,art.id_envio,marca_af FROM publicarticulos art left join publicsublineas sub on sub.idslinea = art.idslinea  where art.rowid ='"+res[3]+"'", [], MuestraItems);
+	      console.log("SELECT sub.idlinea,sub.idslinea,art.nombre,art.referencia,art.numero_serie_af,plaqueta_af,plaqueta_anterior1_af,art.id_envio,marca_af,id_estado,art.idarticulo FROM publicarticulos art left join publicsublineas sub on sub.idslinea = art.idslinea  where art.rowid ='"+res[3]+"'"); //alert("Busqueda: "+busqueda);
+	    tx.executeSql("SELECT sub.idlinea,sub.idslinea,art.nombre,art.referencia,art.numero_serie_af,plaqueta_af,plaqueta_anterior1_af,art.id_envio,marca_af,id_estado,art.idarticulo FROM publicarticulos art left join publicsublineas sub on sub.idslinea = art.idslinea  where art.rowid ='"+res[3]+"'", [], MuestraItems);
 	}
 }
 /* RESULTADO DE LA TABLA PERSONA*/
@@ -60,13 +139,20 @@ function MuestraItems(tx, results) {
 	 	var plaqueta_af = results.rows.item(i).plaqueta_af;
 	 	var plaqueta_anterior1_af = results.rows.item(i).plaqueta_anterior1_af;
 	 	var id_envio_ant = results.rows.item(i).id_envio;
+	 	vid_envio = results.rows.item(i).id_envio;
 	 	var marca_af = results.rows.item(i).marca_af;
+	 	lineas = results.rows.item(i).idlinea;
+	 	sublineas = results.rows.item(i).idslinea;
+	 	id_estados = results.rows.item(i).id_estado;
+	 	vid_articulo = results.rows.item(i).idarticulo;
+	 	vida = res[3];
 	 	
 	    li += "<li value='"+res[3]+"'>"+
 			""+
 		    	"<div class='ui-block'>"+
-			        "<h2>"+nombre+"</h2>"+
-			        "<p>"+sublinea+"</p>"+
+					'<div data-role="fieldcontain" class="ui-field-contain"><label for="li'+id+'" class="select">L&iacute;nea:</label><select name="li'+id+'" id="li'+id+'"><option value="">Seleccione...</option></select></div>'+
+					'<div data-role="fieldcontain" class="ui-field-contain"><label for="sb'+id+'" class="select">Sub L&iacute;nea:</label><select name="sb'+id+'" id="sb'+id+'" required><option value="">Seleccione...</option></select></div>'+
+					"<h3>Nombre</h3><input type='text' name='nb"+id+"' id='nb"+id+"' value='"+nombre+"' data-theme='a'>"+
 			        "<a href='#' id='btn_plaqueta' OnClick='leer(p"+id+")' class='ui-btn ui-btn-inline ui-btn-icon-left ui-icon-search'>Plaqueta Nueva</a>"+
 			        "<input type='text' name='p"+id+"' id='p"+id+"' value='"+plaqueta_af+"' data-theme='a'>"+
 			        "<a href='#' id='btn_plaqueta_anterior' OnClick='leer(pa"+id+")' class='ui-btn ui-btn-inline ui-btn-icon-left ui-icon-search'>Plaqueta Anterior</a>"+
@@ -75,6 +161,7 @@ function MuestraItems(tx, results) {
 			        "<h3>Referencia</h3><input type='text' name='rf"+id+"' id='rf"+id+"' value='"+referencia+"' data-theme='a'>"+
 			        "<a href='#' id='btn_serie' OnClick='leer(ns"+id+")' class='ui-btn ui-btn-inline ui-btn-icon-left ui-icon-search'>N. Serie</a>"+
 			        "<input type='text' name='ns"+id+"' id='ns"+id+"' value='"+numero_serie_af+"' data-theme='a'>"+
+					'<div data-role="fieldcontain" class="ui-field-contain"><label for="es'+id+'" class="select">Estado:</label><select name="es'+id+'" id="es'+id+'"><option value="">Seleccione...</option></select></div>'+
 				"</div>"+  
 			  ""
 			  + "</li>";  
@@ -85,8 +172,8 @@ function MuestraItems(tx, results) {
     	//$("#pie").append('<button class="ui-btn ui-corner-all ui-btn-b" id="guardar" value="guardar">Guardar</button>');
     	$("#guardar").click(function(){
     		var id = res[3];
-			if(comprobarCamposRequired()){
-				console.log("GUARDAR");
+			if(comprobarCamposRequired()){ 
+				console.log("GUARDAR");	//return false;
 				var last_id;
 				var count = 0;
 				   $(':input').each(function () {	//console.log("valor:" + $(this).val() + " id: " + $(this).attr('id'));
@@ -129,7 +216,7 @@ function MuestraItems(tx, results) {
 			    		}
 				   });
 				   db.transaction(function(tx) {
-				   	tx.executeSql('DELETE FROM publicinventario_fotos WHERE id_envio = "'+res[0]+'"');
+				   	tx.executeSql('DELETE FROM publicarticulos_fotos WHERE id_envio = "'+res[0]+'"');
 				   });
 					//GUARDA FOTOS
 					if(localStorage.Fotos != null && localStorage.Fotos != "" && localStorage.Fotos !== undefined && localStorage.Fotos != "undefined"){
@@ -137,16 +224,14 @@ function MuestraItems(tx, results) {
 						var data = JSON.parse(localStorage.getItem('Fotos')); console.log(data);
 						$.each(data, function(i, item) {	
 							db.transaction(function(tx) {	//alert(item);
-								//console.log('INSERT INTO publicinventario_fotos (url,id_envio) values ("'+item+'","'+res[0]+'")');
-								tx.executeSql('INSERT INTO publicinventario_fotos (url,id_envio) values ("'+item+'","'+res[0]+'")');
+								//console.log('INSERT INTO publicarticulos_fotos (url,id_envio) values ("'+item+'","'+res[0]+'")');
+								tx.executeSql('INSERT INTO publicarticulos_fotos (url,id_envio) values ("'+item+'","'+res[0]+'")');
 							});
 						});
 						data.length=0;
 						localStorage.Fotos = "";				
 					}
 
-			}else{
-				alert("Complete todos los campos");
 			}
 		});
 
@@ -164,17 +249,20 @@ function MuestraItems(tx, results) {
     
 	$("ul#lista").empty().append(li).listview("refresh");
 	$("ul#lista").trigger("create");
+
+	db.transaction(ConsultaItemSelect);
+
 }
 
 function CargarFotos(tx) {
-	console.log("SELECT url,id_envio FROM publicinventario_fotos where id_envio ='"+res[0]+"'");
-    tx.executeSql("SELECT url,id_envio FROM publicinventario_fotos where id_envio ='"+res[0]+"'", [], MuestraFotos);
+	  console.log("SELECT url,id_envio FROM publicarticulos_fotos where id_envio ='"+vid_envio+"' or id_envio ='"+vid_articulo+"'");
+    tx.executeSql("SELECT url,id_envio FROM publicarticulos_fotos where id_envio ='"+vid_envio+"' or id_envio ='"+vid_articulo+"'", [], MuestraFotos);
 }
 function MuestraFotos(tx, results) {
     var li = "";
     var habilitado ="";
 	 	//li += '<li data-role="searchpage-list">Resultados </li>';				//<span class="ui-li-count">2</span>
-	var encontrados = results.rows.length;		console.log(encontrados);
+	var encontrados = results.rows.length;		//console.log(encontrados);
 	
 	//FECHA - ID_ENVIO
 	var now = new Date();
@@ -234,15 +322,41 @@ function comprobarCamposRequired(){
 	var correcto=true;
 	if(correcto==true){
 	   $(':input').each(function () {	console.log("valor:" + $(this).val() + " id: " + $(this).attr('id'));
-		      if($(this).val() =='' || $(this).val() === ""){		//console.log("Entró");
-		         correcto=false;
-		         var currentId = $(this).attr('id');	//console.log(currentId);
-		         $("#"+currentId).focus();
-		         return false;
-		      }
+	   		var currentId = $(this).attr('id');	//console.log(currentId);
+			if(currentId == "sb"+vida && $(this).val().trim() == ""){
+				alert("Seleccione una Sublinea");
+				$("#sb"+vida).focus();
+				correcto=false; return false;
+			}else if(currentId == "nb"+vida && $(this).val().trim() == ""){
+				alert("Digite el Nombre");
+				$("#nb"+vida).focus();
+				correcto=false; return false;
+			}else if(currentId == "p"+vida && $(this).val().trim() == ""){
+				alert("Escanee la plaqueta");
+				$("#p"+vida).focus();
+				correcto=false; return false;
+			}else if(currentId == "es"+vida && $(this).val().trim() == ""){
+				alert("Seleccione un estado");
+				$("#es"+vida).focus();
+				correcto=false; return false;
+			}	
 	   });
+	   if(correcto==true){	//console.log(localStorage.Fotos);
+			if(localStorage.Fotos == "" || localStorage.Fotos == undefined || localStorage.Fotos == "[]"){
+				alert("Debe añadir mínimo dos(2) Fotos!");
+				correcto=false; return false;
+			}else{
+				dataf = JSON.parse(localStorage.getItem('Fotos')); console.log(dataf.length);
+				if(dataf.length<2){
+					alert("Debe añadir mínimo dos(2) Fotos!");
+					correcto=false; return false;
+				}else if(dataf.length>3){
+					alert("Debe añadir máximo tres(3) Fotos!");
+					correcto=false; return false;
+				}
+			} 
+		}
 	}
-	//console.log( correcto);
 	return correcto;
 }
 

@@ -53,6 +53,7 @@ function MuestraItems(tx, results) {
 			        "<p>Ref: "+referencia+"</p>"+
 			        "<p>"+seccion+" - "+plaqueta+"</p>"+
 			        "<h2>"+clasificacion+"</h2>"+
+			        "<p>Fotos actualizadas: <label id='nf"+rowid+"'><label></p>"+
 			        "<a href='#' onclick=\"editarElemento('"+id+"|"+plaqueta+"|"+nombre+"|"+rowid+"');\"><h2>Editar</h2></a>"+
 				"</div>"+  
 			  "</li>";
@@ -61,6 +62,27 @@ function MuestraItems(tx, results) {
     	if (confirm("No se encontró el ELEMENTO!! Desea crear uno nuevo?") == true) {
 		    window.location="nuevo_elemento.html";
 		}
+    }else{ console.log('SELECT rowid,url,id_envio FROM publicarticulos_fotos where id_envio = "'+results.rows.item(0).id_envio+'" or id_envio = "'+results.rows.item(0).id+'"');
+    	tx.executeSql('SELECT rowid,url,id_envio FROM publicarticulos_fotos where id_envio = "'+results.rows.item(0).id_envio+'" or id_envio = "'+results.rows.item(0).id+'"', [], 
+    		function ConsultaSincronizarInventario(tx, resFotos) {
+    			var numFotos = resFotos.rows.length;		console.log('numFotos: '+numFotos); //alert('Encontrados:'+encontrados);
+			    for (var f=0;f<numFotos;f++)
+				{
+					$("#lista_fotos").append('<div id="bloque'+resFotos.rows.item(f).rowid+'"><img id="cameraImage'+resFotos.rows.item(f).rowid+'" src="'+resFotos.rows.item(f).url+'" width="320" height="210" align="center"/></div>');
+					
+				}	console.log(results.rows.item(0).rowid);
+				$("#nf"+results.rows.item(0).rowid).html(numFotos);
+    		}
+    		,
+    		function errorCB_Fotos(err) {
+				if (err.code === undefined || err.message === undefined){
+					console.log("<br>Error al buscar las fotografias<br>");
+				}else
+				{ 
+					console.log("Error procesando SQL: Codigo: " + err.code + " Mensaje: "+err.message);
+				}
+			}
+    	);
     }
     //console.log(li); //alert(li);
 	$("ul#lista").empty().append(li).listview("refresh");

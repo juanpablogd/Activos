@@ -38,12 +38,11 @@ function ConsultaItemsCarga(tx, results) {
 	var viddependencia = localStorage.iddependencia;
 	var seleccionado;
 	for (i = 0; i < len; i++){
-		seleccionado = ""; 
+		seleccionado = "";
 		var nombre = results.rows.item(i).nombre;
 		var id = results.rows.item(i).iddependencia;
 		if(viddependencia == id) seleccionado = "selected";
 		$('#dependencia').append('<option value="'+id+'" '+seleccionado+'>'+nombre+'</option>');
-
    	}
 	/*Refresca estilo para cada uno de los controles*/
 	$("#dependencia").selectmenu('refresh'); //console.log(viddependencia);
@@ -181,6 +180,9 @@ function GuardaElemento(tx) {
 		dataf = JSON.parse(localStorage.getItem('Fotos')); console.log(dataf.length);
 		if(dataf.length<2){
 			alert("Debe añadir mínimo dos(2) Fotos!");
+			return false;
+		}else if(dataf.length>3){
+			alert("Debe añadir máximo tres(3) Fotos!");
 			return false;
 		}
 	}

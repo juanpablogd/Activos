@@ -38,6 +38,10 @@ function TablaGuardarExe(tx) {
 	}
 	
 	$.mobile.loading( 'hide' );
+	localStorage.elemento_valor = "";
+	localStorage.persona_valor = "";
+	localStorage.busqueda = "";
+	localStorage.consulta = "";
 	alert("Actualización exitosa");
 	window.location = "principal.html";
 }

@@ -23,8 +23,8 @@ function CargarListado(tx) {
 	var busqueda=localStorage.busqueda;				//alert("Busqueda: "+busqueda+"!"); //console.log("SELECT el.idarticulo id,el.referencia,el.plaqueta,el.nombre,se.nombre seccion,sl.nombre clasificacion FROM publicarticulos el inner join publicsecciones se on se.idseccion = el.idseccion inner join publicsublineas sl on sl.idslinea = el.idslinea where numero_serie like '%"+busqueda+"%' or plaqueta like '%"+busqueda+"%' or plaqueta_anterior like '%"+busqueda+"%' or el.nombre like '%"+busqueda+"%' order by el.nombre");
 	
 	if(busqueda!=null){
-		  console.log("SELECT el.idarticulo id,el.referencia,el.plaqueta_af,el.nombre,se.nombre seccion,sl.nombre clasificacion,el.id_envio,el.rowid FROM publicarticulos el inner join publicsecciones se on se.idseccion = el.idseccion inner join publicsublineas sl on sl.idslinea = el.idslinea where numero_serie_af = '"+busqueda+"' or plaqueta_af = '"+busqueda+"' or plaqueta_anterior1_af = '"+busqueda+"' order by id_envio desc,el.idarticulo desc limit 1");
-	    tx.executeSql("SELECT el.idarticulo id,el.referencia,el.plaqueta_af,el.nombre,se.nombre seccion,sl.nombre clasificacion,el.id_envio,el.rowid FROM publicarticulos el inner join publicsecciones se on se.idseccion = el.idseccion inner join publicsublineas sl on sl.idslinea = el.idslinea where numero_serie_af = '"+busqueda+"' or plaqueta_af = '"+busqueda+"' or plaqueta_anterior1_af = '"+busqueda+"' order by id_envio desc,el.idarticulo desc limit 1", [], MuestraItems);
+		  console.log("SELECT el.idarticulo id,el.referencia,el.plaqueta_af,el.nombre,se.nombre seccion,sl.nombre clasificacion,el.id_envio,el.rowid,el.id_estado FROM publicarticulos el inner join publicsecciones se on se.idseccion = el.idseccion inner join publicsublineas sl on sl.idslinea = el.idslinea where numero_serie_af = '"+busqueda+"' or plaqueta_af = '"+busqueda+"' or plaqueta_anterior1_af = '"+busqueda+"' order by id_envio desc,el.idarticulo desc limit 1");
+	    tx.executeSql("SELECT el.idarticulo id,el.referencia,el.plaqueta_af,el.nombre,se.nombre seccion,sl.nombre clasificacion,el.id_envio,el.rowid,el.id_estado FROM publicarticulos el inner join publicsecciones se on se.idseccion = el.idseccion inner join publicsublineas sl on sl.idslinea = el.idslinea where numero_serie_af = '"+busqueda+"' or plaqueta_af = '"+busqueda+"' or plaqueta_anterior1_af = '"+busqueda+"' order by id_envio desc,el.idarticulo desc limit 1", [], MuestraItems);
    }
 }
 /* RESULTADO DE LA TABLA ELEMENTO*/
@@ -45,16 +45,17 @@ function MuestraItems(tx, results) {
 	 	var seccion = results.rows.item(i).seccion;
 	 	var clasificacion = results.rows.item(i).clasificacion;
 	 	var id_envio_art = results.rows.item(i).id_envio;
+	 	var id_estado = results.rows.item(i).id_estado;
 	 	var rowid = results.rows.item(i).rowid;
 	 	
-	    li += "<li value='"+id+"|"+plaqueta+"|"+nombre+"|"+rowid+"'>"+
+	    li += "<li value='"+id+"|"+plaqueta+"|"+nombre+"|"+rowid+"|"+id_estado+"'>"+
 		    	"<div class='ui-block'>"+
 			        "<h2>"+nombre+"</h2>"+
 			        "<p>Ref: "+referencia+"</p>"+
 			        "<p>"+seccion+" - "+plaqueta+"</p>"+
 			        "<h2>"+clasificacion+"</h2>"+
 			        "<p>Fotos actualizadas: <label id='nf"+rowid+"'><label></p>"+
-			        "<a href='#' onclick=\"editarElemento('"+id+"|"+plaqueta+"|"+nombre+"|"+rowid+"');\"><h2>Editar</h2></a>"+
+			        "<a href='#' id='btnEditar' onclick=\"editarElemento('"+id+"|"+plaqueta+"|"+nombre+"|"+rowid+"');\"><h2>Editar</h2></a>"+
 				"</div>"+  
 			  "</li>";
     }
@@ -72,6 +73,14 @@ function MuestraItems(tx, results) {
 					
 				}	console.log(results.rows.item(0).rowid);
 				$("#nf"+results.rows.item(0).rowid).html(numFotos);
+				if(numFotos>0 && numFotos<4){
+					$("#btn_ok").show();
+				}else{
+					alert("Debe adicionar las fotos del elemento!");
+					console.log($("#btnEditar").attr("onclick"));
+					var par = $("#btnEditar").attr("onclick").split("'");
+					editarElemento(par[1]);
+				}
     		}
     		,
     		function errorCB_Fotos(err) {
@@ -94,7 +103,7 @@ function MuestraItems(tx, results) {
 			var res = $val.split("|");
 			$("#seleccionado").html('<h4 align="center"> '+res[2]+" -  "+res[1]+'</h4>');
 			$("#btn2").removeAttr("disabled");
-			$("#btn3").removeAttr("disabled");
+			//$("#btn3").removeAttr("disabled");
 	//		alert(plaqueta);
 			 
 		}	

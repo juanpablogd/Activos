@@ -13,13 +13,15 @@ $(window).load(function () {
 $(document).ready(function() {
 	//SI YA ESTÁ REGISTRADO EL ELEMENTO Y LA PERSONA ENTONCES HABILITA LA OPCIÓN DE LA FIRMA
 	$val = localStorage.persona_valor;	console.log($val);
-	if($val !== undefined){
-		var res_persona = $val.split("|");
-		//$("#seleccionado").html('<h4 align="center">'+res_persona[1]+" "+res_persona[2]+" - "+res[1]+" -  "+res[2]+'</h4>');
-		$("#seleccionado").html('<h4 align="center">'+res_persona[1]+" "+res_persona[2]+'</h4>');
-		//$("#btn2").removeAttr("disabled");
-		localStorage.busqueda = res_persona[0];
-		db.transaction(CargarListado);		
+	if($val != "" && $val != undefined && $val != null && $val != "null"){
+			var res_persona = $val.split("|");
+			//$("#seleccionado").html('<h4 align="center">'+res_persona[1]+" "+res_persona[2]+" - "+res[1]+" -  "+res[2]+'</h4>');
+			$("#seleccionado").html('<h4 align="center">'+res_persona[1]+" "+res_persona[2]+'</h4>');
+			//$("#btn2").removeAttr("disabled");
+			localStorage.busqueda = res_persona[0];
+			db.transaction(CargarListado);		
+	}else{
+		$("#seleccionado").html('<h4 align="center">Busque una persona por favor</h4>');
 	}
 	
     $("#bcerrar_sesion").click(function(){

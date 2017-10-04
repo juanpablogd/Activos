@@ -99,7 +99,7 @@ $(document).ready(function() {
 		var res = $val.split("|");
 		$("#seleccionado").html('<h4 align="center">'+res[2]+" -  "+res[1]+'</h4>');
 		$("#btn2").removeAttr("disabled");
-		$("#btn3").removeAttr("disabled");
+		//$("#btn3").removeAttr("disabled");
 
 	});
 	
@@ -112,17 +112,101 @@ $(document).ready(function() {
 	$('#btn2').click(function() {
 		window.location= 'p2_elemento_buscar.html';
 	});
+	//GUARDAR FORMULARIO
+	$('#btn_ok').click(function() {
+		$val = localStorage.persona_valor;
+		var id_usr = localStorage.id_usr;
+		var cc = $val.split("|");
+		var observaciones = $( "#observaciones" ).val();
+		//OBTIENE EL ELEMENTO A MOSTRAR
+		$val = localStorage.elemento_valor; 
+		var id_elemento = $val.split("|");
+		//FECHA - ID_ENVIO
+		var now = new Date();
+		var fecha_captura = now.getFullYear()+'-'+(1+now.getMonth())+'-'+now.getDate()+'-'+now.getHours()+'_'+now.getMinutes()+'_'+now.getSeconds();
+		var id_envio = fecha_captura+'-'+id_usr;
+		var seccion = localStorage.idseccion;
+		db.transaction(function guardarInv(tx){
+			//INFO GENERAL DEL ELEMENTO		
+			 console.log('INSERT INTO publicinventario (idseccion,idusuario,cc_responsable,id_envio,activo) values ("'+seccion+'","'+id_usr+'","'+cc[0]+'","'+id_envio+'","1")');
+			tx.executeSql('INSERT INTO publicinventario (idseccion,idusuario,cc_responsable,id_envio,activo) values ("'+seccion+'","'+id_usr+'","'+cc[0]+'","'+id_envio+'","1")');
+			//DETALLE DEL ELMENTO
+			console.log('INSERT INTO publicinventario_det (idarticulo,observacion,asignacion,id_estado,id_envio,id_envio_art)' + 
+			'values ("'+id_elemento[0]+'","'+observaciones+'","R","'+id_elemento[4]+'","'+id_envio+'","'+id_elemento[3]+'")');
+			tx.executeSql('INSERT INTO publicinventario_det (idarticulo,observacion,asignacion,id_estado,id_envio,id_envio_art)' + 
+			'values ("'+id_elemento[0]+'","'+observaciones+'","R","'+id_elemento[4]+'","'+id_envio+'","'+id_elemento[3]+'")');
+			//ASIGNA RESPONSABLE AL articulo
+			console.log('UPDATE publicarticulos set cc_responsable_af = "'+cc[0]+'" where idarticulo = '+id_elemento[0]+' and id_envio != ""');
+			console.log('UPDATE publicarticulos set cc_responsable_af = "'+cc[0]+'" where idarticulo = "'+id_elemento[0]+'" and id_envio = ""');
+			tx.executeSql('UPDATE publicarticulos set cc_responsable_af = "'+cc[0]+'" where idarticulo = '+id_elemento[0]+' and id_envio != ""');
+			tx.executeSql('UPDATE publicarticulos set cc_responsable_af = "'+cc[0]+'" where idarticulo = "'+id_elemento[0]+'" and id_envio = ""');
+		});
+
+		console.log("GUARDAR");
+		localStorage.firma = "";
+		localStorage.elemento_valor = "";
+		//localStorage.persona_valor = "";
+		localStorage.busqueda = "";
+		setTimeout(function() {
+			db.transaction(function(tx) {
+				console.log('select * from publicinventario_det where id_envio = "'+id_envio+'"');
+				tx.executeSql('select * from publicinventario_det where id_envio = "'+id_envio+'"', [],
+					function MuestraItems(tx, results) {
+						var encontrados = results.rows.length; console.log("Encontrados: " + encontrados);
+						if(encontrados>0) {
+							window.location = "p1_persona_buscar.html";
+							alert("Elemento Guardado exitosamente");
+						}else
+						{
+							alert("Espere un momento por favor!");
+							alert("Elemento Guardado exitosamente");
+						}
+					}	
+				);
+			} /*, function errorCB(err) {	alert("Error processing SQL: "+err.code); }
+			,function successCB() {	localStorage.firma = ""; }	*/
+			);
+		}, 300);
+
+
+/*		if ($( "#seccion" ).val()==0){
+			alert("Seleccione una Dependencia/Sección por favor");
+			$("#seccion").focus();
+			return false;
+		}
+		
+		if(localStorage.persona_valor == undefined || localStorage.persona_valor == ""){
+			alert("Busque una persona por favor!");
+			$("input[data-type='search']").focus();
+			return false;
+		}
+		localStorage.iddependencia = $( "#dependencia" ).val(); 
+		localStorage.idseccion = $( "#seccion" ).val();
+		console.log(localStorage.iddependencia);
+		console.log(localStorage.idseccion);
+		console.log(localStorage.persona_valor);
+		console.log("GUARDAR");
+		window.location = "p2_elemento_buscar.html";	*/
+
+
+/*		if ($( "#select-native-1" ).val()==0){
+			alert("Seleccione un estado por favor");
+			$("#select-native-1").focus();
+			return false;
+		}
+		db.transaction(GuardaElemento); */
+	});
 	//DIRECCIONA SELECCIONAR PERSONA
 	$('#btn3').click(function() {
-		window.location= 'p3_foto.html';
+		window.location = "persona_verificar.html";		//console.log('<h4 align="center">'+res[1]+" -  "+res[2]+'</h4>');	//$("#btn2").removeAttr("disabled");	//$("#btn3").removeAttr("disabled");
 	});
-	//DIRECCIONA OPCION PERSONA
+/*	//DIRECCIONA OPCION PERSONA
 	$('#btn4').click(function() {
 		window.location= 'p4_firma.html';
 	});
 	//DIRECCIONA OPCION GUARDAR
 	$('#btn5').click(function() {
 		window.location= 'p5_guardar.html';
-	});
+	}); */
 
 });

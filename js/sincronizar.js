@@ -316,75 +316,76 @@ function ConsultaSincronizarFotos(tx, results) {
 	}else{
 		for (i = 0; i < len; i++){
 
-		var url_imagen = results.rows.item(i).url;
-			
-          var options = new FileUploadOptions();
-            options.fileName=url_imagen;
-            options.mimeType="image/jpeg";
-            
-          var params = new Object();
-			params.cod_envio = results.rows.item(i).id_envio;
-			params.rowid = results.rows.item(i).rowid;
-			params.id_usr = localStorage.id_usr
+			var url_imagen = results.rows.item(i).url; console.log(typeof cordova);
+			if (typeof yourvar !== 'undefined'){	
+	          	var options = new FileUploadOptions();
+	            options.fileName=url_imagen;
+	            options.mimeType="image/jpeg";
+	            
+	          	var params = new Object();
+				params.cod_envio = results.rows.item(i).id_envio;
+				params.rowid = results.rows.item(i).rowid;
+				params.id_usr = localStorage.id_usr
 
-            options.params = params;			
+	            options.params = params;			
 
 
-			//ENVIA EL FOTO	
-			var ft = new FileTransfer();
-			ft.onprogress = function(progressEvent) {
-				if (progressEvent.lengthComputable) {
-					var perc = Math.floor(progressEvent.loaded / progressEvent.total * 100);
-					$("#resultado").html("<br>Cargando "+(len-i)+": <strong>"+perc + "% </strong><br>"); 
-				} else {
-					$("#resultado").html("<br>Cargando "+(len-i)+": <strong>"+perc + "% </strong><br>"); 
-				}
-				if(perc >= 99) $("#resultado").html('');
-				$("#resultado").trigger("create");
-			};
-			
-	        ft.upload(url_imagen,
-	            "http://"+localStorage.url_servidor+"/SIG/servicios/activos_sincronizar_imagen.php",
-	            function(result) {  //$("#resultado").html("Response = " + result.response.toString()); $("#resultado").trigger("create");
-	            	//RESPUESTA DEL SERVIDOR		
-					var respf = result.response.toString();	alert(respf);
-	            	var n=respf.split("|");
-
-	            	//REMOVER ARCHIVO DEL DISPOSITIVO
-	            	function eliminafotodb(tx) { //alert('DELETE from publicarticulos_fotos where id_envio = "'+n[0]+'" and rowid = "'+n[1]+'"');
-						tx.executeSql('DELETE from publicarticulos_fotos where id_envio = "'+n[0]+'" and rowid = "'+n[1]+'"');
+				//ENVIA EL FOTO	
+				var ft = new FileTransfer();
+				ft.onprogress = function(progressEvent) {
+					if (progressEvent.lengthComputable) {
+						var perc = Math.floor(progressEvent.loaded / progressEvent.total * 100);
+						$("#resultado").html("<br>Cargando "+(len-i)+": <strong>"+perc + "% </strong><br>"); 
+					} else {
+						$("#resultado").html("<br>Cargando "+(len-i)+": <strong>"+perc + "% </strong><br>"); 
 					}
-	            	function sqlexitoso ()  {
-						//CONTINUA CON LOS NUEVOS ELEMENTOS REGISTRADOS EN EL SISTEMA
-						if((i+1) == len) { //alert("continue a rtas");
-							   	salir();
-						} 
-						//Delete file 
-						window.requestFileSystem(LocalFileSystem.TEMPORARY, 0, 
-						    function(fileSys) { 
-						
-						        fileSys.root.getFile(n[2], {create: false}, 
-						            function(file) {
-						                file.remove(pictureRemoved, notRemoved);                                                  
-						            }, no);
-						    }, no); 
-					}
-					function sqlfallo(){}
-					function pictureRemoved(){}
-					function notRemoved(){ $("#resultado").html("<br> No se puede Eliminar el archivo, limpie el cache manualmente<br>"); $("#resultado").trigger("create");}
-					function no(error) { $("#resultado").html("<br> Ubicación incorrecta de la imagen<br>"); $("#resultado").trigger("create");}
-	            	//ELIMINA DE LA BASE DE DATOS
-	            	db.transaction(eliminafotodb,sqlfallo,sqlexitoso);
+					if(perc >= 99) $("#resultado").html('');
+					$("#resultado").trigger("create");
+				};
+				
+		        ft.upload(url_imagen,
+		            "http://"+localStorage.url_servidor+"/SIG/servicios/activos_sincronizar_imagen.php",
+		            function(result) {  //$("#resultado").html("Response = " + result.response.toString()); $("#resultado").trigger("create");
+		            	//RESPUESTA DEL SERVIDOR		
+						var respf = result.response.toString();	alert(respf);
+		            	var n=respf.split("|");
 
-	            },
-	            function(error) {
-	                $("#resultado").html('Error cargando archivo ' + url_imagen + ': ' + error.code); $("#resultado").trigger("create");
-						//CONTINUA CON LOS NUEVOS ELEMENTOS REGISTRADOS EN EL SISTEMA
-						if((i+1) == len) { //alert("continue a rtas");
-							   	salir();
+		            	//REMOVER ARCHIVO DEL DISPOSITIVO
+		            	function eliminafotodb(tx) { //alert('DELETE from publicarticulos_fotos where id_envio = "'+n[0]+'" and rowid = "'+n[1]+'"');
+							tx.executeSql('DELETE from publicarticulos_fotos where id_envio = "'+n[0]+'" and rowid = "'+n[1]+'"');
 						}
-	            },options
-			);
+		            	function sqlexitoso ()  {
+							//CONTINUA CON LOS NUEVOS ELEMENTOS REGISTRADOS EN EL SISTEMA
+							if((i+1) == len) { //alert("continue a rtas");
+								   	salir();
+							} 
+							//Delete file 
+							window.requestFileSystem(LocalFileSystem.TEMPORARY, 0, 
+							    function(fileSys) { 
+							
+							        fileSys.root.getFile(n[2], {create: false}, 
+							            function(file) {
+							                file.remove(pictureRemoved, notRemoved);                                                  
+							            }, no);
+							    }, no); 
+						}
+						function sqlfallo(){}
+						function pictureRemoved(){}
+						function notRemoved(){ $("#resultado").html("<br> No se puede Eliminar el archivo, limpie el cache manualmente<br>"); $("#resultado").trigger("create");}
+						function no(error) { $("#resultado").html("<br> Ubicación incorrecta de la imagen<br>"); $("#resultado").trigger("create");}
+		            	//ELIMINA DE LA BASE DE DATOS
+		            	db.transaction(eliminafotodb,sqlfallo,sqlexitoso);
+
+		            },
+		            function(error) {
+		                $("#resultado").html('Error cargando archivo ' + url_imagen + ': ' + error.code); $("#resultado").trigger("create");
+							//CONTINUA CON LOS NUEVOS ELEMENTOS REGISTRADOS EN EL SISTEMA
+							if((i+1) == len) { //alert("continue a rtas");
+								   	salir();
+							}
+		            },options
+				);
+			}
 		}
 	}
 }

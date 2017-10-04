@@ -180,34 +180,39 @@ function MuestraItems(tx, results) {
 			   			var str = $(this).attr('id');	
 			    		var id = str.substr(1, str.len); console.log(last_id + " ID> " + id); 
 			    		if(last_id != id){
+			    			var idslinea = $("#sb"+id).val();
+			    			var nombre = $("#nb"+id).val();
 			    			var texto_plaqueta = $("#p"+id).val();
 			    			var texto_plaquetanterior = $("#pa"+id).val();
 			    			var marca_af = $("#mr"+id).val();
 			    			var referencia = $("#rf"+id).val();
 			    			var numero_serie_af = $("#ns"+id).val();
+			    			var id_estado = $("#es"+id).val();
 			    			if(texto_plaqueta != undefined && texto_plaquetanterior != undefined){
 								function errorCBU(err) {	alert("Error al Guardar: "+err);	}
 								function successCBU() {
 								    count++;	console.log("Contador:"+count);
 								    if(count==encontrados){
-										//idarticulo+"|"+plaqueta_af+"|"+nombre+"|"+id
-										localStorage.elemento_valor = res[0]+"|"+texto_plaqueta+"|"+res[2]+"|"+res[3];
-										console.log(localStorage.elemento_valor);
-									   alert("Registro Almacenado correctamente");
-									   	if(localStorage.persona_valor != ""){
-									   		window.location = "p2_elemento_buscar.html";
-										}else{
-											//window.location = "principal.html";
-										}
+										setTimeout(function() { 
+											//idarticulo+"|"+plaqueta_af+"|"+nombre+"|"+id
+											localStorage.elemento_valor = res[0]+"|"+texto_plaqueta+"|"+res[2]+"|"+res[3];
+											console.log(localStorage.elemento_valor);
+										   alert("Registro Almacenado correctamente");
+										   	if(localStorage.persona_valor != ""){
+										   		window.location = "p2_elemento_buscar.html";
+											}else{
+												//window.location = "principal.html";
+											}
+										}, 450);
 								    }
 								}
 				    			db.transaction(function(tx) {
 				    				if (id_envio_ant == "" || id_envio_ant == null){
-				    				  	  console.log('UPDATE publicarticulos SET plaqueta_af = "'+texto_plaqueta+'",plaqueta_anterior1_af = "'+texto_plaquetanterior+'",id_envio = "'+id_envio+'",marca_af = "'+marca_af+'",referencia = "'+referencia+'",numero_serie_af = "'+numero_serie_af+'" WHERE rowid = "'+id+'"');
-										tx.executeSql('UPDATE publicarticulos SET plaqueta_af = "'+texto_plaqueta+'",plaqueta_anterior1_af = "'+texto_plaquetanterior+'",id_envio = "'+id_envio+'",marca_af = "'+marca_af+'",referencia = "'+referencia+'",numero_serie_af = "'+numero_serie_af+'" WHERE rowid = "'+id+'"');				    					
+				    				  	  console.log('UPDATE publicarticulos SET nombre = "'+nombre+'",idslinea = "'+idslinea+'",plaqueta_af = "'+texto_plaqueta+'",plaqueta_anterior1_af = "'+texto_plaquetanterior+'",id_envio = "'+id_envio+'",marca_af = "'+marca_af+'",referencia = "'+referencia+'",numero_serie_af = "'+numero_serie_af+'",id_estado = "'+id_estado+'" WHERE rowid = "'+id+'"');
+										tx.executeSql('UPDATE publicarticulos SET nombre = "'+nombre+'",idslinea = "'+idslinea+'",plaqueta_af = "'+texto_plaqueta+'",plaqueta_anterior1_af = "'+texto_plaquetanterior+'",id_envio = "'+id_envio+'",marca_af = "'+marca_af+'",referencia = "'+referencia+'",numero_serie_af = "'+numero_serie_af+'",id_estado = "'+id_estado+'" WHERE rowid = "'+id+'"');				    					
 				    				}else{
-				    				  	  console.log('UPDATE publicarticulos SET plaqueta_af = "'+texto_plaqueta+'",plaqueta_anterior1_af = "'+texto_plaquetanterior+'",marca_af = "'+marca_af+'",referencia = "'+referencia+'",numero_serie_af = "'+numero_serie_af+'" WHERE rowid = "'+id+'"');
-										tx.executeSql('UPDATE publicarticulos SET plaqueta_af = "'+texto_plaqueta+'",plaqueta_anterior1_af = "'+texto_plaquetanterior+'",marca_af = "'+marca_af+'",referencia = "'+referencia+'",numero_serie_af = "'+numero_serie_af+'" WHERE rowid = "'+id+'"');				    					
+				    				  	  console.log('UPDATE publicarticulos SET nombre = "'+nombre+'",idslinea = "'+idslinea+'",plaqueta_af = "'+texto_plaqueta+'",plaqueta_anterior1_af = "'+texto_plaquetanterior+'",marca_af = "'+marca_af+'",referencia = "'+referencia+'",numero_serie_af = "'+numero_serie_af+'",id_estado = "'+id_estado+'" WHERE rowid = "'+id+'"');
+										tx.executeSql('UPDATE publicarticulos SET nombre = "'+nombre+'",idslinea = "'+idslinea+'",plaqueta_af = "'+texto_plaqueta+'",plaqueta_anterior1_af = "'+texto_plaquetanterior+'",marca_af = "'+marca_af+'",referencia = "'+referencia+'",numero_serie_af = "'+numero_serie_af+'",id_estado = "'+id_estado+'" WHERE rowid = "'+id+'"');				    					
 				    				}
 								}, errorCBU, successCBU
 								);
@@ -269,8 +274,8 @@ function MuestraFotos(tx, results) {
 	var fecha_captura = now.getFullYear()+'-'+(1+now.getMonth())+'-'+now.getDate()+'-'+now.getHours()+'_'+now.getMinutes()+'_'+now.getSeconds();
 	var id_envio = fecha_captura+'-'+localStorage.id_usr;
 
-    var arr_tmp_fotos = new Array();				//CREA NUEVO ARRAY PARA LAS FOTOS
-    if(localStorage.getItem('Fotos')!=""){ var arr_tmp_fotos = JSON.parse(localStorage.getItem('Fotos'));}
+    var arr_tmp_fotos = new Array();	console.log(localStorage.getItem('Fotos'));				//CREA NUEVO ARRAY PARA LAS FOTOS
+    //if(localStorage.getItem('Fotos')!=""){ var arr_tmp_fotos = JSON.parse(localStorage.getItem('Fotos'));}
 
     for (var i=0;i<encontrados;i++){
     	var src = results.rows.item(i).url;

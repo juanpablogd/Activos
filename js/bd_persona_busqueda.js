@@ -61,13 +61,14 @@ function ConsultaSeccionesCarga(tx, results) {
 
    	}
    	$("#seccion").selectmenu('refresh');
+   	localStorage.busqueda = "";
 }
 /****************************************************************************************************************************************************************/
 /* BUSQUEDA EN LA TABLA PERSONA*/
 function CargarListado(tx) {
 	var busqueda=localStorage.busqueda;
 	console.log("Busqueda: "+busqueda+"!"); //alert("Busqueda: "+busqueda);
-	if(busqueda!=null){
+	if(busqueda!=null && busqueda.trim() != ""){
 	    tx.executeSql("SELECT cc,nombres,apellidos,telefono,correo,rowid FROM publicusuarios where cc = '"+busqueda+"' limit 1", [], MuestraItems);
    }
 }

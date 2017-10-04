@@ -46,17 +46,17 @@
 <body>
 	<div id="custom-format-page" data-role="page" data-theme="b">
 		
-			<div data-role="header" data-position="inline" >
-				<h1>GOBERNACIÓN CUNDINAMARCA - Inventarios</h1>
-				<a href="salir.html" target="_top" data-icon="power">Salir</a>
-				<div data-role="navbar">
-					<ul>
-						<li><a href="p1_persona_buscar.html" target="_top" data-icon="bullets">Registro Inv</a></li>
-						<li><a href="consultar.html" target="_top" data-icon="search">Consulta</a></li>
-						<li><a href="mnu_sincronizar.html" target="_top" data-icon="recycle">Sincronizar</a></li>
-					</ul>
-				</div>
-				<div class="ui-body-b ui-body">
+		<div data-role="header" data-position="inline" >
+			<h1>GOBERNACIÓN CUNDINAMARCA - Inventarios</h1>
+			<a href="salir.html" target="_top" data-icon="power">Salir</a>
+			<div data-role="navbar">
+				<ul>
+					<li><a href="p1_persona_buscar.html" target="_top" data-icon="bullets">Registro Inv</a></li>
+					<li><a href="consultar.html" target="_top" data-icon="search">Consulta</a></li>
+					<li><a href="mnu_sincronizar.html" target="_top" data-icon="recycle">Sincronizar</a></li>
+				</ul>
+			</div>
+			<div class="ui-body-b ui-body">
 			    <div data-role="navbar" data-iconpos="left"> 
 			        <ul>
 			            <li><a href="#" id="btn1" data-icon="arrow-r" data-theme="a">1</a></li>
@@ -67,27 +67,26 @@
 			        </ul>
 			    </div><!-- /navbar -->
 			</div><!-- /container -->	
-				<div id="seleccionado"></div>
-				<div id="item_dependencia" data-role="fieldcontain" class="ui-field-contain">
-					<label for="dependencia" class="select">Dependencia:</label>
-						<select name="dependencia" id="dependencia"  tabindex="-1">
-						<option value="">Seleccione...</option>
-					</select>
-				</div>
-				<div id="item_seccion" data-role="fieldcontain" class="ui-field-contain">
-					<label for="seccion" class="select">Secci&oacute;n:</label>
-						<select name="seccion" id="seccion"  tabindex="-1" required>
-						<option value="">Seleccione...</option>
-					</select>
-				</div>
+			<div id="seleccionado"></div>
+			<div id="item_dependencia" data-role="fieldcontain" class="ui-field-contain">
+				<label for="dependencia" class="select">Dependencia:</label>
+					<select name="dependencia" id="dependencia"  tabindex="-1">
+					<option value="">Seleccione...</option>
+				</select>
 			</div>
+			<div id="item_seccion" data-role="fieldcontain" class="ui-field-contain">
+				<label for="seccion" class="select">Secci&oacute;n:</label>
+					<select name="seccion" id="seccion"  tabindex="-1" required>
+						<option value="">Seleccione...</option>
+					</select>
+			</div>
+		</div>
 		
 		<div data-role="content">
 			<ul id="lista" data-role="listview" data-filter="true"  data-filter-placeholder="Buscar Persona..." data-theme="a"></ul>
-		</div>
-		</br>
-		<div data-role="footer" style="overflow:hidden;" align="center"></div>
-			<div data-role="navbar"align="center"><ul><li>
+		</div></br>
+		<div data-role="footer" style="overflow:hidden;" align="center">
+			<div data-role="navbar" align="center"><ul><li>
 				<button id="btn_ok" class="ui-btn ui-btn-b ui-icon-check ui-btn-icon-left">Seleccionar</button>
 				</ul></li>
 			</div>

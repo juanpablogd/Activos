@@ -40,7 +40,7 @@ $(document).ready(function() {
         	alert("Debe digitar el número de CC/TI");
         	$("#txtBuscar").focus();
         }
-    });  
+    });
 	
 	//EVENTO CLICK DE LA LISTA DE COLABORADORES
 	$('#lista').on('click', 'li', function(){

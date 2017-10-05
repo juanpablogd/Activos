@@ -15,7 +15,7 @@ function successCB() {
 
 /* BUSQUEDA EN LA TABLA ELEMENTO*/
 function CargarListado(tx) {
-	var busqueda=localStorage.consulta; //console.log("Busqueda: "+busqueda+"!"); //alert("Busqueda: "+busqueda); alert("SELECT * FROM publicp_elemento where referencia like '%"+busqueda+"%'");
+	var busqueda=localStorage.consulta.trim(); //console.log("Busqueda: "+busqueda+"!"); //alert("Busqueda: "+busqueda); alert("SELECT * FROM publicp_elemento where referencia like '%"+busqueda+"%'");
 	if(busqueda!=null){ console.log('SELECT el.idarticulo,el.rowid as id,el.referencia,el.numero_serie_af,plaqueta_af,plaqueta_anterior1_af,el.nombre,te.nombres||" "||te.apellidos as responsable FROM publicarticulos el left join publicusuarios te on (el.cc_responsable_af = te.cc and el.cc_responsable_af != "") where referencia like "%'+busqueda+'%" or nombre like "%'+busqueda+'%" or numero_serie_af like "%'+busqueda+'%" or plaqueta_af like "%'+busqueda+'%" or plaqueta_anterior1_af like "%'+busqueda+'%" limit 200');
 	                  tx.executeSql('SELECT el.idarticulo,el.rowid as id,el.referencia,el.numero_serie_af,plaqueta_af,plaqueta_anterior1_af,el.nombre,te.nombres||" "||te.apellidos as responsable FROM publicarticulos el left join publicusuarios te on (el.cc_responsable_af = te.cc and el.cc_responsable_af != "") where referencia like "%'+busqueda+'%" or nombre like "%'+busqueda+'%" or numero_serie_af like "%'+busqueda+'%" or plaqueta_af like "%'+busqueda+'%" or plaqueta_anterior1_af like "%'+busqueda+'%" limit 200', [], MuestraItems);
    }
@@ -58,15 +58,18 @@ function MuestraItems(tx, results) {
 }
 
 $(document).ready(function() {
-    $("#lista").on( "listviewbeforefilter", function ( e, data ) {
-        var $ul = $( this ),	$input = $( data.input ),	value = $input.val(),	html = "";
-        $ul.html( "" );	//console.log(value); console.log(value.length);
-        if ( value && value.length > 4 ) {
-			//console.log("encontrados: " + $("#lista li").size());
-            localStorage.consulta=$input.val();
+
+	//BOTÓN BUSQUEDA ELEMENTO
+    $("#btnBuscar").click(function () {
+    	var input = $("#txtBuscar").val();	console.log(input);
+        if ( input.trim() != "" ) {
+            localStorage.consulta=input.trim();
 	    	db.transaction(CargarListado);
-            $ul.listview( "refresh" );
-            $ul.trigger( "updatelayout");
+            $("#lista").listview( "refresh" );
+            $("#lista").trigger( "updatelayout");
+        }else{
+        	alert("Debe digitar el número de Placa o Serial");
+        	$("#txtBuscar").focus();
         }
     });
     

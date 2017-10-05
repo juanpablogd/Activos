@@ -71,7 +71,7 @@ $(document).ready(function() {
     	db.transaction(EliminaUsr);
     });
     
-	//BOTÓN BUSQUEDA PERSONA
+	//BOTÓN BUSQUEDA ELEMENTO
     $("#btnBuscar").click(function () {
     	var input = $("#txtBuscar").val();	console.log(input);
         if ( input.trim() != "" ) {
@@ -80,10 +80,10 @@ $(document).ready(function() {
             $("#lista").listview( "refresh" );
             $("#lista").trigger( "updatelayout");
         }else{
-        	alert("Debe digitar el número de CC/TI");
+        	alert("Debe digitar el número de Placa o Serial");
         	$("#txtBuscar").focus();
         }
-    });  
+    });
 
 	//EVENTO CLICK DE LA LISTA DE ARTICULOS
 	$('#lista').on('click', 'li', function(){

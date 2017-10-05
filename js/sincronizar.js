@@ -372,7 +372,7 @@ function ConsultaSincronizarFotos(tx, results) {
 							//Delete file 
 							window.requestFileSystem(LocalFileSystem.TEMPORARY, 0, 
 							    function(fileSys) { 
-							
+									console.log(n[2]);
 							        fileSys.root.getFile(n[2], {create: false}, 
 							            function(file) {
 							                file.remove(pictureRemoved, notRemoved);                                                  
@@ -382,7 +382,7 @@ function ConsultaSincronizarFotos(tx, results) {
 						function sqlfallo(){}
 						function pictureRemoved(){}
 						function notRemoved(){ $("#resultado").html("<br> No se puede Eliminar el archivo, limpie el cache manualmente<br>"); $("#resultado").trigger("create");}
-						function no(error) { $("#resultado").html("<br> Ubicación incorrecta de la imagen<br>"); $("#resultado").trigger("create");}
+						function no(error) { console.log(error.message); /* $("#resultado").html("<br> Ubicación incorrecta de la imagen<br>"); */ $("#resultado").trigger("create");}
 		            	//ELIMINA DE LA BASE DE DATOS
 		            	db.transaction(eliminafotodb,sqlfallo,sqlexitoso);
 

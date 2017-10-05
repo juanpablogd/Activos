@@ -334,7 +334,7 @@ function comprobarCamposRequired(){
 	if(correcto==true){
 	   $(':input').each(function () {	console.log("valor:" + $(this).val() + " id: " + $(this).attr('id'));
 	   		var currentId = $(this).attr('id');	//console.log(currentId);
-			if(currentId == "sb"+vida && $(this).val().trim() == ""){
+			if(currentId == "sb"+vida && ($(this).val() == "" || $(this).val() ==null)){
 				alert("Seleccione una Sublinea");
 				$("#sb"+vida).focus();
 				correcto=false; return false;

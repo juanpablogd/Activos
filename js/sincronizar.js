@@ -106,7 +106,7 @@ function ConsultaSincronizarElemento(tx, results) {
 				async: false,		//timeout: 30000,
 				success: function(responser){	//alert("Articulo:"+responser);
 					//db.transaction(function(tx) {
-						var respr = responser.trim();		//alert(respr);	
+						var respr = responser.trim();		console.log(respr);	
 						var res=respr.split("|");			//res[0]=>Id del Elemento en el servidor	res[1]=>Id Envío	res[2]=>Id temporal en la base de datos Local
 							console.log('update publicarticulos set idarticulo = "'+res[0]+'" where id_envio = "'+res[1]+'"');			
 						tx.executeSql('update publicarticulos set idarticulo = "'+res[0]+'" where id_envio = "'+res[1]+'"');		//tx.executeSql('DELETE from publicp_elemento where id_envio = "'+res+'"');

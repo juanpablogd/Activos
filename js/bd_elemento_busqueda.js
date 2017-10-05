@@ -76,10 +76,12 @@ function MuestraItems(tx, results) {
 				if(numFotos>0 && numFotos<4){
 					$("#btn_ok").show();
 				}else{
-					alert("Debe adicionar las fotos del elemento!");
-					console.log($("#btnEditar").attr("onclick"));
-					var par = $("#btnEditar").attr("onclick").split("'");
-					editarElemento(par[1]);
+					var r = confirm("No hay fotos, desea adicionarlas?");
+				    if (r == true) {
+						console.log($("#btnEditar").attr("onclick"));
+						var par = $("#btnEditar").attr("onclick").split("'");
+						editarElemento(par[1]);
+				    }
 				}
     		}
     		,

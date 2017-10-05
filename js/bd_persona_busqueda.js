@@ -95,7 +95,7 @@ function MuestraItems(tx, results) {
 				        "<a href='#' onclick=\"editarPersona('"+id+"|"+nombres+"|"+apellidos+"|"+telefono+"|"+correo+"|"+rowid+"');\"><h2>Editar</h2></a>"+
 					"</div>"+  
 			  "</li>";
-    } console.log(li);
+    } //console.log(li);
 	$("ul#lista").empty().append(li).listview("refresh");
     if(encontrados==0){
     	if (confirm("No se encontró la persona!! Desea crear una nueva PERSONA") == true) {

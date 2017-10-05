@@ -28,21 +28,18 @@ $(document).ready(function() {
     	db.transaction(EliminaUsr);
     });
     
-	//CUANDO SE DIGITA UN CARACTER FILTRA EN LA LISTA
-    $("#lista").on( "listviewbeforefilter", function ( e, data ) {
-        var $ul = $( this ),
-            $input = $( data.input ),
-            value = $input.val(),
-            html = "";
-        $ul.html( "" );
-        if ( value && value.length > 5 ) {
-			console.log("encontrados: " + $("#lista li").size());
-            localStorage.busqueda=$input.val().trim();
+	//BOTÓN BUSQUEDA PERSONA
+    $("#btnBuscar").click(function () {
+    	var input = $("#txtBuscar").val();	console.log(input);
+        if ( input.trim() != "" ) {
+            localStorage.busqueda=input.trim();
 	    	db.transaction(CargarListado);
-            $ul.listview( "refresh" );
-            $ul.trigger( "updatelayout");
+            $("#lista").listview( "refresh" );
+            $("#lista").trigger( "updatelayout");
+        }else{
+        	alert("Debe digitar el número de CC/TI");
+        	$("#txtBuscar").focus();
         }
-        
     });  
 	
 	//EVENTO CLICK DE LA LISTA DE COLABORADORES

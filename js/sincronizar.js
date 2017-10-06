@@ -69,8 +69,8 @@ function Cono_fotosResp(tx, results) {
 //--------------------------------------------------------------------------------------------------------------
 
 function ConsultaSincronizar(tx) {
-	  console.log('SELECT idarticulo,idseccion,idslinea,marca_af,nombre,referencia,numero_serie_af,plaqueta_af,plaqueta_anterior1_af,id_envio,id_estado FROM publicarticulos where id_envio != ""');
-	tx.executeSql('SELECT idarticulo,idseccion,idslinea,marca_af,nombre,referencia,numero_serie_af,plaqueta_af,plaqueta_anterior1_af,id_envio,id_estado FROM publicarticulos where id_envio != ""', [],
+	  console.log('SELECT idarticulo,idseccion,idslinea,marca_af,nombre,referencia,numero_serie_af,plaqueta_af,plaqueta_anterior1_af,id_envio,id_estado,idusuario_envio FROM publicarticulos where id_envio != ""');
+	tx.executeSql('SELECT idarticulo,idseccion,idslinea,marca_af,nombre,referencia,numero_serie_af,plaqueta_af,plaqueta_anterior1_af,id_envio,id_estado,idusuario_envio FROM publicarticulos where id_envio != ""', [],
 		           ConsultaSincronizarElemento,errorCB_Elemento);
 }
 
@@ -96,6 +96,7 @@ function ConsultaSincronizarElemento(tx, results) {
 			parametros['plaqueta_anterior'] = results.rows.item(i).plaqueta_anterior1_af;
 			parametros['id_envio'] = results.rows.item(i).id_envio;
 			parametros['id_estado'] = results.rows.item(i).id_estado;
+			parametros['idusuario_envio'] = results.rows.item(i).idusuario_envio;
 			$("#resultado").html("<br>Articulos restantes: "+(lon-i)+".<br>"); $("#resultado").trigger("create");
 			$.ajax({
 				data:  parametros,
@@ -104,7 +105,7 @@ function ConsultaSincronizarElemento(tx, results) {
             	complete: function() { $("#resultado").html('<br>Carga Completa....'+(lon-i)+'.<br>'); $("#resultado").trigger("create"); },
 				type:  'post',
 				async: false,		//timeout: 30000,
-				success: function(responser){	//alert("Articulo:"+responser);
+				success: function(responser){	console.log("Articulo:"+responser);
 					//db.transaction(function(tx) {
 						var respr = responser.trim();		console.log(respr);	
 						var res=respr.split("|");			//res[0]=>Id del Elemento en el servidor	res[1]=>Id Envío	res[2]=>Id temporal en la base de datos Local

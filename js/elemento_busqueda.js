@@ -139,18 +139,16 @@ $(document).ready(function() {
 			tx.executeSql('INSERT INTO publicinventario_det (idarticulo,observacion,asignacion,id_estado,id_envio,id_envio_art)' + 
 			'values ("'+id_elemento[0]+'","'+observaciones+'","R","'+id_elemento[4]+'","'+id_envio+'","'+id_elemento[5]+'")');
 			//ASIGNA RESPONSABLE AL articulo
-			console.log('UPDATE publicarticulos set cc_responsable_af = "'+cc[0]+'" where idarticulo = '+id_elemento[0]+' and id_envio != ""');
-			console.log('UPDATE publicarticulos set cc_responsable_af = "'+cc[0]+'" where idarticulo = "'+id_elemento[0]+'" and id_envio = ""');
-			tx.executeSql('UPDATE publicarticulos set cc_responsable_af = "'+cc[0]+'" where idarticulo = '+id_elemento[0]+' and id_envio != ""');
-			tx.executeSql('UPDATE publicarticulos set cc_responsable_af = "'+cc[0]+'" where idarticulo = "'+id_elemento[0]+'" and id_envio = ""');
+              console.log('UPDATE publicarticulos set cc_responsable_af = "'+cc[0]+'" where idarticulo = '+id_elemento[0]+'');
+			tx.executeSql('UPDATE publicarticulos set cc_responsable_af = "'+cc[0]+'" where idarticulo = '+id_elemento[0]+'');
 		});
 
 		console.log("GUARDAR");
-		localStorage.firma = "";
-		localStorage.elemento_valor = "";
-		localStorage.Fotos = "";
-		localStorage.busqueda = "";
 		setTimeout(function() {
+			localStorage.firma = "";
+			localStorage.elemento_valor = "";
+			localStorage.Fotos = "";
+			localStorage.busqueda = "";
 			db.transaction(function(tx) {
 				console.log('select * from publicinventario_det where id_envio = "'+id_envio+'"');
 				tx.executeSql('select * from publicinventario_det where id_envio = "'+id_envio+'"', [],

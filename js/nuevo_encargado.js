@@ -100,5 +100,9 @@ $(document).ready(function() {
 			db.transaction(consultaPersona);
 		}
 	});
+	if(localStorage.busqueda != null && localStorage.busqueda != ""){
+		$("#cc").val(localStorage.busqueda.trim());
+		$("#nombres").focus();
+	}
 });
 

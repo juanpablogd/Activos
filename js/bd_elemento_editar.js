@@ -138,7 +138,7 @@ function MuestraItems(tx, results) {
 	 	var numero_serie_af = results.rows.item(i).numero_serie_af;
 	 	var plaqueta_af = results.rows.item(i).plaqueta_af;
 	 	var plaqueta_anterior1_af = results.rows.item(i).plaqueta_anterior1_af;
-	 	var id_envio_ant = results.rows.item(i).id_envio;
+	 	var id_envio_ant = results.rows.item(i).id_envio;	console.log("ART id_envio: "+results.rows.item(i).id_envio);
 	 	vid_envio = results.rows.item(i).id_envio;
 	 	var marca_af = results.rows.item(i).marca_af;
 	 	lineas = results.rows.item(i).idlinea;
@@ -193,26 +193,22 @@ function MuestraItems(tx, results) {
 								function successCBU() {
 								    count++;	console.log("Contador:"+count);
 								    if(count==encontrados){
-										setTimeout(function() { 
-											//idarticulo+"|"+plaqueta_af+"|"+nombre+"|"+id
-											localStorage.elemento_valor = res[0]+"|"+texto_plaqueta+"|"+res[2]+"|"+res[3];
+										setTimeout(function() { //idarticulo+"|"+plaqueta_af+"|"+nombre+"|"+rowid+"|"+id_estado+"|"+id_envio
+											localStorage.elemento_valor = res[0]+"|"+texto_plaqueta+"|"+nombre+"|"+res[3]+"|"+id_estado+"|"+res[5];
 											console.log(localStorage.elemento_valor);
-										   alert("Registro Almacenado correctamente");
-										   	if(localStorage.persona_valor != ""){
-										   		window.location = "p2_elemento_buscar.html";
-											}else{
-												//window.location = "principal.html";
-											}
+     										alert("Registro Almacenado correctamente");
+									   		window.location = "p2_elemento_buscar.html";
+
 										}, 450);
 								    }
 								}
 				    			db.transaction(function(tx) {
-				    				if (id_envio_ant == "" || id_envio_ant == null){
-				    				  	  console.log('UPDATE publicarticulos SET nombre = "'+nombre+'",idslinea = "'+idslinea+'",plaqueta_af = "'+texto_plaqueta+'",plaqueta_anterior1_af = "'+texto_plaquetanterior+'",marca_af = "'+marca_af+'",referencia = "'+referencia+'",numero_serie_af = "'+numero_serie_af+'",id_estado = "'+id_estado+'",id_envio = "'+id_envio+'" WHERE rowid = "'+id+'"');
-										tx.executeSql('UPDATE publicarticulos SET nombre = "'+nombre+'",idslinea = "'+idslinea+'",plaqueta_af = "'+texto_plaqueta+'",plaqueta_anterior1_af = "'+texto_plaquetanterior+'",marca_af = "'+marca_af+'",referencia = "'+referencia+'",numero_serie_af = "'+numero_serie_af+'",id_estado = "'+id_estado+'",id_envio = "'+id_envio+'" WHERE rowid = "'+id+'"');				    					
+				    				if(res[0]!="" && res[0]!="null"){
+				    				  	  console.log('UPDATE publicarticulos SET nombre = "'+nombre+'",idslinea = "'+idslinea+'",plaqueta_af = "'+texto_plaqueta+'",plaqueta_anterior1_af = "'+texto_plaquetanterior+'",marca_af = "'+marca_af+'",referencia = "'+referencia+'",numero_serie_af = "'+numero_serie_af+'",id_estado = "'+id_estado+'",idusuario_envio="'+localStorage.id_usr+'",id_envio = "'+id_envio+'" WHERE rowid = "'+id+'"');
+										tx.executeSql('UPDATE publicarticulos SET nombre = "'+nombre+'",idslinea = "'+idslinea+'",plaqueta_af = "'+texto_plaqueta+'",plaqueta_anterior1_af = "'+texto_plaquetanterior+'",marca_af = "'+marca_af+'",referencia = "'+referencia+'",numero_serie_af = "'+numero_serie_af+'",id_estado = "'+id_estado+'",idusuario_envio="'+localStorage.id_usr+'",id_envio = "'+id_envio+'" WHERE rowid = "'+id+'"');				    					
 				    				}else{
-				    				  	  console.log('UPDATE publicarticulos SET nombre = "'+nombre+'",idslinea = "'+idslinea+'",plaqueta_af = "'+texto_plaqueta+'",plaqueta_anterior1_af = "'+texto_plaquetanterior+'",marca_af = "'+marca_af+'",referencia = "'+referencia+'",numero_serie_af = "'+numero_serie_af+'",id_estado = "'+id_estado+'" WHERE rowid = "'+id+'"');
-										tx.executeSql('UPDATE publicarticulos SET nombre = "'+nombre+'",idslinea = "'+idslinea+'",plaqueta_af = "'+texto_plaqueta+'",plaqueta_anterior1_af = "'+texto_plaquetanterior+'",marca_af = "'+marca_af+'",referencia = "'+referencia+'",numero_serie_af = "'+numero_serie_af+'",id_estado = "'+id_estado+'" WHERE rowid = "'+id+'"');				    					
+				    				  	  console.log('UPDATE publicarticulos SET nombre = "'+nombre+'",idslinea = "'+idslinea+'",plaqueta_af = "'+texto_plaqueta+'",plaqueta_anterior1_af = "'+texto_plaquetanterior+'",marca_af = "'+marca_af+'",referencia = "'+referencia+'",numero_serie_af = "'+numero_serie_af+'",id_estado = "'+id_estado+'",idusuario_envio="'+localStorage.id_usr+'" WHERE rowid = "'+id+'"');
+										tx.executeSql('UPDATE publicarticulos SET nombre = "'+nombre+'",idslinea = "'+idslinea+'",plaqueta_af = "'+texto_plaqueta+'",plaqueta_anterior1_af = "'+texto_plaquetanterior+'",marca_af = "'+marca_af+'",referencia = "'+referencia+'",numero_serie_af = "'+numero_serie_af+'",id_estado = "'+id_estado+'",idusuario_envio="'+localStorage.id_usr+'" WHERE rowid = "'+id+'"');				    					
 				    				}
 								}, errorCBU, successCBU
 								);
@@ -221,7 +217,14 @@ function MuestraItems(tx, results) {
 			    		}
 				   });
 				   db.transaction(function(tx) {
-				   	tx.executeSql('DELETE FROM publicarticulos_fotos WHERE id_envio = "'+res[0]+'"');
+				   		if(res[0]!="" && res[0]!="null"){
+				   			  console.log('DELETE FROM publicarticulos_fotos WHERE idarticulo = "'+res[0]+'"');
+				   			tx.executeSql('DELETE FROM publicarticulos_fotos WHERE idarticulo = "'+res[0]+'"');
+				   		}else{
+				   			console.log('DELETE FROM publicarticulos_fotos WHERE id_envio = "'+res[5]+'"');
+				   			tx.executeSql('DELETE FROM publicarticulos_fotos WHERE id_envio = "'+res[5]+'"');
+				   		}
+				   		
 				   });
 					//GUARDA FOTOS
 					if(localStorage.Fotos != null && localStorage.Fotos != "" && localStorage.Fotos !== undefined && localStorage.Fotos != "undefined"){
@@ -229,11 +232,12 @@ function MuestraItems(tx, results) {
 						var data = JSON.parse(localStorage.getItem('Fotos')); console.log(data);
 						$.each(data, function(i, item) {	
 							db.transaction(function(tx) {	//alert(item);
-								//console.log('INSERT INTO publicarticulos_fotos (url,id_envio) values ("'+item+'","'+res[0]+'")');
-								if(res[0]!=""){
+								if(res[0]!="" && res[0]!="null"){
+									  console.log('INSERT INTO publicarticulos_fotos (url,idarticulo) values ("'+item+'","'+res[0]+'")');
 									tx.executeSql('INSERT INTO publicarticulos_fotos (url,idarticulo) values ("'+item+'","'+res[0]+'")');	
 								}else{
-									tx.executeSql('INSERT INTO publicarticulos_fotos (url,id_envio) values ("'+item+'","'+res[0]+'")');	
+									  console.log('INSERT INTO publicarticulos_fotos (url,id_envio) values ("'+item+'","'+res[5]+'")');
+									tx.executeSql('INSERT INTO publicarticulos_fotos (url,id_envio) values ("'+item+'","'+res[5]+'")');	
 								}
 								
 							});

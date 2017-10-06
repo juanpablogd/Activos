@@ -192,8 +192,8 @@ function GuardaElemento(tx) {
 	var fecha_captura = now.getFullYear()+'-'+(1+now.getMonth())+'-'+now.getDate()+'-'+now.getHours()+'_'+now.getMinutes()+'_'+now.getSeconds();
 	var id_envio = fecha_captura+'-'+id_usr;
 	
-	  console.log('INSERT INTO publicarticulos (idseccion,idslinea,marca_af,nombre,referencia,numero_serie_af,plaqueta_af,plaqueta_anterior1_af,id_envio,id_estado) values ("'+localStorage.idseccion+'","'+sublinea+'","'+marca+'","'+nombre+'","'+referencia+'","'+nserie+'","'+plaqueta+'","'+plaqueta_anterior+'","'+id_envio+'","'+id_estado+'")');
-	tx.executeSql('INSERT INTO publicarticulos (idseccion,idslinea,marca_af,nombre,referencia,numero_serie_af,plaqueta_af,plaqueta_anterior1_af,id_envio,id_estado) values ("'+localStorage.idseccion+'","'+sublinea+'","'+marca+'","'+nombre+'","'+referencia+'","'+nserie+'","'+plaqueta+'","'+plaqueta_anterior+'","'+id_envio+'","'+id_estado+'")');
+	  console.log('INSERT INTO publicarticulos (idseccion,idslinea,marca_af,nombre,referencia,numero_serie_af,plaqueta_af,plaqueta_anterior1_af,id_envio,id_estado,idusuario_envio) values ("'+localStorage.idseccion+'","'+sublinea+'","'+marca+'","'+nombre+'","'+referencia+'","'+nserie+'","'+plaqueta+'","'+plaqueta_anterior+'","'+id_envio+'","'+id_estado+'","'+id_usr+'")');
+	tx.executeSql('INSERT INTO publicarticulos (idseccion,idslinea,marca_af,nombre,referencia,numero_serie_af,plaqueta_af,plaqueta_anterior1_af,id_envio,id_estado,idusuario_envio) values ("'+localStorage.idseccion+'","'+sublinea+'","'+marca+'","'+nombre+'","'+referencia+'","'+nserie+'","'+plaqueta+'","'+plaqueta_anterior+'","'+id_envio+'","'+id_estado+'","'+id_usr+'")');
 	
 	tx.executeSql('select rowid from publicarticulos where id_envio = "'+id_envio+'"', [], 
 		           function(tx,rs){	console.log("rowidOK");

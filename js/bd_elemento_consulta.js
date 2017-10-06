@@ -16,14 +16,15 @@ function successCB() {
 /* BUSQUEDA EN LA TABLA ELEMENTO*/
 function CargarListado(tx) {
 	var busqueda=localStorage.consulta.trim(); //console.log("Busqueda: "+busqueda+"!"); //alert("Busqueda: "+busqueda); alert("SELECT * FROM publicp_elemento where referencia like '%"+busqueda+"%'");
-	if(busqueda!=null){ console.log('SELECT el.idarticulo,el.rowid as id,el.referencia,el.numero_serie_af,plaqueta_af,plaqueta_anterior1_af,el.nombre,te.nombres||" "||te.apellidos as responsable FROM publicarticulos el left join publicusuarios te on (el.cc_responsable_af = te.cc and el.cc_responsable_af != "") where referencia like "%'+busqueda+'%" or nombre like "%'+busqueda+'%" or numero_serie_af like "%'+busqueda+'%" or plaqueta_af like "%'+busqueda+'%" or plaqueta_anterior1_af like "%'+busqueda+'%" limit 200');
-	                  tx.executeSql('SELECT el.idarticulo,el.rowid as id,el.referencia,el.numero_serie_af,plaqueta_af,plaqueta_anterior1_af,el.nombre,te.nombres||" "||te.apellidos as responsable FROM publicarticulos el left join publicusuarios te on (el.cc_responsable_af = te.cc and el.cc_responsable_af != "") where referencia like "%'+busqueda+'%" or nombre like "%'+busqueda+'%" or numero_serie_af like "%'+busqueda+'%" or plaqueta_af like "%'+busqueda+'%" or plaqueta_anterior1_af like "%'+busqueda+'%" limit 200', [], MuestraItems);
+	if(busqueda!=null){ console.log('SELECT el.idarticulo,el.rowid as id,el.referencia,el.numero_serie_af,plaqueta_af,plaqueta_anterior1_af,el.nombre,te.nombres||" "||te.apellidos as responsable,idusuario_envio,el.id_envio FROM publicarticulos el left join publicusuarios te on (el.cc_responsable_af = te.cc and el.cc_responsable_af != "") where referencia like "%'+busqueda+'%" or nombre like "%'+busqueda+'%" or numero_serie_af like "%'+busqueda+'%" or plaqueta_af like "%'+busqueda+'%" or plaqueta_anterior1_af like "%'+busqueda+'%" limit 200');
+	                  tx.executeSql('SELECT el.idarticulo,el.rowid as id,el.referencia,el.numero_serie_af,plaqueta_af,plaqueta_anterior1_af,el.nombre,te.nombres||" "||te.apellidos as responsable,idusuario_envio,el.id_envio FROM publicarticulos el left join publicusuarios te on (el.cc_responsable_af = te.cc and el.cc_responsable_af != "") where referencia like "%'+busqueda+'%" or nombre like "%'+busqueda+'%" or numero_serie_af like "%'+busqueda+'%" or plaqueta_af like "%'+busqueda+'%" or plaqueta_anterior1_af like "%'+busqueda+'%" limit 200', [], MuestraItems);
    }
 }
 /* RESULTADO DE LA TABLA ELEMENTO*/
 function MuestraItems(tx, results) {
     var li = "";								//li += '<li data-role="searchpage-list">Resultados </li>';				//<span class="ui-li-count">2</span>
 	var encontrados = results.rows.length;		console.log('Encontrados: '+encontrados);
+	$("ul#lista").empty();
     for (var i=0;i<encontrados;i++)
 	{
 	 	var id = results.rows.item(i).id;
@@ -34,8 +35,16 @@ function MuestraItems(tx, results) {
 	 	var numero_serie_af = results.rows.item(i).numero_serie_af;
 	 	var plaqueta_af = results.rows.item(i).plaqueta_af;
 	 	var plaqueta_anterior1_af = results.rows.item(i).plaqueta_anterior1_af;
+	 	var bid_envio = results.rows.item(i).id_envio;
+	 	var idusuario_envio = results.rows.item(i).idusuario_envio;
+	 	var cod_id;
+	 	if(idarticulo != null && idarticulo != "null" && idarticulo != ""){
+	 		cod_id = idarticulo;
+	 	}else{
+	 		cod_id = bid_envio;
+	 	}	console.log(cod_id);
 
-	    li += "<li value='"+idarticulo+"|"+plaqueta_af+"|"+nombre+"|"+id+"'>"+
+	    li = "<li value='"+idarticulo+"|"+plaqueta_af+"|"+nombre+"|"+id+"'>"+
 			"<a href='#'>"+
 			    	"<div class='ui-block'>"+
 				        "<h2>"+nombre+"</h2>"+
@@ -43,12 +52,24 @@ function MuestraItems(tx, results) {
 				        "<p>N° Serie: "+numero_serie_af+"</p>"+
 				        "<h2>N° Actual: "+plaqueta_af+"</h2>"+
 				        "<p>N° Anterior: "+plaqueta_anterior1_af+"</p>"+
+				        "<p id='usr"+cod_id+"'></p>"+
 					"</div>"+  
 			  "</a>"
 			  + "</li>";
-		
+		$("ul#lista").append(li);
+		if(idusuario_envio != null && idusuario_envio != "null" && idusuario_envio != ""){
+			  console.log('SELECT usuario as usr, "'+cod_id+'" as rowid FROM publicusuarios where idusuario ="'+idusuario_envio+'"');
+			tx.executeSql('SELECT usuario as usr, "'+cod_id+'" as rowid FROM publicusuarios where idusuario ="'+idusuario_envio+'"', [], 
+				function ConsultaCargueusr(tx, resultnf) {	console.log(resultnf.rows.length);
+					if(resultnf.rows.length>0){
+						$("#usr"+resultnf.rows.item(0).rowid).html("Usuario: "+resultnf.rows.item(0).usr);	
+					}
+				}
+			);
+		}
     }
-	$("ul#lista").empty().append(li).listview("refresh");
+	$("ul#lista").listview("refresh");
+
 	localStorage.consulta = null;
     if(encontrados==0){
     	if (confirm("No se encontró el ELEMENTO!! Desea crear uno nuevo?") == true) {

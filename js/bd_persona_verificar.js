@@ -38,11 +38,36 @@ function abrir(id){
 	window.location = "elemento_editar.html";
 }
 
+
+function desasignar(videnvio,nombre){ console.log(videnvio+" - "+nombre)
+	var r = confirm('Seguro que desea DESASIGNAR: "'+nombre+'"?');
+    if (r == true) {
+		db.transaction(function(tx) {
+			  console.log('DELETE FROM publicinventario_det where id_envio = "'+videnvio+'"');
+			tx.executeSql('DELETE FROM publicinventario_det where id_envio = "'+videnvio+'"');
+		}, function errorCBdelete(err) {	console.log("Error processing SQL: "+err.code); }
+		,function successCBdelete() {	console.log("Eliminado inventario Detalle: "+videnvio); }
+		);
+		db.transaction(function(tx) {
+			  console.log('DELETE FROM publicinventario where id_envio = "'+videnvio+'"');
+			tx.executeSql('DELETE FROM publicinventario where id_envio = "'+videnvio+'"');
+		}, function errorCBdeleteok(err) {	console.log("Error processing SQL: "+err.code); }
+		,function successCBdeleteok() {	console.log("Eliminado inventario: "+videnvio); 
+			setTimeout(function() { 
+				console.log("Elemento Desasignado exitosamente");
+				alert("Elemento Desasignado exitosamente");
+				window.location = "persona_verificar.html";
+			}, 300);
+		}
+		);
+
+    }
+}
+
 /* RESULTADO DE LA TABLA PERSONA*/
 function MuestraItems(tx, results) {
     var li = "";
     var habilitado ="";
-	 	//li += '<li data-role="searchpage-list">Resultados </li>';				//<span class="ui-li-count">2</span>
 	var encontrados = results.rows.length;		console.log(encontrados);
 	
 	//FECHA - ID_ENVIO
@@ -52,7 +77,7 @@ function MuestraItems(tx, results) {
 	
     for (var i=0;i<encontrados;i++)
 	{
-	 	var id = results.rows.item(i).idinventariodet;		//console.log("Id: "+id);
+	 	var id = results.rows.item(i).idinventariodet;		console.log("Id: "+id);
 	 	var nombre = results.rows.item(i).nombre;					//alert( "nombre = " + sessionStorage.getItem("nombre"));
 	 	var sublinea = results.rows.item(i).sublinea;
 	 	var referencia = results.rows.item(i).referencia;
@@ -65,8 +90,8 @@ function MuestraItems(tx, results) {
 	 	var id_envio_art = results.rows.item(i).id_envio_art;
 	 	var inv_det_id_envio = results.rows.item(i).id_envio;
 	 	var firma = results.rows.item(i).firma;
-		console.log($("#firma_ok").attr('src'));
-		console.log(firma);
+	 	var desasignar="";
+		//console.log($("#firma_ok").attr('src'));console.log(firma);
 		if($("#firma_ok").attr('src') == undefined){	console.log("indefinido");
 			if(firma != null && firma != ""){	console.log("set firma");
 				localStorage.firma = firma;
@@ -74,7 +99,7 @@ function MuestraItems(tx, results) {
 			}
 		}
 
-	 	habilitado = ""; if(id==null || id=="" || id===undefined ) habilitado = "disabled";
+	 	habilitado = ""; if(id==null || id=="" || id===undefined) habilitado = "disabled";
 	 	if(seleccionado == "R"){
 	 		selR = "selected";
 	 	}else if(seleccionado == "N"){
@@ -93,8 +118,10 @@ function MuestraItems(tx, results) {
 	 	}else{
 	 		cod_id = id;
 	 	}	//console.log(cod_id);
+	 	if (id==null || id=="" || id===undefined){
+	 		desasignar	= '<div class="ui-input-btn ui-btn ui-icon-delete ui-btn-icon-left">Desasignar<input type="button" onclick="desasignar(\''+cod_id+'\',\''+nombre+'\');" data-enhanced="true" value="Enhanced - Left"></div>';
+	 	}
 	 	
-	 	//idarticulo+"|"+plaqueta_af+"|"+nombre+"|"+id
 	    li += "<li value='"+cod_id+"'>"+
 			""+
 		    	"<div class='ui-block'>"+
@@ -105,6 +132,7 @@ function MuestraItems(tx, results) {
 			        "<label for='t"+cod_id+"' style='color:#"+color+"'>Observación:</label><input type='text' name='t"+cod_id+"' id='t"+cod_id+"' style='color:#"+color+"' value='"+observacion+"' "+habilitado+">"+
 			        "<p style='color:#"+color+"'>Fotos actualizadas: <label id='nf"+cod_id+"'><label></p>"+
 					"<label for='s"+cod_id+"'></label><select class='componentSelect' name='s"+cod_id+"' id='s"+cod_id+"' "+habilitado+"><option value=''></option><option value='N' "+selN+">No reportado</option><option value='P' "+selP+">Pendiente</option><option value='R' "+selR+">Reportado</option></select>" +
+					desasignar+
 //					'<br><input type="checkbox" name="checkbox-mini-'+cod_id+'" id="checkbox-mini-'+cod_id+'" data-mini="true">'+'<label for="checkbox-mini-'+cod_id+'">Revisado</label>'+
 				"</div>"+  
 			  ""
@@ -123,7 +151,17 @@ function MuestraItems(tx, results) {
     	$("#Lencontrado").append('');
     	if($('#div_firma').is(':visible')){
 			$("#img_firma").append('<img id="firma_ok" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAApYAAAFkCAYAAACaQHuFAAAT8UlEQVR4Xu3YwY0bQRAEwVsPpRdt5EvnIeVEEugCggYUBrH9SPD58SNAgAABAgQIECAQCDzBhgkCBAgQIECAAAECP8LSERAgQIAAAQIECCQCwjJhNEKAAAECBAgQICAs3QABAgQIECBAgEAiICwTRiMECBAgQIAAAQLC0g0QIECAAAECBAgkAsIyYTRCgAABAgQIECAgLN0AAQIECBAgQIBAIiAsE0YjBAgQIECAAAECwtINECBAgAABAgQIJALCMmE0QoAAAQIECBAgICzdAAECBAgQIECAQCIgLBNGIwQIECBAgAABAsLSDRAgQIAAAQIECCQCwjJhNEKAAAECBAgQICAs3QABAgQIECBAgEAiICwTRiMECBAgQIAAAQLC0g0QIECAAAECBAgkAsIyYTRCgAABAgQIECAgLN0AAQIECBAgQIBAIiAsE0YjBAgQIECAAAECwtINECBAgAABAgQIJALCMmE0QoAAAQIECBAgICzdAAECBAgQIECAQCIgLBNGIwQIECBAgAABAsLSDRAgQIAAAQIECCQCwjJhNEKAAAECBAgQICAs3QABAgQIECBAgEAiICwTRiMECBAgQIAAAQLC0g0QIECAAAECBAgkAsIyYTRCgAABAgQIECAgLN0AAQIECBAgQIBAIiAsE0YjBAgQIECAAAECwtINECBAgAABAgQIJALCMmE0QoAAAQIECBAgICzdAAECBAgQIECAQCIgLBNGIwQIECBAgAABAsLSDRAgQIAAAQIECCQCwjJhNEKAAAECBAgQICAs3QABAgQIECBAgEAiICwTRiMECBAgQIAAAQLC0g0QIECAAAECBAgkAsIyYTRCgAABAgQIECAgLN0AAQIECBAgQIBAIiAsE0YjBAgQIECAAAECwtINECBAgAABAgQIJALCMmE0QoAAAQIECBAgICzdAAECBAgQIECAQCIgLBNGIwQIECBAgAABAsLSDRAgQIAAAQIECCQCwjJhNEKAAAECBAgQICAs3QABAgQIECBAgEAiICwTRiMECBAgQIAAAQLC0g0QIECAAAECBAgkAsIyYTRCgAABAgQIECAgLN0AAQIECBAgQIBAIiAsE0YjBAgQIECAAAECwtINECBAgAABAgQIJALCMmE0QoAAAQIECBAgICzdAAECBAgQIECAQCIgLBNGIwQIECBAgAABAsLSDRAgQIAAAQIECCQCwjJhNEKAAAECBAgQICAs3QABAgQIECBAgEAiICwTRiMECBAgQIAAAQLC0g0QIECAAAECBAgkAsIyYTRCgAABAgQIECAgLN0AAQIECBAgQIBAIiAsE0YjBAgQIECAAAECwtINECBAgAABAgQIJALCMmE0QoAAAQIECBAgICzdAAECBAgQIECAQCIgLBNGIwQIECBAgAABAsLSDRAgQIAAAQIECCQCwjJhNEKAAAECBAgQICAs3QABAgQIECBAgEAiICwTRiMECBAgQIAAAQLC0g0QIECAAAECBAgkAsIyYTRCgAABAgQIECAgLN0AAQIECBAgQIBAIiAsE0YjBAgQIECAAAECwtINECBAgAABAgQIJALCMmE0QoAAAQIECBAgICzdAAECBAgQIECAQCIgLBNGIwQIECBAgAABAsLSDRAgQIAAAQIECCQCwjJhNEKAAAECBAgQICAs3QABAgQIECBAgEAiICwTRiMECBAgQIAAAQLC0g0QIECAAAECBAgkAsIyYTRCgAABAgQIECAgLN0AAQIECBAgQIBAIiAsE0YjBAgQIECAAAECwtINECBAgAABAgQIJALCMmE0QoAAAQIECBAgICzdAAECBAgQIECAQCIgLBNGIwQIECBAgAABAsLSDRAgQIAAAQIECCQCwjJhNEKAAAECBAgQICAs3QABAgQIECBAgEAiICwTRiMECBAgQIAAAQLC0g0QIECAAAECBAgkAsIyYTRCgAABAgQIECAgLN0AAQIECBAgQIBAIiAsE0YjBAgQIECAAAECwtINECBAgAABAgQIJALCMmE0QoAAAQIECBAgICzdAAECBAgQIECAQCIgLBNGIwQIECBAgAABAsLSDRAgQIAAAQIECCQCwjJhNEKAAAECBAgQICAs3QABAgQIECBAgEAiICwTRiMECBAgQIAAAQLC0g0QIECAAAECBAgkAsIyYTRCgAABAgQIECAgLN0AAQIECBAgQIBAIiAsE0YjBAgQIECAAAECwtINECBAgAABAgQIJALCMmE0QoAAAQIECBAgICzdAAECBAgQIECAQCIgLBNGIwQIECBAgAABAsLSDRAgQIAAAQIECCQCwjJhNEKAAAECBAgQICAs3QABAgQIECBAgEAiICwTRiMECBAgQIAAAQLC0g0QIECAAAECBAgkAsIyYTRCgAABAgQIECAgLN0AAQIECBAgQIBAIiAsE0YjBAgQIECAAAECwtINECBAgAABAgQIJALCMmE0QoAAAQIECBAgICzdAAECBAgQIECAQCIgLBNGIwQIECBAgAABAsLSDRAgQIAAAQIECCQCwjJhNEKAAAECBAgQICAs3QABAgQIECBAgEAiICwTRiMECBAgQIAAAQLC0g0QIECAAAECBAgkAsIyYTRCgAABAgQIECAgLN0AAQIECBAgQIBAIiAsE0YjBAgQIECAAAECwtINECBAgAABAgQIJALCMmE0QoAAAQIECBAgICzdAAECBAgQIECAQCIgLBNGIwQIECBAgAABAsLSDRAgQIAAAQIECCQCwjJhNEKAAAECBAgQICAs3QABAgQIECBAgEAiICwTRiMECBAgQIAAAQLC0g0QIECAAAECBAgkAsIyYTRCgAABAgQIECAgLN0AAQIECBAgQIBAIiAsE0YjBAgQIECAAAECwtINECBAgAABAgQIJALCMmE0QoAAAQIECBAgICzdAAECBAgQIECAQCIgLBNGIwQIECBAgAABAsLSDRAgQIAAAQIECCQCwjJhNEKAAAECBAgQICAs3QABAgQIECBAgEAiICwTRiMECBAgQIAAAQLC0g0QIECAAAECBAgkAsIyYTRCgAABAgQIECAgLN0AAQIECBAgQIBAIiAsE0YjBAgQIECAAAECwtINECBAgAABAgQIJALCMmE0QoAAAQIECBAgICzdAAECBAgQIECAQCIgLBNGIwQIECBAgAABAsLSDRAgQIAAAQIECCQCwjJhNEKAAAECBAgQICAs3QABAgQIECBAgEAiICwTRiMECBAgQIAAAQLC0g0QIECAAAECBAgkAsIyYTRCgAABAgQIECAgLN0AAQIECBAgQIBAIiAsE0YjBAgQIECAAAECwtINECBAgAABAgQIJALCMmE0QoAAAQIECBAgICzdAAECBAgQIECAQCIgLBNGIwQIECBAgAABAsLSDRAgQIAAAQIECCQCwjJhNEKAAAECBAgQICAs3QABAgQIECBAgEAiICwTRiMECBAgQIAAAQLC0g0QIECAAAECBAgkAsIyYTRCgAABAgQIECAgLN0AAQIECBAgQIBAIiAsE0YjBAgQIECAAAECwtINECBAgAABAgQIJALCMmE0QoAAAQIECBAgICzdAAECBAgQIECAQCIgLBNGIwQIECBAgAABAsLSDRAgQIAAAQIECCQCwjJhNEKAAAECBAgQICAs3QABAgQIECBAgEAiICwTRiMECBAgQIAAAQLC0g0QIECAAAECBAgkAsIyYTRCgAABAgQIECAgLN0AAQIECBAgQIBAIiAsE0YjBAgQIECAAAECwtINECBAgAABAgQIJALCMmE0QoAAAQIECBAgICzdAAECBAgQIECAQCIgLBNGIwQIECBAgAABAsLSDRAgQIAAAQIECCQCwjJhNEKAAAECBAgQICAs3QABAgQIECBAgEAiICwTRiMECBAgQIAAAQLC0g0QIECAAAECBAgkAsIyYTRCgAABAgQIECAgLN0AAQIECBAgQIBAIiAsE0YjBAgQIECAAAECwtINECBAgAABAgQIJALCMmE0QoAAAQIECBAgICzdAAECBAgQIECAQCIgLBNGIwQIECBAgAABAsLSDRAgQIAAAQIECCQCwjJhNEKAAAECBAgQICAs3QABAgQIECBAgEAiICwTRiMECBAgQIAAAQLC0g0QIECAAAECBAgkAsIyYTRCgAABAgQIECAgLN0AAQIECBAgQIBAIiAsE0YjBAgQIECAAAECwtINECBAgAABAgQIJALCMmE0QoAAAQIECBAgICzdAAECBAgQIECAQCIgLBNGIwQIECBAgAABAsLSDRAgQIAAAQIECCQCwjJhNEKAAAECBAgQICAs3QABAgQIECBAgEAiICwTRiMECBAgQIAAAQLC0g0QIECAAAECBAgkAsIyYTRCgAABAgQIECAgLN0AAQIECBAgQIBAIiAsE0YjBAgQIECAAAECwtINECBAgAABAgQIJALCMmE0QoAAAQIECBAgICzdAAECBAgQIECAQCIgLBNGIwQIECBAgAABAsLSDRAgQIAAAQIECCQCwjJhNEKAAAECBAgQICAs3QABAgQIECBAgEAiICwTRiMECBAgQIAAAQLC0g0QIECAAAECBAgkAsIyYTRCgAABAgQIECAgLN0AAQIECBAgQIBAIiAsE0YjBAgQIECAAAECwtINECBAgAABAgQIJALCMmE0QoAAAQIECBAgICzdAAECBAgQIECAQCIgLBNGIwQIECBAgAABAsLSDRAgQIAAAQIECCQCwjJhNEKAAAECBAgQICAs3QAB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" width="100%"  height="300px">');
-			$("#div_firma").append('Escriba su firma a continuación:<br><iframe id="firmar" src="firma.html" width="680px" frameborder="0" ></iframe>');
+			$("#div_firma").append('<form><label><input type="checkbox" name="chkEditarfirma" id="chkEditarfirma">Editar Firma</label></form><br><p id="contenidoFirma" style="display: none;">Escriba su firma a continuación:<br><iframe id="firmar" src="firma.html" width="680px" frameborder="0"></iframe></p>');
+		    $('#chkEditarfirma').change(function() {
+		        if($(this).is(":checked")) {
+		            console.log("checked");
+		            $("#contenidoFirma").show();
+		        }else{
+		        	console.log("NO checked");
+		        	$("#contenidoFirma").hide();
+		        }
+		        
+		    });
 		}	//console.log($("#guardar").length);
 		if ($("#guardar").length == 0  ) {
 			$("#pie").append('<button class="ui-btn ui-corner-all ui-btn-b" id="guardar" value="guardar">Guardar</button>');

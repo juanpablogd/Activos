@@ -129,45 +129,67 @@ $(document).ready(function() {
 		var fecha_captura = now.getFullYear()+'-'+(1+now.getMonth())+'-'+now.getDate()+'-'+now.getHours()+'_'+now.getMinutes()+'_'+now.getSeconds();
 		var id_envio = fecha_captura+'-'+id_usr;
 		var seccion = localStorage.idseccion;
-		db.transaction(function guardarInv(tx){
-			//INFO GENERAL DEL ELEMENTO		
-			 console.log('INSERT INTO publicinventario (idseccion,idusuario,cc_responsable,id_envio,activo) values ("'+seccion+'","'+id_usr+'","'+cc[0]+'","'+id_envio+'","1")');
-			tx.executeSql('INSERT INTO publicinventario (idseccion,idusuario,cc_responsable,id_envio,activo) values ("'+seccion+'","'+id_usr+'","'+cc[0]+'","'+id_envio+'","1")');
-			//DETALLE DEL ELMENTO
-			console.log('INSERT INTO publicinventario_det (idarticulo,observacion,asignacion,id_estado,id_envio,id_envio_art)' + 
-			'values ("'+id_elemento[0]+'","'+observaciones+'","R","'+id_elemento[4]+'","'+id_envio+'","'+id_elemento[5]+'")');
-			tx.executeSql('INSERT INTO publicinventario_det (idarticulo,observacion,asignacion,id_estado,id_envio,id_envio_art)' + 
-			'values ("'+id_elemento[0]+'","'+observaciones+'","R","'+id_elemento[4]+'","'+id_envio+'","'+id_elemento[5]+'")');
-			//ASIGNA RESPONSABLE AL articulo
-              console.log('UPDATE publicarticulos set cc_responsable_af = "'+cc[0]+'" where idarticulo = '+id_elemento[0]+'');
-			tx.executeSql('UPDATE publicarticulos set cc_responsable_af = "'+cc[0]+'" where idarticulo = '+id_elemento[0]+'');
-		});
 
-		console.log("GUARDAR");
-		setTimeout(function() {
-			localStorage.firma = "";
-			localStorage.elemento_valor = "";
-			localStorage.Fotos = "";
-			localStorage.busqueda = "";
-			db.transaction(function(tx) {
-				console.log('select * from publicinventario_det where id_envio = "'+id_envio+'"');
-				tx.executeSql('select * from publicinventario_det where id_envio = "'+id_envio+'"', [],
-					function MuestraItems(tx, results) {
-						var encontrados = results.rows.length; console.log("Encontrados: " + encontrados);
-						if(encontrados>0) {
-							window.location = "p2_elemento_buscar.html";
-							alert("Elemento Guardado exitosamente");
-						}else
-						{
-							alert("Espere un momento por favor!");
-							alert("Elemento Guardado exitosamente");
+		db.transaction(function(tx) {
+			console.log('select nombres,apellidos from publicinventario inv inner join publicinventario_det inv_det on ((inv.idinventario = inv_det.idinventario) or (inv.id_envio = inv_det.id_envio and inv.id_envio != "")) left join publicusuarios usr on usr.cc = inv.cc_responsable where (id_envio_art = "'+id_elemento[5]+'" and id_envio_art != "" and id_envio_art != "null") or (idarticulo = "'+id_elemento[0]+'" and idarticulo != "" and idarticulo != "null") order by inv.rowid desc limit 1'); 
+			tx.executeSql('select nombres,apellidos from publicinventario inv inner join publicinventario_det inv_det on ((inv.idinventario = inv_det.idinventario) or (inv.id_envio = inv_det.id_envio and inv.id_envio != "")) left join publicusuarios usr on usr.cc = inv.cc_responsable where (id_envio_art = "'+id_elemento[5]+'" and id_envio_art != "" and id_envio_art != "null") or (idarticulo = "'+id_elemento[0]+'" and idarticulo != "" and idarticulo != "null") order by inv.rowid desc limit 1', [],
+				function consultaEle(tx, results) {
+					var encontrados = results.rows.length; console.log("Encontrados: " + encontrados);
+					if(encontrados>0) {
+				    	if (confirm("El elemento ya se encuentra asignado a "+results.rows.item(0).nombres+" "+results.rows.item(0).apellidos+" Desea Reasignarlo?") == false) {
+				    		console.log("NO GUARDAR");
+							return false;						    
 						}
-					}	
-				);
-			} /*, function errorCB(err) {	alert("Error processing SQL: "+err.code); }
-			,function successCB() {	localStorage.firma = ""; }	*/
-			);
-		}, 300);
+					}
+					console.log("GUARDAR");
+					db.transaction(function guardarInv(tx){
+						//INFO GENERAL DEL ELEMENTO		
+						 console.log('INSERT INTO publicinventario (idseccion,idusuario,cc_responsable,id_envio,activo) values ("'+seccion+'","'+id_usr+'","'+cc[0]+'","'+id_envio+'","1")');
+						tx.executeSql('INSERT INTO publicinventario (idseccion,idusuario,cc_responsable,id_envio,activo) values ("'+seccion+'","'+id_usr+'","'+cc[0]+'","'+id_envio+'","1")');
+						//DETALLE DEL ELMENTO
+						console.log('INSERT INTO publicinventario_det (idarticulo,observacion,asignacion,id_estado,id_envio,id_envio_art)' + 
+						'values ("'+id_elemento[0]+'","'+observaciones+'","R","'+id_elemento[4]+'","'+id_envio+'","'+id_elemento[5]+'")');
+						tx.executeSql('INSERT INTO publicinventario_det (idarticulo,observacion,asignacion,id_estado,id_envio,id_envio_art)' + 
+						'values ("'+id_elemento[0]+'","'+observaciones+'","R","'+id_elemento[4]+'","'+id_envio+'","'+id_elemento[5]+'")');
+						//ASIGNA RESPONSABLE AL articulo
+						if(id_elemento[0]!="" && id_elemento[0]!="null"){
+			              console.log('UPDATE publicarticulos set cc_responsable_af = "'+cc[0]+'" where idarticulo = "'+id_elemento[0]+'"');
+			              tx.executeSql('UPDATE publicarticulos set cc_responsable_af = "'+cc[0]+'" where idarticulo = "'+id_elemento[0]+'"');
+						}else{
+			              console.log('UPDATE publicarticulos set cc_responsable_af = "'+cc[0]+'" where id_envio = "'+id_elemento[5]+'"');
+			              tx.executeSql('UPDATE publicarticulos set cc_responsable_af = "'+cc[0]+'" where id_envio = "'+id_elemento[5]+'"');
+						}
+						
+					});
+					setTimeout(function() {
+						localStorage.firma = "";
+						localStorage.elemento_valor = "";
+						localStorage.Fotos = "";
+						localStorage.busqueda = "";
+						db.transaction(function(tx) {
+							console.log('select * from publicinventario_det where id_envio = "'+id_envio+'"');
+							tx.executeSql('select * from publicinventario_det where id_envio = "'+id_envio+'"', [],
+								function MuestraItems(tx, results) {
+									var encontrados = results.rows.length; console.log("Encontrados: " + encontrados);
+									if(encontrados>0) {
+										window.location = "p2_elemento_buscar.html";
+										alert("Elemento Guardado exitosamente");
+									}else
+									{
+										alert("Espere un momento por favor!");
+										alert("Elemento Guardado exitosamente");
+									}
+								}	
+							);
+						} /*, function errorCB(err) {	alert("Error processing SQL: "+err.code); }
+						,function successCB() {	localStorage.firma = ""; }	*/
+						);
+					}, 300);
+				}	
+			);	
+			return false;
+		});
+		return false;
 
 
 /*		if ($( "#seccion" ).val()==0){

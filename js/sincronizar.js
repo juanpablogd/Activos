@@ -69,8 +69,8 @@ function Cono_fotosResp(tx, results) {
 //--------------------------------------------------------------------------------------------------------------
 
 function ConsultaSincronizar(tx) {
-	  console.log('SELECT idarticulo,idseccion,idslinea,marca_af,nombre,referencia,numero_serie_af,plaqueta_af,plaqueta_anterior1_af,id_envio,id_estado,idusuario_envio FROM publicarticulos where id_envio != ""');
-	tx.executeSql('SELECT idarticulo,idseccion,idslinea,marca_af,nombre,referencia,numero_serie_af,plaqueta_af,plaqueta_anterior1_af,id_envio,id_estado,idusuario_envio FROM publicarticulos where id_envio != ""', [],
+	  console.log('SELECT idarticulo,idseccion,idslinea,marca_af,nombre,referencia,numero_serie_af,plaqueta_af,plaqueta_anterior1_af,id_envio,id_estado,idusuario_envio,cc_responsable_af FROM publicarticulos where id_envio != ""');
+	tx.executeSql('SELECT idarticulo,idseccion,idslinea,marca_af,nombre,referencia,numero_serie_af,plaqueta_af,plaqueta_anterior1_af,id_envio,id_estado,idusuario_envio,cc_responsable_af FROM publicarticulos where id_envio != ""', [],
 		           ConsultaSincronizarElemento,errorCB_Elemento);
 }
 
@@ -97,6 +97,7 @@ function ConsultaSincronizarElemento(tx, results) {
 			parametros['id_envio'] = results.rows.item(i).id_envio;
 			parametros['id_estado'] = results.rows.item(i).id_estado;
 			parametros['idusuario_envio'] = results.rows.item(i).idusuario_envio;
+			parametros['cc_responsable_af'] = results.rows.item(i).cc_responsable_af;
 			$("#resultado").html("<br>Articulos restantes: "+(lon-i)+".<br>"); $("#resultado").trigger("create");
 			$.ajax({
 				data:  parametros,

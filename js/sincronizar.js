@@ -390,11 +390,26 @@ function ConsultaSincronizarFotos(tx, results) {
 
 		            },
 		            function(error) {
-		                $("#resultado").html('Error cargando archivo ' + url_imagen + ': ' + error.code); $("#resultado").trigger("create");
-							//CONTINUA CON LOS NUEVOS ELEMENTOS REGISTRADOS EN EL SISTEMA
-							if((i+1) == len) { //alert("continue a rtas");
-								   	salir();
-							}
+		            	var txtServidor;
+	                	if(error.code == 1){
+	                		txtServidor = "No se encontró el archivo, pudo haber sido Eliminado";
+	                	}else if(error.code == 2){
+	                		txtServidor = "Error en la Url del servidor";
+	                	}else if(error.code == 3){
+	                		txtServidor = "Debe contar con buena conexión a internet para cargar las fotos";
+	                	}else if(error.code == 4){
+	                		txtServidor = "ABORT_ERR";
+	                	}else if(error.code == 5){
+	                		txtServidor = "NOT_MODIFIED_ERR";
+	                	}else{
+							txtServidor = 'Error cargando archivo ' + url_imagen + ': ' + error.code;
+	                	}
+		                $("#resultado").html(txtServidor);	$("#resultado").trigger("create");
+
+						//CONTINUA CON LOS NUEVOS ELEMENTOS REGISTRADOS EN EL SISTEMA
+						if((i+1) == len) { //alert("continue a rtas");
+							   	salir();
+						}
 		            },options
 				);
 			}

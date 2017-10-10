@@ -138,13 +138,14 @@ function MuestraItems(tx, results) {
 			  ""
 			  + "</li>";
 			  //(id_envio = "'+results.rows.item(0).id_envio+'" and id_envio != "") or (idarticulo= "'+results.rows.item(0).id+'" and idarticulo != "null")
-			  console.log('SELECT count(*) as c, "'+cod_id+'" as rowid FROM publicarticulos_fotos where (id_envio ="'+id_envio_art+'" and id_envio != "") or (idarticulo= "'+idarticulo+'" and idarticulo != "null")');
+		if(inv_det_id_envio != "null" && inv_det_id_envio != "" && inv_det_id_envio != undefined && inv_det_id_envio != null){
+			console.log('SELECT count(*) as c, "'+cod_id+'" as rowid FROM publicarticulos_fotos where (id_envio ="'+id_envio_art+'" and id_envio != "") or (idarticulo= "'+idarticulo+'" and idarticulo != "null")');
 			tx.executeSql('SELECT count(*) as c, "'+cod_id+'" as rowid FROM publicarticulos_fotos where (id_envio ="'+id_envio_art+'" and id_envio != "") or (idarticulo= "'+idarticulo+'" and idarticulo != "null")', [], 
 				function ConsultaSincronizarInventario(tx, resultnf) {
 					$("#nf"+resultnf.rows.item(0).rowid).html(resultnf.rows.item(0).c);
 				}	//nf2017-10-4-11_12_29-1
 			);
-
+		}
     } //console.log("hab: " + habilitado);
     $.mobile.loading( 'hide');
     if(encontrados>0 ){

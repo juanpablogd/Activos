@@ -318,7 +318,7 @@ function ConsultaSincronizarFotos(tx, results) {
 	}else{
 		for (i = 0; i < len; i++){
 
-			var url_imagen = results.rows.item(i).url; console.log(typeof cordova);
+			var url_imagen = results.rows.item(i).url; //console.log(url_imagen);	console.log(typeof cordova);
 			if (typeof cordova !== 'undefined'){
 	          	var options = new FileUploadOptions();
 	            options.fileName=url_imagen;
@@ -329,9 +329,9 @@ function ConsultaSincronizarFotos(tx, results) {
 				params.rowid = results.rows.item(i).rowid;
 				params.id_usr = localStorage.id_usr;
 				params.idarticulo = results.rows.item(i).idarticulo;
+				params.ruta_archivo = url_imagen;
 
 	            options.params = params;			
-
 
 				//ENVIA EL FOTO	
 				var ft = new FileTransfer();
@@ -356,35 +356,38 @@ function ConsultaSincronizarFotos(tx, results) {
 		            	//REMOVER ARCHIVO DEL DISPOSITIVO
 		            	function eliminafotodb(tx) { //alert('DELETE from publicarticulos_fotos where id_envio = "'+n[0]+'" and rowid = "'+n[1]+'"');
 							if(n[0]!="null" && n[0] !=""){
-								//console.log('UPDATE from publicarticulos_fotos SET id_envio="",idarticulo="'+n[3]+'" where id_envio = "'+n[0]+'" and rowid = "'+n[1]+'"');
-								//tx.executeSql('UPDATE from publicarticulos_fotos SET id_envio="",idarticulo="'+n[3]+'" where id_envio = "'+n[0]+'" and rowid = "'+n[1]+'"');
-								tx.executeSql('DELETE from publicarticulos_fotos where id_envio = "'+n[0]+'" and rowid = "'+n[1]+'"');
+								console.log('DELETE from publicarticulos_fotos where id_envio = "'+n[0]+'" and rowid = "'+n[1]+'"');
+								//tx.executeSql('DELETE from publicarticulos_fotos where id_envio = "'+n[0]+'" and rowid = "'+n[1]+'"');
 							}else if(n[3]!="null" && n[3] !=""){
-								//  console.log('UPDATE from publicarticulos_fotos SET id_envio="" where idarticulo = "'+n[3]+'" and rowid = "'+n[1]+'"');
-								//tx.executeSql('UPDATE from publicarticulos_fotos SET id_envio="" where idarticulo = "'+n[3]+'" and rowid = "'+n[1]+'"');
-								tx.executeSql('DELETE from publicarticulos_fotos where idarticulo = "'+n[3]+'" and rowid = "'+n[1]+'"');
+								  console.log('DELETE from publicarticulos_fotos where idarticulo = "'+n[3]+'" and rowid = "'+n[1]+'"');
+								//tx.executeSql('DELETE from publicarticulos_fotos where idarticulo = "'+n[3]+'" and rowid = "'+n[1]+'"');
 							}
-							
 						}
-		            	function sqlexitoso ()  {
+		            	function sqlexitoso ()  {	//console.log(LocalFileSystem.TEMPORARY);
+							//Delete file 
+							window.requestFileSystem(LocalFileSystem.TEMPORARY, 0, 
+							    function(fileSys) {	
+									for(key in fileSys) {
+										if(fileSys.hasOwnProperty(key)) {
+									        var value = fileSys[key];
+									        console.log(key + " " + fileSys[key]);
+									    }
+									}	//console.log(n[2]);
+							        fileSys.root.getFile(n[2], {create: false}, 
+							            function(file) {	console.log("fileEntry es un Archivo?" + fileEntry.isFile.toString());
+							                file.remove(pictureRemoved, notRemoved,pictureNotfound);                                                  
+							            });
+							    }, no);
 							//CONTINUA CON LOS NUEVOS ELEMENTOS REGISTRADOS EN EL SISTEMA
 							if((i+1) == len) { //alert("continue a rtas");
 								   	salir();
 							} 
-							//Delete file 
-							window.requestFileSystem(LocalFileSystem.TEMPORARY, 0, 
-							    function(fileSys) { 
-									console.log(n[2]);
-							        fileSys.root.getFile(n[2], {create: false}, 
-							            function(file) {
-							                file.remove(pictureRemoved, notRemoved);                                                  
-							            }, no);
-							    }, no); 
 						}
 						function sqlfallo(){}
-						function pictureRemoved(){}
+						function pictureNotfound(){ console.log ("El archivo no fué Encontrado!"); }
+						function pictureRemoved(){ console.log ("El archivo fué eliminado!"); }
 						function notRemoved(){ $("#resultado").html("<br> No se puede Eliminar el archivo, limpie el cache manualmente<br>"); $("#resultado").trigger("create");}
-						function no(error) { console.log(error.message); /* $("#resultado").html("<br> Ubicación incorrecta de la imagen<br>"); */ $("#resultado").trigger("create");}
+						function no(error) { console.log("Error al consultar el archivo: " +error.message); /* $("#resultado").html("<br> Ubicación incorrecta de la imagen<br>"); */ $("#resultado").trigger("create");}
 		            	//ELIMINA DE LA BASE DE DATOS
 		            	db.transaction(eliminafotodb,sqlfallo,sqlexitoso);
 

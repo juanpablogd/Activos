@@ -5,7 +5,7 @@ var foto_tamano;
 
 
 if(localStorage.foto_calidad=="" || localStorage.foto_calidad == undefined){
-	foto_calidad = "30";
+	foto_calidad = "25";
 }else{
 	foto_calidad = localStorage.foto_calidad;
 }	//alert(foto_calidad);
@@ -49,10 +49,8 @@ function onFail(message) {
 	});		
 	alert('Falló al capturar Foto'); //message
 }
-    
-// api-camera
-function onPhotoDataSuccess(imageData) {	
-	//alert("Foto Capturada");
+
+function adicionarFoto(imageData){
 	//VERIFICA SI EXISTEN ELEMENTOS IMG, SI HAY VERIFICA SI HAY DISPONIBILIDAD PARA CAPTURA DE FOTOGRAFÍA
 	var img_disponible = false;
 	//ARRAY DE FOTOS
@@ -87,3 +85,77 @@ function onPhotoDataSuccess(imageData) {
 	$("#"+NomIdimage).trigger("create");							//alert('Calidad: '+foto_calidad+' FTW: ' + foto_tamano); */
 	return false;
 }
+
+function onErrorGetDir(error) {
+    console.log("Error:" + error.code + " " + error.message);
+    //alert(error.code);
+}
+
+// api-camera
+function onPhotoDataSuccess(imageData) {	console.log(imageData);
+	//Grab the file name of the photo in the temporary directory
+	 //var currentName = imageData.replace(/^.*[\\\/]/, '');	console.log(currentName);
+	 //Create a new name for the photo
+  var d = new Date(),
+      n = d.getTime(),
+      newFileName = n + ".jpg";
+	if (typeof cordova !== 'undefined'){
+			function successCallbackf(entry) {
+			    console.log("New Path: " + entry.fullPath);
+			    console.log("Success. New Path: " + entry.fullPath);
+			    adicionarFoto(newFileName);
+			}
+
+			function errorCallbackf(error) {
+			    console.log("Error:" + error.code)
+			    //alert(error.code);
+			}
+			console.log(imageData);
+			//console.log(cordova.file.externalRootDirectory);
+			//console.log(cordova.file.dataDirectory);
+			console.log(newFileName);
+
+			var path = imageData;
+
+			window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(entry){
+			        var parent = document.getElementById('parent').value;
+			        parentEntry = new DirectoryEntry({fullPath: parent});
+
+			        // copy the file to a new directory and rename it
+			        entry.copyTo(parentEntry, "file.copy", function(entry){
+			            console.log("New Path: " + entry.fullPath);
+			        }, function(error){
+			            console.log(error.code);
+			        });
+
+			    }, null);
+
+/*	      window.resolveLocalFileSystemURL(path,
+		      function gotFile(fileEntry){
+				window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, 
+				    function(fileSys) {
+			          fileEntry.moveTo(fileSys, newFileName,
+			              function()
+			              {
+			                  console.log('copying was successful')
+			              },
+			              function()
+			              {
+			                  console.log('unsuccessful copying')
+			              });
+				    }
+				);	      	
+		      }
+		    ); */
+	      
+
+
+
+
+	} else{
+		adicionarFoto(imageData);
+	}
+}
+
+
+		

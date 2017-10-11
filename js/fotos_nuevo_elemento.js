@@ -31,8 +31,9 @@ $(document).ready(function() {
 						{ 	quality : foto_calidad									
 				    		,destinationType : Camera.DestinationType.FILE_URI
 				    		,sourceType : Camera.PictureSourceType.CAMERA
-				    		,encodingType: Camera.EncodingType.JPEG,
-				    		correctOrientation:true
+				    		,encodingType: Camera.EncodingType.JPEG
+				    		,saveToPhotoAlbum:true
+				    		,correctOrientation:true
 						}
 			);	
 		}else{

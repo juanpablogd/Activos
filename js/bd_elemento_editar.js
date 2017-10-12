@@ -6,6 +6,15 @@ var busqueda=localStorage.elemento_valor;
 var res = busqueda.split("|");
 var lineas,sublineas,id_estados,vid_envio,vid_articulo,vida;
 
+function txtOk(t){	console.log(t);
+	if (t != "undefined" && t != undefined){
+		t = t.trim();
+		return t.replace(/'/g , "").replace(/"/g , "").replace(/\|/g , " ");
+	}else{
+		return t;
+	}
+}
+
 function leer(ident){
 	console.log(ident);
 	cordova.plugins.barcodeScanner.scan(
@@ -181,16 +190,45 @@ function MuestraItems(tx, results) {
 			    		var id = str.substr(1, str.len); console.log(last_id + " ID> " + id); 
 			    		if(last_id != id){
 			    			var idslinea = $("#sb"+id).val();
-			    			var nombre = $("#nb"+id).val();
-			    			var texto_plaqueta = $("#p"+id).val();
-			    			var texto_plaquetanterior = $("#pa"+id).val();
-			    			var marca_af = $("#mr"+id).val();
-			    			var referencia = $("#rf"+id).val();
-			    			var numero_serie_af = $("#ns"+id).val();
+			    			var nombre = txtOk($("#nb"+id).val());
+			    			var texto_plaqueta = txtOk($("#p"+id).val());
+			    			var texto_plaquetanterior = txtOk($("#pa"+id).val());
+			    			var marca_af = txtOk($("#mr"+id).val());
+			    			var referencia = txtOk($("#rf"+id).val());
+			    			var numero_serie_af = txtOk($("#ns"+id).val());
 			    			var id_estado = $("#es"+id).val();
 			    			if(texto_plaqueta != undefined && texto_plaquetanterior != undefined){
-								function errorCBU(err) {	alert("Error al Guardar: "+err);	}
+								function errorCBU(err) { if (err.code != "undefined" && err.message != "undefined") alert("Error al guardar, revise los caracteres especiales: \n" + " Mensaje: " + err.message + err.code); }
 								function successCBU() {
+								   db.transaction(function(tx) {
+								   		if(res[0]!="" && res[0]!="null"){
+								   			  console.log('DELETE FROM publicarticulos_fotos WHERE idarticulo = "'+res[0]+'"');
+								   			tx.executeSql('DELETE FROM publicarticulos_fotos WHERE idarticulo = "'+res[0]+'"');
+								   		}else{
+								   			console.log('DELETE FROM publicarticulos_fotos WHERE id_envio = "'+res[5]+'"');
+								   			tx.executeSql('DELETE FROM publicarticulos_fotos WHERE id_envio = "'+res[5]+'"');
+								   		}
+								   		
+								   });
+									//GUARDA FOTOS
+									if(localStorage.Fotos != null && localStorage.Fotos != "" && localStorage.Fotos !== undefined && localStorage.Fotos != "undefined"){
+										//CARGA FOTOS
+										var data = JSON.parse(localStorage.getItem('Fotos')); console.log(data);
+										$.each(data, function(i, item) {	
+											db.transaction(function(tx) {	//alert(item);
+												if(res[0]!="" && res[0]!="null"){
+													  console.log('INSERT INTO publicarticulos_fotos (url,idarticulo) values ("'+item+'","'+res[0]+'")');
+													tx.executeSql('INSERT INTO publicarticulos_fotos (url,idarticulo) values ("'+item+'","'+res[0]+'")');	
+												}else{
+													  console.log('INSERT INTO publicarticulos_fotos (url,id_envio) values ("'+item+'","'+res[5]+'")');
+													tx.executeSql('INSERT INTO publicarticulos_fotos (url,id_envio) values ("'+item+'","'+res[5]+'")');	
+												}
+												
+											});
+										});
+										data.length=0;
+										localStorage.Fotos = "";				
+									}
 								    count++;	console.log("Contador:"+count);
 								    if(count==encontrados){
 										setTimeout(function() { //idarticulo+"|"+plaqueta_af+"|"+nombre+"|"+rowid+"|"+id_estado+"|"+id_envio
@@ -198,7 +236,6 @@ function MuestraItems(tx, results) {
 											console.log(localStorage.elemento_valor);
      										alert("Registro Almacenado correctamente");
 									   		window.location = "p2_elemento_buscar.html";
-
 										}, 450);
 								    }
 								}
@@ -216,36 +253,6 @@ function MuestraItems(tx, results) {
 			    			}
 			    		}
 				   });
-				   db.transaction(function(tx) {
-				   		if(res[0]!="" && res[0]!="null"){
-				   			  console.log('DELETE FROM publicarticulos_fotos WHERE idarticulo = "'+res[0]+'"');
-				   			tx.executeSql('DELETE FROM publicarticulos_fotos WHERE idarticulo = "'+res[0]+'"');
-				   		}else{
-				   			console.log('DELETE FROM publicarticulos_fotos WHERE id_envio = "'+res[5]+'"');
-				   			tx.executeSql('DELETE FROM publicarticulos_fotos WHERE id_envio = "'+res[5]+'"');
-				   		}
-				   		
-				   });
-					//GUARDA FOTOS
-					if(localStorage.Fotos != null && localStorage.Fotos != "" && localStorage.Fotos !== undefined && localStorage.Fotos != "undefined"){
-						//CARGA FOTOS
-						var data = JSON.parse(localStorage.getItem('Fotos')); console.log(data);
-						$.each(data, function(i, item) {	
-							db.transaction(function(tx) {	//alert(item);
-								if(res[0]!="" && res[0]!="null"){
-									  console.log('INSERT INTO publicarticulos_fotos (url,idarticulo) values ("'+item+'","'+res[0]+'")');
-									tx.executeSql('INSERT INTO publicarticulos_fotos (url,idarticulo) values ("'+item+'","'+res[0]+'")');	
-								}else{
-									  console.log('INSERT INTO publicarticulos_fotos (url,id_envio) values ("'+item+'","'+res[5]+'")');
-									tx.executeSql('INSERT INTO publicarticulos_fotos (url,id_envio) values ("'+item+'","'+res[5]+'")');	
-								}
-								
-							});
-						});
-						data.length=0;
-						localStorage.Fotos = "";				
-					}
-
 			}
 		});
 

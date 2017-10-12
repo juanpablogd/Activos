@@ -40,7 +40,7 @@ function GuardaElemento(tx) {
 }
 function txtOk(t){
 	t = t.trim();
-	return t.replace(/'/g , " ").replace(/"/g , " ").replace(/\|/g , " ");
+	return t.replace(/'/g , "").replace(/"/g , "").replace(/\|/g , " ");
 }
 /* BUSQUEDA EN LA TABLA PERSONA*/
 function consultaPersona(tx) {

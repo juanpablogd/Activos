@@ -1,9 +1,9 @@
 var db = window.openDatabase("bdactivos", "1.0", "Proyecto SFK Activos", 33554432);
 var tipo = '';
-function errorCB(err) {
+function errorInsertp(err) {
 	// Esto se puede ir a un Log de Error dir�a el purista de la oficina, pero como este es un ejemplo pongo el MessageBox.Show :P
 	if (err.code != "undefined" && err.message != "undefined"){
-		alert("Error procesando SQL: Codigo: " + err.code + " Mensaje: "+err.message);
+		alert("Error almacenando Persona: \n" + " Mensaje: " + err.message + err.code);
 	}
 }
 
@@ -38,7 +38,10 @@ function GuardaElemento(tx) {
 	db.transaction(consultaPersona);
 
 }
-
+function txtOk(t){
+	t = t.trim();
+	return t.replace(/'/g , " ").replace(/"/g , " ").replace(/\|/g , " ");
+}
 /* BUSQUEDA EN LA TABLA PERSONA*/
 function consultaPersona(tx) {
 	var busqueda=localStorage.busqueda;
@@ -62,27 +65,31 @@ function resultadoCC(tx, results) { console.log('MuestraItems');
 			var id_usr = localStorage.id_usr; 
 			
 			//OBTIENE EL ID DE LA CEDULA
-			var cc = $( "#cc" ).val();
+			var cc = txtOk($( "#cc" ).val());
 			//OBTIENE EL ID DE LOS NOMBRES
-			var nombres = $( "#nombres" ).val();
+			var nombres = txtOk($( "#nombres" ).val());
 				//OBTIENE EL ID DE LOS APELLIDOS
-			var apellidos = $( "#apellidos" ).val();
+			var apellidos = txtOk($( "#apellidos" ).val());
 			//OBTIENE EL ID DE LOS TELEFONOS
-			var telefonos = $( "#telefonos" ).val();
+			var telefonos = txtOk($( "#telefonos" ).val());
 			//OBTIENE EL ID DEL CORREO
-			var correo = $( "#correo" ).val();
+			var correo = txtOk($( "#correo" ).val());
 			//FECHA - ID_ENVIO
 			var now = new Date();
 			var fecha_captura = now.getFullYear()+'-'+(1+now.getMonth())+'-'+now.getDate()+'-'+now.getHours()+'_'+now.getMinutes()+'_'+now.getSeconds();
 			var id_envio = fecha_captura+'-'+id_usr;
-			
-			console.log('INSERT INTO publicusuarios (cc,nombres,apellidos,telefono,correo,id_envio) values ("'+cc+'","'+nombres+'","'+apellidos+'","'+telefonos+'","'+correo+'","'+id_envio+'")');
-			tx.executeSql('INSERT INTO publicusuarios (cc,nombres,apellidos,telefono,correo,id_envio) values ("'+cc+'","'+nombres+'","'+apellidos+'","'+telefonos+'","'+correo+'","'+id_envio+'")');
-			localStorage.persona_valor = cc+"|"+nombres+"|"+apellidos;
-			alert("Persona registrada exitosamente");
-			setTimeout(function() {
-				window.location = "p1_persona_buscar.html";
-			}, 200);
+			db.transaction(function(tx) {
+				console.log('INSERT INTO publicusuarios (cc,nombres,apellidos,telefono,correo,id_envio) values ("'+cc+'","'+nombres+'","'+apellidos+'","'+telefonos+'","'+correo+'","'+id_envio+'")');
+				tx.executeSql('INSERT INTO publicusuarios (cc,nombres,apellidos,telefono,correo,id_envio) values ("'+cc+'","'+nombres+'","'+apellidos+'","'+telefonos+'","'+correo+'","'+id_envio+'")');
+			},errorInsertp,
+				function successInsertp() {
+					localStorage.persona_valor = cc+"|"+nombres+"|"+apellidos;
+					alert("Persona registrada exitosamente");
+					setTimeout(function() {
+						window.location = "p1_persona_buscar.html";
+					}, 100);
+				}
+			);
 		}
 	}
 }

@@ -101,7 +101,6 @@ function onPhotoDataSuccess(imageData) {	console.log(imageData);
 	if (typeof cordova !== 'undefined'){
 			console.log(JSON.stringify(cordova.file));
 			console.log(newFileName);
-
 	      	window.resolveLocalFileSystemURL(
 	      		  imageData,
 			      function gotFile(fileEntry){	console.log(JSON.stringify(fileEntry));
@@ -119,7 +118,7 @@ function onPhotoDataSuccess(imageData) {	console.log(imageData);
 				                  alert('Error al copiar el Archivo: '+nuevoArchivo);
 				              });
 					    }
-					);	      	
+					);
 			      }
 		    );
 	} else{

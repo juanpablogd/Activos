@@ -357,27 +357,19 @@ function ConsultaSincronizarFotos(tx, results) {
 		            	function eliminafotodb(tx) { //alert('DELETE from publicarticulos_fotos where id_envio = "'+n[0]+'" and rowid = "'+n[1]+'"');
 							if(n[0]!="null" && n[0] !=""){
 								console.log('DELETE from publicarticulos_fotos where id_envio = "'+n[0]+'" and rowid = "'+n[1]+'"');
-								//tx.executeSql('DELETE from publicarticulos_fotos where id_envio = "'+n[0]+'" and rowid = "'+n[1]+'"');
+								tx.executeSql('DELETE from publicarticulos_fotos where id_envio = "'+n[0]+'" and rowid = "'+n[1]+'"');
 							}else if(n[3]!="null" && n[3] !=""){
 								  console.log('DELETE from publicarticulos_fotos where idarticulo = "'+n[3]+'" and rowid = "'+n[1]+'"');
-								//tx.executeSql('DELETE from publicarticulos_fotos where idarticulo = "'+n[3]+'" and rowid = "'+n[1]+'"');
+								tx.executeSql('DELETE from publicarticulos_fotos where idarticulo = "'+n[3]+'" and rowid = "'+n[1]+'"');
 							}
 						}
 		            	function sqlexitoso ()  {	//console.log(LocalFileSystem.TEMPORARY);
-							//Delete file 
-							window.requestFileSystem(LocalFileSystem.TEMPORARY, 0, 
-							    function(fileSys) {	
-									for(key in fileSys) {
-										if(fileSys.hasOwnProperty(key)) {
-									        var value = fileSys[key];
-									        console.log(key + " " + fileSys[key]);
-									    }
-									}	//console.log(n[2]);
-							        fileSys.root.getFile(n[2], {create: false}, 
-							            function(file) {	console.log("fileEntry es un Archivo?" + fileEntry.isFile.toString());
-							                file.remove(pictureRemoved, notRemoved,pictureNotfound);                                                  
-							            });
-							    }, no);
+					      	window.resolveLocalFileSystemURL(
+					      		  n[2],
+							      function gotFile(fileEntry){	console.log(JSON.stringify(fileEntry));
+									fileEntry.remove(pictureRemoved, notRemoved);  
+							      }
+						    );
 							//CONTINUA CON LOS NUEVOS ELEMENTOS REGISTRADOS EN EL SISTEMA
 							if((i+1) == len) { //alert("continue a rtas");
 								   	salir();

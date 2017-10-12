@@ -5,7 +5,7 @@ var foto_tamano;
 
 
 if(localStorage.foto_calidad=="" || localStorage.foto_calidad == undefined){
-	foto_calidad = "25";
+	foto_calidad = "30";
 }else{
 	foto_calidad = localStorage.foto_calidad;
 }	//alert(foto_calidad);

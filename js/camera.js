@@ -93,65 +93,35 @@ function onErrorGetDir(error) {
 
 // api-camera
 function onPhotoDataSuccess(imageData) {	console.log(imageData);
-	//Grab the file name of the photo in the temporary directory
-	 //var currentName = imageData.replace(/^.*[\\\/]/, '');	console.log(currentName);
 	 //Create a new name for the photo
-  var d = new Date(),
-      n = d.getTime(),
-      newFileName = n + ".jpg";
+  	var d = new Date(),
+    	  n = d.getTime(),
+      	newFileName = n + ".jpg";
+    var nuevoArchivo = cordova.file.externalDataDirectory + newFileName;	console.log(nuevoArchivo);
 	if (typeof cordova !== 'undefined'){
-			function successCallbackf(entry) {
-			    console.log("New Path: " + entry.fullPath);
-			    console.log("Success. New Path: " + entry.fullPath);
-			    adicionarFoto(newFileName);
-			}
-
-			function errorCallbackf(error) {
-			    console.log("Error:" + error.code)
-			    //alert(error.code);
-			}
-			console.log(imageData);
-			//console.log(cordova.file.externalRootDirectory);
-			//console.log(cordova.file.dataDirectory);
+			console.log(JSON.stringify(cordova.file));
 			console.log(newFileName);
 
-			var path = imageData;
-
-			window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function(entry){
-			        var parent = document.getElementById('parent').value;
-			        parentEntry = new DirectoryEntry({fullPath: parent});
-
-			        // copy the file to a new directory and rename it
-			        entry.copyTo(parentEntry, "file.copy", function(entry){
-			            console.log("New Path: " + entry.fullPath);
-			        }, function(error){
-			            console.log(error.code);
-			        });
-
-			    }, null);
-
-/*	      window.resolveLocalFileSystemURL(path,
-		      function gotFile(fileEntry){
-				window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, 
-				    function(fileSys) {
-			          fileEntry.moveTo(fileSys, newFileName,
-			              function()
-			              {
-			                  console.log('copying was successful')
-			              },
-			              function()
-			              {
-			                  console.log('unsuccessful copying')
-			              });
-				    }
-				);	      	
-		      }
-		    ); */
-	      
-
-
-
-
+	      	window.resolveLocalFileSystemURL(
+	      		  imageData,
+			      function gotFile(fileEntry){	console.log(JSON.stringify(fileEntry));
+					window.resolveLocalFileSystemURL(
+						cordova.file.externalDataDirectory,
+					    function(fileSys) {		console.log(JSON.stringify(fileSys));
+				          fileEntry.copyTo(fileSys, newFileName,
+				              function()
+				              {
+				                  console.log('Copia Exitosa: '+nuevoArchivo)
+				                  adicionarFoto(nuevoArchivo);
+				              },
+				              function()
+				              {
+				                  alert('Error al copiar el Archivo: '+nuevoArchivo);
+				              });
+					    }
+					);	      	
+			      }
+		    );
 	} else{
 		adicionarFoto(imageData);
 	}

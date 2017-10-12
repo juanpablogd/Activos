@@ -27,8 +27,8 @@ function CargarListado(tx) {
 			var order = "art.nombre";
 		}
 		$.mobile.loading( 'show', { text: 'Buscando... ', textVisible: true, theme: 'b', html: "" }); 
-		  console.log('SELECT idinventariodet,sub.nombre sublinea,art.nombre,art.referencia,art.numero_serie_af,inv_det.observacion,asignacion,art.idarticulo,plaqueta_af,art.rowid,id_envio_art,inv_det.id_envio,inv.firma FROM publicinventario inv inner join publicinventario_det inv_det on ((inv.idinventario = inv_det.idinventario) or (inv.id_envio = inv_det.id_envio and inv.id_envio != "")) inner join publicarticulos art on ((art.idarticulo  = inv_det.idarticulo) or (CAST(art.id_envio as text) = CAST(inv_det.id_envio_art as text) and art.id_envio != "")) left join publicsublineas sub on sub.idslinea = art.idslinea where inv.cc_responsable ="'+res[0]+'" order by ' + order);		  
-	    tx.executeSql('SELECT idinventariodet,sub.nombre sublinea,art.nombre,art.referencia,art.numero_serie_af,inv_det.observacion,asignacion,art.idarticulo,plaqueta_af,art.rowid,id_envio_art,inv_det.id_envio,inv.firma FROM publicinventario inv inner join publicinventario_det inv_det on ((inv.idinventario = inv_det.idinventario) or (inv.id_envio = inv_det.id_envio and inv.id_envio != "")) inner join publicarticulos art on ((art.idarticulo  = inv_det.idarticulo) or (CAST(art.id_envio as text) = CAST(inv_det.id_envio_art as text) and art.id_envio != "")) left join publicsublineas sub on sub.idslinea = art.idslinea where inv.cc_responsable ="'+res[0]+'" order by ' + order, [], MuestraItems);
+		  console.log('SELECT idinventariodet,sub.nombre sublinea,art.nombre,art.referencia,art.numero_serie_af,inv_det.observacion,asignacion,art.idarticulo,plaqueta_af,art.rowid,id_envio_art,inv_det.id_envio,inv.firma,sar.nombre estado FROM publicinventario inv inner join publicinventario_det inv_det on ((inv.idinventario = inv_det.idinventario) or (inv.id_envio = inv_det.id_envio and inv.id_envio != "")) inner join publicarticulos art on ((art.idarticulo  = inv_det.idarticulo) or (CAST(art.id_envio as text) = CAST(inv_det.id_envio_art as text) and art.id_envio != "")) left join publicestadoarticulo sar on sar.id_estado = art.id_estado left join publicsublineas sub on sub.idslinea = art.idslinea where inv.cc_responsable ="'+res[0]+'" order by ' + order);		  
+	    tx.executeSql('SELECT idinventariodet,sub.nombre sublinea,art.nombre,art.referencia,art.numero_serie_af,inv_det.observacion,asignacion,art.idarticulo,plaqueta_af,art.rowid,id_envio_art,inv_det.id_envio,inv.firma,sar.nombre estado FROM publicinventario inv inner join publicinventario_det inv_det on ((inv.idinventario = inv_det.idinventario) or (inv.id_envio = inv_det.id_envio and inv.id_envio != "")) inner join publicarticulos art on ((art.idarticulo  = inv_det.idarticulo) or (CAST(art.id_envio as text) = CAST(inv_det.id_envio_art as text) and art.id_envio != "")) left join publicestadoarticulo sar on sar.id_estado = art.id_estado left join publicsublineas sub on sub.idslinea = art.idslinea where inv.cc_responsable ="'+res[0]+'" order by ' + order, [], MuestraItems);
 	}
 }
 
@@ -74,7 +74,7 @@ function MuestraItems(tx, results) {
 	var now = new Date();
 	var fecha_captura = now.getFullYear()+'-'+(1+now.getMonth())+'-'+now.getDate()+'-'+now.getHours()+'_'+now.getMinutes()+'_'+now.getSeconds();
 	var id_envio = fecha_captura+'-'+localStorage.id_usr;
-	
+	localStorage.firma = "";
     for (var i=0;i<encontrados;i++)
 	{
 	 	var id = results.rows.item(i).idinventariodet;		console.log("Id: "+id);
@@ -90,6 +90,7 @@ function MuestraItems(tx, results) {
 	 	var id_envio_art = results.rows.item(i).id_envio_art;
 	 	var inv_det_id_envio = results.rows.item(i).id_envio;
 	 	var firma = results.rows.item(i).firma;
+	 	var estado = results.rows.item(i).estado;
 	 	var desasignar="";
 		//console.log($("#firma_ok").attr('src'));console.log(firma);
 		if($("#firma_ok").attr('src') == undefined){	console.log("indefinido");
@@ -129,6 +130,7 @@ function MuestraItems(tx, results) {
 			        "<p style='color:#"+color+"'>"+sublinea+"</p>"+
 			        "<p style='color:#"+color+"'>Plaq: "+plaqueta_af+"</p>"+
 			        "<p style='color:#"+color+"'>Serie: "+numero_serie_af+"</p>"+
+			        "<h1 style='color:#"+color+";font-size: 0.9em;font-weight: 100;'>Estado: "+estado+"</h1>"+
 			        "<label for='t"+cod_id+"' style='color:#"+color+"'>Observación:</label><input type='text' name='t"+cod_id+"' id='t"+cod_id+"' style='color:#"+color+"' value='"+observacion+"' "+habilitado+">"+
 			        "<p style='color:#"+color+"'>Fotos actualizadas: <label id='nf"+cod_id+"'><label></p>"+
 					"<label for='s"+cod_id+"'></label><select class='componentSelect' name='s"+cod_id+"' id='s"+cod_id+"' "+habilitado+"><option value=''></option><option value='N' "+selN+">No reportado</option><option value='P' "+selP+">Pendiente</option><option value='R' "+selR+">Reportado</option></select>" +
@@ -157,6 +159,7 @@ function MuestraItems(tx, results) {
 		        if($(this).is(":checked")) {
 		            console.log("checked");
 		            $("#contenidoFirma").show();
+		            $("#guardar").focus();
 		        }else{
 		        	console.log("NO checked");
 		        	$("#contenidoFirma").hide();

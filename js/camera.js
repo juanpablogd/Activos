@@ -93,12 +93,12 @@ function onErrorGetDir(error) {
 
 // api-camera
 function onPhotoDataSuccess(imageData) {	console.log(imageData);
-	 //Create a new name for the photo
-  	var d = new Date(),
-    	  n = d.getTime(),
-      	newFileName = n + ".jpg";
-    var nuevoArchivo = cordova.file.externalDataDirectory + newFileName;	console.log(nuevoArchivo);
 	if (typeof cordova !== 'undefined'){
+		//Create a new name for the photo
+	  	var d = new Date(),
+	    	  n = d.getTime(),
+	      	newFileName = n + ".jpg";
+		var nuevoArchivo = cordova.file.externalDataDirectory + newFileName;	console.log(nuevoArchivo);
 			console.log(JSON.stringify(cordova.file));
 			console.log(newFileName);
 	      	window.resolveLocalFileSystemURL(

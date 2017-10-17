@@ -23,6 +23,10 @@ function GuardaElemento(tx) {
 		$("#cc").focus();
 		$.mobile.loading( 'hide' );
 		return false;
+	}else if(cc.trim().length > 42){
+		alert("CC no puede tener más de 42 caracteres");
+		$("#cc").focus();
+		$.mobile.loading( 'hide' );
 	}else if(nombres.trim() == ""){
 		alert("Digite Nombres");
 		$("#nombres").focus();

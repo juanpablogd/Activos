@@ -387,7 +387,7 @@ function ConsultaSincronizarFotos(tx, results) {
 		            function(error) {
 		            	var txtServidor;
 	                	if(error.code == 1){
-	                		txtServidor = "No se encontró el archivo, pudo haber sido Eliminado: " + url_imagen;
+	                		txtServidor = "No se encontró el archivo, pudo haber sido Eliminado: " + url_imagen.substr(26);
 	                	}else if(error.code == 2){
 	                		txtServidor = "Error en la Url del servidor";
 	                	}else if(error.code == 3){

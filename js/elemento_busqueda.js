@@ -131,7 +131,7 @@ $(document).ready(function() {
 		var seccion = localStorage.idseccion;
 
 		db.transaction(function(tx) {
-			console.log('select nombres,apellidos from publicinventario inv inner join publicinventario_det inv_det on ((inv.idinventario = inv_det.idinventario) or (inv.id_envio = inv_det.id_envio and inv.id_envio != "")) left join publicusuarios usr on usr.cc = inv.cc_responsable where (id_envio_art = "'+id_elemento[5]+'" and id_envio_art != "" and id_envio_art != "null") or (idarticulo = "'+id_elemento[0]+'" and idarticulo != "" and idarticulo != "null") order by inv.rowid desc limit 1'); 
+			  console.log('select nombres,apellidos from publicinventario inv inner join publicinventario_det inv_det on ((inv.idinventario = inv_det.idinventario) or (inv.id_envio = inv_det.id_envio and inv.id_envio != "")) left join publicusuarios usr on usr.cc = inv.cc_responsable where (id_envio_art = "'+id_elemento[5]+'" and id_envio_art != "" and id_envio_art != "null") or (idarticulo = "'+id_elemento[0]+'" and idarticulo != "" and idarticulo != "null") order by inv.rowid desc limit 1'); 
 			tx.executeSql('select nombres,apellidos from publicinventario inv inner join publicinventario_det inv_det on ((inv.idinventario = inv_det.idinventario) or (inv.id_envio = inv_det.id_envio and inv.id_envio != "")) left join publicusuarios usr on usr.cc = inv.cc_responsable where (id_envio_art = "'+id_elemento[5]+'" and id_envio_art != "" and id_envio_art != "null") or (idarticulo = "'+id_elemento[0]+'" and idarticulo != "" and idarticulo != "null") order by inv.rowid desc limit 1', [],
 				function consultaEle(tx, results) {
 					var encontrados = results.rows.length; console.log("Encontrados: " + encontrados);
@@ -167,7 +167,7 @@ $(document).ready(function() {
 						localStorage.Fotos = "";
 						localStorage.busqueda = "";
 						db.transaction(function(tx) {
-							console.log('select * from publicinventario_det where id_envio = "'+id_envio+'"');
+							  console.log('select * from publicinventario_det where id_envio = "'+id_envio+'"');
 							tx.executeSql('select * from publicinventario_det where id_envio = "'+id_envio+'"', [],
 								function MuestraItems(tx, results) {
 									var encontrados = results.rows.length; console.log("Encontrados: " + encontrados);

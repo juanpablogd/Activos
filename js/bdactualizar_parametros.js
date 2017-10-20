@@ -28,6 +28,10 @@ function TablaGuardarExe(tx) {
 		if(arr_ListaTabla[fil][0] == "publicinventario"){
 			tx.executeSql('CREATE INDEX idx_inv_publicinventario_cc_responsable ON publicinventario (cc_responsable);');	
 		}
+		if(arr_ListaTabla[fil][0] == "publicinventario_det"){
+			tx.executeSql('CREATE INDEX idx_inv_publicinventariodet_id_envio_art ON publicinventario_det (id_envio_art);');
+			tx.executeSql('CREATE INDEX idx_inv_publicinventariodet_idarticulo ON publicinventario_det (idarticulo);');
+		}
 	}																														//alert("Longitud: "+arr_tabla.length);
 	
 	$.mobile.loading( 'show', { text: 'Ingresando datos... ', textVisible: true, theme: 'a', html: "" });

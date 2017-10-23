@@ -94,33 +94,38 @@ function onErrorGetDir(error) {
 // api-camera
 function onPhotoDataSuccess(imageData) {	console.log(imageData);
 	if (typeof cordova !== 'undefined'){
-		//Create a new name for the photo
-	  	var d = new Date(),
-	    	  n = d.getTime(),
-	      	newFileName = n + ".jpg";
-		var nuevoArchivo = cordova.file.externalDataDirectory + newFileName;	console.log(nuevoArchivo);
-			console.log(JSON.stringify(cordova.file));
-			console.log(newFileName);
-	      	window.resolveLocalFileSystemURL(
-	      		  imageData,
-			      function gotFile(fileEntry){	console.log(JSON.stringify(fileEntry));
-					window.resolveLocalFileSystemURL(
-						cordova.file.externalDataDirectory,
-					    function(fileSys) {		console.log(JSON.stringify(fileSys));
-				          fileEntry.copyTo(fileSys, newFileName,
-				              function()
-				              {
-				                  console.log('Copia Exitosa: '+nuevoArchivo)
-				                  adicionarFoto(nuevoArchivo);
-				              },
-				              function()
-				              {
-				                  alert('Error al copiar el Archivo: '+nuevoArchivo);
-				              });
-					    }
-					);
-			      }
-		    );
+		var devicePlatform = device.platform;	console.log(devicePlatform);
+        if(devicePlatform == "Android"){
+			//Create a new name for the photo
+		  	var d = new Date(),
+		    	  n = d.getTime(),
+		      	newFileName = n + ".jpg";
+			var nuevoArchivo = cordova.file.externalDataDirectory + newFileName;	console.log(nuevoArchivo);
+				console.log(JSON.stringify(cordova.file));
+				console.log(newFileName);
+		      	window.resolveLocalFileSystemURL(
+		      		  imageData,
+				      function gotFile(fileEntry){	console.log(JSON.stringify(fileEntry));
+						window.resolveLocalFileSystemURL(
+							cordova.file.externalDataDirectory,
+						    function(fileSys) {		console.log(JSON.stringify(fileSys));
+					          fileEntry.copyTo(fileSys, newFileName,
+					              function()
+					              {
+					                  console.log('Copia Exitosa: '+nuevoArchivo)
+					                  adicionarFoto(nuevoArchivo);
+					              },
+					              function()
+					              {
+					                  alert('Error al copiar el Archivo: '+nuevoArchivo);
+					              });
+						    }
+						);
+				      }
+			    );
+        }else{
+        	adicionarFoto(imageData);	
+        }
 	} else{
 		adicionarFoto(imageData);
 	}

@@ -22,7 +22,7 @@
 		complete: function() { $("#resultado").html('<br>Carga Completa....'+(lon-i)+'.<br>');  },
 		type:  'post',
 		async: false,		//timeout: 30000,
-		success: function(responser){	//alert(responser);
+		success: function(responser){	//console.log(responser);
 			$("#resultado").text('Información registrada Exitosamente!!!');
 
 		},

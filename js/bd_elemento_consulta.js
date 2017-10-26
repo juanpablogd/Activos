@@ -6,16 +6,21 @@ var db = window.openDatabase("bdactivos", "1.0", "Proyecto SFK Activos", 3355443
 function errorCB(err) {
 	// Esto se puede ir a un Log de Error dir�a el purista de la oficina, pero como este es un ejemplo pongo el MessageBox.Show :P
 	if (err.code != "undefined" && err.message != "undefined"){
-		alert("Error procesando SQL: Codigo: " + err.code + " Mensaje: "+err.message);
+		alerta (
+		    "Error procesando SQL: Codigo: " + err.code + " Mensaje: "+err.message,  // message
+		    function(){},         // callback
+		    'Activos',            // title
+		    'Ok'                  // buttonName
+		);
 	}
 }
 function successCB() {
-    //alert("Ok!");
+    //console.log("Ok!");
 }
 
 /* BUSQUEDA EN LA TABLA ELEMENTO*/
 function CargarListado(tx) {
-	var busqueda=localStorage.consulta.trim(); //console.log("Busqueda: "+busqueda+"!"); //alert("Busqueda: "+busqueda); alert("SELECT * FROM publicp_elemento where referencia like '%"+busqueda+"%'");
+	var busqueda=localStorage.consulta.trim(); //console.log("Busqueda: "+busqueda+"!"); //console.log("Busqueda: "+busqueda); console.log("SELECT * FROM publicp_elemento where referencia like '%"+busqueda+"%'");
 	if(busqueda!=null){ console.log('SELECT el.idarticulo,el.rowid as id,el.referencia,el.numero_serie_af,plaqueta_af,plaqueta_anterior1_af,el.nombre,te.nombres||" "||te.apellidos as responsable,idusuario_envio,el.id_envio FROM publicarticulos el left join publicusuarios te on (el.cc_responsable_af = te.cc and el.cc_responsable_af != "") where referencia like "%'+busqueda+'%" or nombre like "%'+busqueda+'%" or numero_serie_af like "%'+busqueda+'%" or plaqueta_af like "%'+busqueda+'%" or plaqueta_anterior1_af like "%'+busqueda+'%" limit 200');
 	                  tx.executeSql('SELECT el.idarticulo,el.rowid as id,el.referencia,el.numero_serie_af,plaqueta_af,plaqueta_anterior1_af,el.nombre,te.nombres||" "||te.apellidos as responsable,idusuario_envio,el.id_envio FROM publicarticulos el left join publicusuarios te on (el.cc_responsable_af = te.cc and el.cc_responsable_af != "") where referencia like "%'+busqueda+'%" or nombre like "%'+busqueda+'%" or numero_serie_af like "%'+busqueda+'%" or plaqueta_af like "%'+busqueda+'%" or plaqueta_anterior1_af like "%'+busqueda+'%" limit 200', [], MuestraItems);
    }
@@ -30,7 +35,7 @@ function MuestraItems(tx, results) {
 	 	var id = results.rows.item(i).id;
 	 	var idarticulo = results.rows.item(i).idarticulo;
 	 	var referencia = results.rows.item(i).referencia;
-	 	var nombre = results.rows.item(i).nombre;					//alert( "nombre = " + sessionStorage.getItem("nombre"));
+	 	var nombre = results.rows.item(i).nombre;					//console.log( "nombre = " + sessionStorage.getItem("nombre"));
 	 	var responsable = results.rows.item(i).responsable;	if(responsable==null) responsable = "";
 	 	var numero_serie_af = results.rows.item(i).numero_serie_af;
 	 	var plaqueta_af = results.rows.item(i).plaqueta_af;
@@ -89,8 +94,14 @@ $(document).ready(function() {
             $("#lista").listview( "refresh" );
             $("#lista").trigger( "updatelayout");
         }else{
-        	alert("Debe digitar el número de Placa o Serial");
-        	$("#txtBuscar").focus();
+			alerta (
+			    "Debe digitar el número de Placa o Serial",  // message
+			    function(){
+					$("#txtBuscar").focus();
+			    },         // callback
+			    'Activos',            // title
+			    'Ok'                  // buttonName
+			);
         }
     });
     

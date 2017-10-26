@@ -84,7 +84,7 @@
 			function leer(){
 				cordova.plugins.barcodeScanner.scan(
 					function(result) {
-//						$val = result.text; //alert($val);
+//						$val = result.text; //console.log($val);
 //						var res = $val.split("@");
 						localStorage.consulta = result.text; 
 						db.transaction(CargarListado);
@@ -92,7 +92,14 @@
 						$ul.trigger( "updatelayout");	
 					},
 					function (error){
-						alert("Error: " + error);
+						alerta (
+						    "Error: " + error,  // message
+						    function(){
+								//window.location = "principal.html";	    	
+						    },         // callback
+						    'Activos',            // title
+						    'Ok'                  // buttonName
+						);
 					}
 				);
 			}

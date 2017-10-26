@@ -2,10 +2,15 @@ var db = window.openDatabase("bdactivos", "1.0", "Proyecto SFK Activos", 3355443
 function errorCB(err) {
 	// Esto se puede ir a un Log de Error dir�a el purista de la oficina, pero como este es un ejemplo pongo el MessageBox.Show :P
 	if (err.code != "undefined" && err.message != "undefined"){
-		alert("Error procesando SQL: Codigo: " + err.code + " Mensaje: "+err.message);
+		alerta (
+		    "Error procesando SQL: Codigo: " + err.code + " Mensaje: "+err.message,  		// message
+		    function(){ },         	// callback
+		    'Activos',            	// title
+		    'Ok'                  	// buttonName
+		);
 	}
 }
-function successCB() { /*alert("Ok!"); */ }
+function successCB() { /*console.log("Ok!"); */ }
 
 function TBLusuario(tx) {//Si no existe crea la talba USUARIOS	//tx.executeSql('DELETE TABLE IF EXISTS "usuario"');
     tx.executeSql('CREATE TABLE IF NOT EXISTS usuario ("id" INTEGER PRIMARY KEY  NOT NULL  DEFAULT (null) ,"nombre" CHAR NOT NULL ,"usuario" CHAR NOT NULL ,"contrasegna" CHAR NOT NULL  DEFAULT (null) ,"activo" CHAR NOT NULL  DEFAULT (1),"conectado" CHAR NOT NULL  DEFAULT (1) )');
@@ -19,24 +24,24 @@ function TBLusuarioConsulta(tx) {
 }
 /* LOGUEADO EXITOSAMENTE*/
 function TBLusuarioConsultaGuarda(tx, results) {
-	var len = results.rows.length;	//alert('Resultados: '+len);
+	var len = results.rows.length;	//console.log('Resultados: '+len);
     if(len==0){
 		tx.executeSql('INSERT INTO usuario (id,nombre,usuario,contrasegna,activo,conectado) values ("9999","Usuario Maestro","maestro","maestro","S","2013-01-01")'); 
 	}
 }
 /* LOGUEADO EXITOSAMENTE*/
-function AlmacenaUsr(tx) {	//alert("Inicia AlmacenaUsr");
+function AlmacenaUsr(tx) {	//console.log("Inicia AlmacenaUsr");
 	db.transaction(TBLusuario); 					//Crea la tabla y usuario por defecto
 	db.transaction(AlmacenaUsrConsulta);			//Consulta Usuario en la base de datos para trabajo Offline
 }
 /* LOGUEADO EXITOSAMENTE*/
 function AlmacenaUsrConsulta(tx) {
-	var id = localStorage.id_usr;				//console.log(id);					//alert('SELECT * FROM usuario  where id = "'+id+'"');
+	var id = localStorage.id_usr;				//console.log(id);					//console.log('SELECT * FROM usuario  where id = "'+id+'"');
     tx.executeSql('SELECT * FROM usuario  where id = "'+id+'"', [], AlmacenaUsrConsultaGuarda); 
 }
 /* LOGUEADO EXITOSAMENTE*/
 function AlmacenaUsrConsultaGuarda(tx, results) {
-	var len = results.rows.length;					console.log(len);					//alert('Resultados: '+len);
+	var len = results.rows.length;					console.log(len);					//console.log('Resultados: '+len);
 	var usr = $("#login").val();
 	var pas = $("#password").val();
 
@@ -49,10 +54,10 @@ function AlmacenaUsrConsultaGuarda(tx, results) {
 		var fecha_ingreso = now.getFullYear()+'-'+(1+now.getMonth())+'-'+now.getDate();
 		
 	    if(len==0){
-	    	//alert("Insert");
+	    	//console.log("Insert");
 			tx.executeSql('INSERT INTO usuario (id,nombre,usuario,contrasegna,activo,conectado) values ("'+id+'","'+nombre+'","'+usr+'","'+pas+'","S","'+fecha_ingreso+'")'); 
 		}else 
-		{	//alert("Update");
+		{	//console.log("Update");
 			tx.executeSql('UPDATE usuario set nombre = "'+nombre+'",usuario = "'+usr+'",contrasegna = "'+pas+'",conectado = "'+fecha_ingreso+'" where id = "'+id+'"');
 		}
 		window.location = "principal.html";	
@@ -69,12 +74,12 @@ function BuscaUsuario(tx) {
 /* LOGUEADO LOCALMENTE EN EL MOVIL*/
 function BuscaUsuarioConsulta(tx) {
 	var usr = $("#login").val();
-	var pas = $("#password").val();					//alert('SELECT * FROM usuario  where usuario = "'+usr+'" and contrasegna = "'+pas+'"');
+	var pas = $("#password").val();					//console.log('SELECT * FROM usuario  where usuario = "'+usr+'" and contrasegna = "'+pas+'"');
     tx.executeSql('SELECT * FROM usuario  where usuario = "'+usr+'" and contrasegna = "'+pas+'"', [], MuestraItems);
 }
 /* LOGUEADO LOCALMENTE EN EL MOVIL*/
 function MuestraItems(tx, results) {
-    var len = results.rows.length;					//alert('Resultados: '+len);
+    var len = results.rows.length;					//console.log('Resultados: '+len);
     if(len==0){
     	$("#equivocado").text('Usuario o contraseña no valido!');
     }else{
@@ -82,7 +87,7 @@ function MuestraItems(tx, results) {
 	 	var id = results.rows.item(0).id;			
 	 	var nombre = results.rows.item(0).nombre;	
 	 	localStorage.id_usr = id;	
-	 	localStorage.nombre = nombre;				//alert( "nombre = " + localStorage.nombre);
+	 	localStorage.nombre = nombre;				//console.log( "nombre = " + localStorage.nombre);
 		window.location = "principal.html";	
     }
 }
@@ -98,11 +103,11 @@ function BuscaUsuarioLogueado(tx) {
 }
 /* LOGUEADO LOCALMENTE EN EL MOVIL*/
 function MuestraUsuarioLogueado(tx, results) {
-    var len = results.rows.length;        //alert('Resultados: '+len);
+    var len = results.rows.length;        //console.log('Resultados: '+len);
     if(len>0){
                 $("#equivocado").text('Ingreso exitoso,espere por favor...');
                  var id = results.rows.item(0).id;
-                 var nombre = results.rows.item(0).nombre;                                        //alert( "nombre = " + sessionStorage.getItem("nombre"));
+                 var nombre = results.rows.item(0).nombre;					//console.log( "nombre = " + sessionStorage.getItem("nombre"));
 
                  localStorage.nombre=nombre;
                  localStorage.id_usr=id;

@@ -4,8 +4,14 @@
 var db = window.openDatabase("bdactivos", "1.0", "Proyecto SFK Activos", 33554432);
 
 function errorCBv(err) {
-	alert("Debe sincronizar la base de datos");
-	window.location="descargar.html";
+	alerta (
+	    "Debe sincronizar la base de datos",  // message
+	    function(){
+			window.location = "descargar.html";	    	
+	    },         // callback
+	    'Activos',            // title
+	    'Ok'                  // buttonName
+	);
 }
 
 /* BUSQUEDA EN LA TABLA ELEMENTO*/

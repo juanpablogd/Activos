@@ -2,8 +2,12 @@ var db = window.openDatabase("bdactivos", "1.0", "Proyecto SFK Activos", 3355443
 //VALIDA SI NO HAY EMPRESA CREADA
 
 if (localStorage.idempresa == "" || localStorage.idempresa === undefined){
-	alert("No hay empresa seleccionada, creela y sincronice de nuevo");
-	window.location = "principal.html";
+	alerta (
+	    "No hay empresa seleccionada, creela y sincronice de nuevo",  		// message
+	    function(){ window.location = "principal.html"; },         	// callback
+	    'Activos',            	// title
+	    'Ok'                  	// buttonName
+	);
 } 
 
 // Start with the map page
@@ -11,7 +15,7 @@ $(window).load(function () {
 		/*
 		var idcorredor = localStorage.idcorredor;		 	
 		var nombre = localStorage.nombre;
-		var idinscripcion = localStorage.idinscripcion;	//alert("Nombre: "+nombre+"   Insss: "+idinscripcion);
+		var idinscripcion = localStorage.idinscripcion;	//console.log("Nombre: "+nombre+"   Insss: "+idinscripcion);
 		*/
 		//if (nombre != null && nombre != "" && idinscripcion != null && idinscripcion != "") window.location = "main.html";
 		 /* db.transaction(AlmacenaUsr);
@@ -22,7 +26,12 @@ $(window).load(function () {
 function errorCB(err) {
 	// Esto se puede ir a un Log de Error dir�a el purista de la oficina, pero como este es un ejemplo pongo el MessageBox.Show :P
 	if (err.code != "undefined" && err.message != "undefined"){
-		alert("Error procesando SQL: Codigo: " + err.code + " Mensaje: "+err.message);
+		alerta (
+		    "Error procesando SQL: Codigo: " + err.code + " Mensaje: "+err.message,  		// message
+		    function(){ },         	// callback
+		    'Activos',            	// title
+		    'Ok'                  	// buttonName
+		);
 	}
 }
 
@@ -34,7 +43,7 @@ function ConsultaItems(tx) {
 		tx.executeSql('select id_estado,nombre from publicestadoarticulo order by nombre', [], ConsultaLoadEstado,errorCB);
 }
 function ConsultaItemsCarga(tx, results) {
-	var len = results.rows.length;	//alert(len);
+	var len = results.rows.length;	//console.log(len);
 	var viddependencia = localStorage.iddependencia;
 	var seleccionado;
 	for (i = 0; i < len; i++){
@@ -52,7 +61,7 @@ function ConsultaItemsCarga(tx, results) {
 	}
 }
 function ConsultaLoadEstado(tx, results) {
-	var len = results.rows.length;	//alert(len);
+	var len = results.rows.length;	//console.log(len);
 
 	for (i = 0; i < len; i++){
 		var nombre = results.rows.item(i).nombre;
@@ -72,7 +81,7 @@ function ConsultaSecciones(tx) {
 		tx.executeSql('select idseccion,nombre from publicsecciones where iddependencia = "'+localStorage.busqueda+'" order by nombre', [], ConsultaSeccionesCarga,errorCB);
 }
 function ConsultaSeccionesCarga(tx, results) {
-	var len = results.rows.length;	//alert(len);
+	var len = results.rows.length;	//console.log(len);
 	var vidseccion = localStorage.idseccion;
 	var seleccionado;
 	$('#seccion').empty();
@@ -95,7 +104,7 @@ function ConsultaLinea(tx) {
 		tx.executeSql('select idlinea,nombre from publiclineas order by nombre', [], ConsultaLineaCarga,errorCB);
 }
 function ConsultaLineaCarga(tx, results) {
-	var len = results.rows.length;	//alert(len);
+	var len = results.rows.length;	//console.log(len);
 	for (i = 0; i < len; i++){
 		var nombre = results.rows.item(i).nombre;
 		var id = results.rows.item(i).idlinea;
@@ -111,7 +120,7 @@ function ConsultaSubLinea(tx) {
 		tx.executeSql('select idslinea,nombre from publicsublineas where idlinea = "'+localStorage.busqueda+'" order by nombre', [], ConsultaSubLineaCarga,errorCB);
 }
 function ConsultaSubLineaCarga(tx, results) {
-	var len = results.rows.length;	//alert(len);
+	var len = results.rows.length;	//console.log(len);
 	
 	$('#sublinea').empty();
 	
@@ -130,9 +139,7 @@ function ConsultaSubLineaCarga(tx, results) {
 
 
 function GuardaElemento(tx) {
-	//alert("asdf");
-	
-	
+
 	//OBTIENE EL ID DEL USUARIO
 	var id_usr = localStorage.id_usr; 
 	
@@ -155,34 +162,63 @@ function GuardaElemento(tx) {
 	var dataf;	//datos de fotos
 	
 	if(sublinea.trim() == ""){
-		alert("Seleccione una Sublinea");
-		$("#sublinea").focus();
-		
+		alerta (
+		    "Seleccione una Sublinea",  		// message
+		    function(){ $("#sublinea").focus(); },         	// callback
+		    'Activos',            	// title
+		    'Ok'                  	// buttonName
+		);
 		return false;
 	}else if(nombre.trim() == ""){
-		alert("Digite el Nombre");
-		$("#name").focus();
-		
+		alerta (
+		    "Digite el Nombre",  		// message
+		    function(){ $("#name").focus(); },         	// callback
+		    'Activos',            	// title
+		    'Ok'                  	// buttonName
+		);
 		return false;
 	}else if(plaqueta.trim() == ""){
-		alert("Escanee la plaqueta");
-		$("#plaqueta").focus();
+		alerta (
+		    "Escanee la plaqueta",  		// message
+		    function(){ $("#plaqueta").focus(); },         	// callback
+		    'Activos',            	// title
+		    'Ok'                  	// buttonName
+		);
 		return false;
 	}else if(id_estado.trim() == 0){
-		alert("Seleccione un estado");
-		$("#id_estado").focus();
+		alerta (
+		    "Seleccione un estado",  		// message
+		    function(){ $("#id_estado").focus(); },         	// callback
+		    'Activos',            	// title
+		    'Ok'                  	// buttonName
+		);
 		return false;
 	}
 	if(localStorage.Fotos == "" || localStorage.Fotos == undefined){
-		alert("Debe añadir mínimo dos(2) Fotos!");
+			alerta (
+			    "Debe añadir mínimo dos(2) Fotos!",  		// message
+			    function(){ },         	// callback
+			    'Activos',            	// title
+			    'Ok'                  	// buttonName
+			);
 		return false;
 	}else{
 		dataf = JSON.parse(localStorage.getItem('Fotos')); console.log(dataf.length);
 		if(dataf.length<2){
-			alert("Debe añadir mínimo dos(2) Fotos!");
+			alerta (
+			    "Debe añadir mínimo dos(2) Fotos!",  		// message
+			    function(){ },         	// callback
+			    'Activos',            	// title
+			    'Ok'                  	// buttonName
+			);
 			return false;
 		}else if(dataf.length>3){
-			alert("Debe añadir máximo tres(3) Fotos!");
+			alerta (
+			    "Debe añadir máximo tres(3) Fotos!",  		// message
+			    function(){ },         	// callback
+			    'Activos',            	// title
+			    'Ok'                  	// buttonName
+			);
 			return false;
 		}
 	}
@@ -198,7 +234,7 @@ function GuardaElemento(tx) {
 	tx.executeSql('select rowid from publicarticulos where id_envio = "'+id_envio+'"', [], 
 		           function(tx,rs){	console.log("rowidOK");
 		           		var p = rs.rows.item(0);
-						localStorage.elemento_valor = p.rowid+"|"+plaqueta+"|"+nombre+"|"+id_envio;		console.log(localStorage.elemento_valor);	//alert(localStorage.elemento_valor);
+						localStorage.elemento_valor = p.rowid+"|"+plaqueta+"|"+nombre+"|"+id_envio;		console.log(localStorage.elemento_valor);	//console.log(localStorage.elemento_valor);
 								//Actualiza columna Id si tiene valor nulo
 								//	console.log('UPDATE publicarticulos set idarticulo = rowid where idarticulo is null');
 								//tx.executeSql('UPDATE publicarticulos set idarticulo = rowid where idarticulo is null');
@@ -207,18 +243,24 @@ function GuardaElemento(tx) {
 									//CARGA FOTOS
 									
 									$.each(dataf, function(i, item) {	
-										db.transaction(function(tx) {	//alert(item);
+										db.transaction(function(tx) {	//console.log(item);
 											  console.log('INSERT INTO publicarticulos_fotos (url,id_envio) values ("'+item+'","'+id_envio+'")');
 											tx.executeSql('INSERT INTO publicarticulos_fotos (url,id_envio) values ("'+item+'","'+id_envio+'")');
 										});	//console.log(i);
 										if((i+1)==dataf.length){
+											console.log("Elemento Guardado exitosamente");
 											setTimeout(function() { 
 												dataf.length=0;
 												localStorage.Fotos = "";
-												console.log("Elemento Guardado exitosamente");
-												alert("Elemento Guardado exitosamente");
-												window.location = "p2_elemento_buscar.html";
-											}, 500);
+												alerta (
+												    "Elemento Guardado exitosamente",  		// message
+												    function(){ 
+												    	window.location = "p2_elemento_buscar.html";
+												    },         	// callback
+												    'Activos',            	// title
+												    'Ok'                  	// buttonName
+												);
+											}, 360);
 										}
 									});
 								}
@@ -272,7 +314,7 @@ $(document).ready(function() {
 	function leer(){
 		cordova.plugins.barcodeScanner.scan(
 			function(result) {
-				//var val = result.text; //alert($val);
+				//var val = result.text; //console.log($val);
 				if(localStorage.busqueda == "s"){
 					$("#nserie").val(result.text);		
 					$('#nserie').textinput();			
@@ -285,7 +327,12 @@ $(document).ready(function() {
 				}
 			},
 			function (error){
-				alert("Error: " + error);
+				alerta (
+				    "Error: " + error,  		// message
+				    function(){ },         	// callback
+				    'Activos',            	// title
+				    'Ok'                  	// buttonName
+				);
 			}
 		);
 		return false;

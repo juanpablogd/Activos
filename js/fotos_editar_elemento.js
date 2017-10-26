@@ -3,7 +3,7 @@
 $(window).load(function () {
 		var idcorredor = localStorage.idcorredor;		 	
 		var nombre = localStorage.nombre;
-		var idinscripcion = localStorage.idinscripcion;	//alert("Nombre: "+nombre+"   Insss: "+idinscripcion);
+		var idinscripcion = localStorage.idinscripcion;	//console.log("Nombre: "+nombre+"   Insss: "+idinscripcion);
 		//if (nombre != null && nombre != "" && idinscripcion != null && idinscripcion != "") window.location = "main.html";
 		 /* db.transaction(AlmacenaUsr);
 		db.transaction(CargarAtletas); */

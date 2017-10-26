@@ -75,7 +75,7 @@ function ConsultaSincronizar(tx) {
 }
 
 function ConsultaSincronizarElemento(tx, results) {
-	var lon = results.rows.length;		//alert("Rta Elemento: " + lon);		//alert("Respuestas: "+lon);  //$("#resultado").before("<br>Cuestionarios encontrados: "+len+".<br>");	
+	var lon = results.rows.length;		//console.log("Rta Elemento: " + lon);		//console.log("Respuestas: "+lon);  //$("#resultado").before("<br>Cuestionarios encontrados: "+len+".<br>");	
 	if(lon==0){	console.log('SELECT idseccion,idusuario,cc_responsable,firma,id_envio,idinventario FROM publicinventario where id_envio != ""');
 	   	      tx.executeSql('SELECT idseccion,idusuario,cc_responsable,firma,id_envio,idinventario FROM publicinventario where id_envio != ""', [],
 	          	ConsultaSincronizarInventario,errorCB_Inventario);
@@ -118,7 +118,7 @@ function ConsultaSincronizarElemento(tx, results) {
 						tx.executeSql('update publicarticulos set id_envio = "" where id_envio = "'+res[1]+'"');		//tx.executeSql('DELETE from publicp_elemento where id_envio = "'+res+'"');
 					//});
 					//CONTINUA CON LOS NUEVOS ELEMENTOS REGISTRADOS EN EL SISTEMA
-					if((i+1) == lon) { //alert("continue a rtas");
+					if((i+1) == lon) { //console.log("continue a rtas");
 					   	tx.executeSql('SELECT idseccion,idusuario,cc_responsable,firma,id_envio,idinventario FROM publicinventario where id_envio != ""', [],
 					           ConsultaSincronizarInventario,errorCB_Inventario);
 					}
@@ -126,7 +126,7 @@ function ConsultaSincronizarElemento(tx, results) {
 				error: function (error) {
 					$("#resultado").text('Error en ingreso de Respuestas'); $("#resultado").trigger("create");
 					//CONTINUA CON LOS NUEVOS ELEMENTOS REGISTRADOS EN EL SISTEMA
-					if((i+1) == lon) { //alert("continue a rtas");
+					if((i+1) == lon) { //console.log("continue a rtas");
 						  console.log('SELECT idseccion,idusuario,cc_responsable,firma,id_envio,idinventario FROM publicinventario where id_envio != ""');
 					   	tx.executeSql('SELECT idseccion,idusuario,cc_responsable,firma,id_envio,idinventario FROM publicinventario where id_envio != ""', [],
 					           ConsultaSincronizarInventario,errorCB_Inventario);
@@ -138,7 +138,7 @@ function ConsultaSincronizarElemento(tx, results) {
 }
 
 function ConsultaSincronizarInventario(tx, results) {
-	var lon = results.rows.length;		//alert("N Inventario: " + lon);		//alert("Respuestas: "+lon);  //$("#resultado").before("<br>Cuestionarios encontrados: "+len+".<br>");
+	var lon = results.rows.length;		//console.log("N Inventario: " + lon);		//console.log("Respuestas: "+lon);  //$("#resultado").before("<br>Cuestionarios encontrados: "+len+".<br>");
 	if(lon==0){ //SI NO HAY INVENTARIO NOTIFICA AL USUARIO
 			  console.log('SELECT cc,nombres,apellidos,telefono,correo,id_envio FROM publicusuarios where id_envio != ""');
 		   	tx.executeSql('SELECT cc,nombres,apellidos,telefono,correo,id_envio FROM publicusuarios where id_envio != ""', [],
@@ -155,7 +155,7 @@ function ConsultaSincronizarInventario(tx, results) {
 			parametros['cc_responsable'] = results.rows.item(i).cc_responsable;
 			parametros['firma'] = results.rows.item(i).firma;
 			parametros['id_envio'] = results.rows.item(i).id_envio;
-			parametros['idinventario'] = results.rows.item(i).idinventario;		//alert(parametros['idinventario']);
+			parametros['idinventario'] = results.rows.item(i).idinventario;		//console.log(parametros['idinventario']);
 			
 			$("#resultado").html("<br>Datos restantes: "+(lon-i)+".<br>"); $("#resultado").trigger("create");
 			$.ajax({
@@ -165,19 +165,19 @@ function ConsultaSincronizarInventario(tx, results) {
 				async: false,		//timeout: 30000,
 				beforeSend: function() { $("#resultado").html('<br>Cargando Inventario....'+(lon-i)+'.<br>'); $("#resultado").trigger("create"); }, //Show spinner
             	complete: function() { $("#resultado").html('<br>Carga Completa....'+(lon-i)+'.<br>'); $("#resultado").trigger("create"); },
-				success: function(responser){	//alert("Inventario: "+responser);
+				success: function(responser){	//console.log("Inventario: "+responser);
 					//db.transaction(function(tx) {
-						var respr = responser.trim();		//alert(respr);	//var res=respr.split("|");
+						var respr = responser.trim();		//console.log(respr);	//var res=respr.split("|");
 						
 						var res=respr.split("|");
 						tx.executeSql('UPDATE publicinventario SET idinventario = "'+res[1]+'" where id_envio = "'+res[0]+'"');		//tx.executeSql('DELETE from publicp_elemento where id_envio = "'+res+'"');
 						tx.executeSql('UPDATE publicinventario SET id_envio = "" where id_envio = "'+res[0]+'"');
 							
-						//alert('delete from publicinventario where id_envio = "'+respr+'"');	
+						//console.log('delete from publicinventario where id_envio = "'+respr+'"');	
 						//tx.executeSql('delete from publicinventario where id_envio = "'+respr+'"');		//tx.executeSql('DELETE from publicp_elemento where id_envio = "'+res+'"');
 					//});
 					//CUANDO TERMINA DE SINCRONIZAR NOTIFICA AL USUARIO
-					if((i+1) == lon) { //alert("continue a rtas");
+					if((i+1) == lon) { //console.log("continue a rtas");
 						//CONTINUA CON LAS NUEVAS PERSONAS REGISTRADAS EN EL SISTEMA
 						  console.log('SELECT cc,nombres,apellidos,telefono,correo,id_envio FROM publicusuarios where id_envio != ""');
 					   	tx.executeSql('SELECT cc,nombres,apellidos,telefono,correo,id_envio FROM publicusuarios where id_envio != ""', [],
@@ -187,7 +187,7 @@ function ConsultaSincronizarInventario(tx, results) {
 				error: function (error) {
 					$("#resultado").text('Error en carga del inventario');	$("#resultado").trigger("create");
 					//CUANDO TERMINA DE SINCRONIZAR NOTIFICA AL USUARIO
-					if((i+1) == lon) { //alert("continue a rtas");
+					if((i+1) == lon) { //console.log("continue a rtas");
 						//CONTINUA CON LAS NUEVAS PERSONAS REGISTRADAS EN EL SISTEMA
 						  console.log('SELECT cc,nombres,apellidos,telefono,correo,id_envio FROM publicusuarios where id_envio != ""');
 					   	tx.executeSql('SELECT cc,nombres,apellidos,telefono,correo,id_envio FROM publicusuarios where id_envio != ""', [],
@@ -200,7 +200,7 @@ function ConsultaSincronizarInventario(tx, results) {
 }
 
 function ConsultaSincronizarPersonas(tx, results) {
-	var lon = results.rows.length;	//alert("Rta Personas: " + lon);								//alert(lon);//$("#resultado").before("<br>Cuestionarios encontrados: "+len+".<br>");	
+	var lon = results.rows.length;	//console.log("Rta Personas: " + lon);								//console.log(lon);//$("#resultado").before("<br>Cuestionarios encontrados: "+len+".<br>");	
 	if(lon==0){	//SI NO HAY PERSONAS PARA ENVIAR CONTINUA CON LOS ELEMENTOS
 			  console.log('SELECT idinventario,idinventariodet,idarticulo,id_estado,id_envio,id_envio_art,observacion,asignacion FROM publicinventario_det where id_envio != ""');
 		   	tx.executeSql('SELECT idinventario,idinventariodet,idarticulo,id_estado,id_envio,id_envio_art,observacion,asignacion FROM publicinventario_det where id_envio != ""', [],
@@ -225,13 +225,13 @@ function ConsultaSincronizarPersonas(tx, results) {
 				async: false,
 				beforeSend: function() { $("#resultado").html('<br>Cargando Empleados....'+(lon-i)+'.<br>'); $("#resultado").trigger("create"); }, 
             	complete: function() { $("#resultado").html('<br>Carga Completa....'+(lon-i)+'.<br>'); $("#resultado").trigger("create"); },
-				success: function(responsea){				//alert("Funcionarios: "+responsea);
+				success: function(responsea){				//console.log("Funcionarios: "+responsea);
 					//db.transaction(function(tx) {
 						var respa = responsea.trim();  
 			          	tx.executeSql('update publicusuarios set id_envio = "" where id_envio = "'+respa+'"');
 			        //});
 					//CUANDO TERMINA DE SINCRONIZAR NOTIFICA AL USUARIO
-					if((i+1) == lon) { //alert("continue a rtas");
+					if((i+1) == lon) { //console.log("continue a rtas");
 						  console.log('SELECT idinventario,idinventariodet,idarticulo,id_estado,id_envio,id_envio_art,observacion,asignacion FROM publicinventario_det where id_envio != ""');
 					   	tx.executeSql('SELECT idinventario,idinventariodet,idarticulo,id_estado,id_envio,id_envio_art,observacion,asignacion FROM publicinventario_det where id_envio != ""', [],
 					           ConsultaSincronizarInventarioDetalle,errorCB_Inventario);
@@ -240,7 +240,7 @@ function ConsultaSincronizarPersonas(tx, results) {
 				error: function (error) {
 					$("#resultado").text('Error en ingreso de Empleados');			$("#resultado").trigger("create");
 					//CUANDO TERMINA DE SINCRONIZAR NOTIFICA AL USUARIO
-					if((i+1) == lon) { //alert("continue a rtas");
+					if((i+1) == lon) { //console.log("continue a rtas");
 						  console.log('SELECT idinventario,idinventariodet,idarticulo,id_estado,id_envio,id_envio_art,observacion,asignacion FROM publicinventario_det where id_envio != ""');
 					   	tx.executeSql('SELECT idinventario,idinventariodet,idarticulo,id_estado,id_envio,id_envio_art,observacion,asignacion FROM publicinventario_det where id_envio != ""', [],
 					           ConsultaSincronizarInventarioDetalle,errorCB_Inventario);
@@ -253,7 +253,7 @@ function ConsultaSincronizarPersonas(tx, results) {
 
 
 function ConsultaSincronizarInventarioDetalle(tx, results) {
-	var lon = results.rows.length;		//alert("InventarioDetalle: " + lon);		//alert("Respuestas: "+lon);  //$("#resultado").before("<br>Cuestionarios encontrados: "+len+".<br>");
+	var lon = results.rows.length;		//console.log("InventarioDetalle: " + lon);		//console.log("Respuestas: "+lon);  //$("#resultado").before("<br>Cuestionarios encontrados: "+len+".<br>");
 	if(lon==0){ //SI NO HAY INVENTARIO NOTIFICA AL USUARIO
 		  console.log('SELECT rowid,url,id_envio,idarticulo FROM publicarticulos_fotos');
 		tx.executeSql('SELECT rowid,url,id_envio,idarticulo FROM publicarticulos_fotos', [], ConsultaSincronizarFotos,errorCB_Fotos);
@@ -282,16 +282,16 @@ function ConsultaSincronizarInventarioDetalle(tx, results) {
 				async: false,		//timeout: 30000,
 				beforeSend: function() { $("#resultado").html('<br>Cargando Inventario....'+(lon-i)+'.<br>'); $("#resultado").trigger("create"); }, 
             	complete: function() { $("#resultado").html('<br>Carga Completa....'+(lon-i)+'.<br>'); $("#resultado").trigger("create"); },
-				success: function(responser){	//alert(responser);
+				success: function(responser){	//console.log(responser);
 					//db.transaction(function(tx) {
-						var respr = responser.trim();		//alert("Inv Detalle: "+respr);	//var res=respr.split("|");	alert('delete from publicinventario_det where id_envio = "'+respr+'"');
+						var respr = responser.trim();		//console.log("Inv Detalle: "+respr);	//var res=respr.split("|");	console.log('delete from publicinventario_det where id_envio = "'+respr+'"');
 
 						var res=respr.split("|");
 						tx.executeSql('UPDATE publicinventario_det SET idinventario = "'+res[1]+'",idinventariodet = "'+res[2]+'" where id_envio = "'+res[0]+'"');		//tx.executeSql('DELETE from publicp_elemento where id_envio = "'+res+'"');
 						tx.executeSql('UPDATE publicinventario_det SET id_envio = "" where id_envio = "'+res[0]+'"');
 					//});
 					//CUANDO TERMINA DE SINCRONIZAR NOTIFICA AL USUARIO
-					if((i+1) == lon) { //alert("continue a rtas");
+					if((i+1) == lon) { //console.log("continue a rtas");
 						  console.log('SELECT rowid,url,id_envio,idarticulo FROM publicarticulos_fotos');
 					   	tx.executeSql('SELECT rowid,url,id_envio,idarticulo FROM publicarticulos_fotos', [], ConsultaSincronizarFotos,errorCB_Fotos);
 					}
@@ -299,7 +299,7 @@ function ConsultaSincronizarInventarioDetalle(tx, results) {
 				error: function (error) {
 					$("#resultado").text('Error en ingreso de Respuestas');	$("#resultado").trigger("create");
 					//CUANDO TERMINA DE SINCRONIZAR NOTIFICA AL USUARIO
-					if((i+1) == lon) { //alert("continue a rtas");
+					if((i+1) == lon) { //console.log("continue a rtas");
 						  console.log('SELECT rowid,url,id_envio,idarticulo FROM publicarticulos_fotos');
 					   	tx.executeSql('SELECT rowid,url,id_envio,idarticulo FROM publicarticulos_fotos', [], ConsultaSincronizarFotos,errorCB_Fotos);
 					}
@@ -312,7 +312,7 @@ function ConsultaSincronizarInventarioDetalle(tx, results) {
 
 //SINCRONIZAR FOTOS
 function ConsultaSincronizarFotos(tx, results) {	
-	var len = results.rows.length;	//alert("Fotos: " + len);
+	var len = results.rows.length;	//console.log("Fotos: " + len);
 	if(len==0){ //SI NO HAY FOTOS PARA ENVIAR CONTINUA CON LAS NUEVAS PERSONAS REGISTRADAS EN EL SISTEMA
 		   	salir();
 	}else{
@@ -354,7 +354,7 @@ function ConsultaSincronizarFotos(tx, results) {
 		            	var n=respf.split("|");
 
 		            	//REMOVER ARCHIVO DEL DISPOSITIVO
-		            	function eliminafotodb(tx) { //alert('DELETE from publicarticulos_fotos where id_envio = "'+n[0]+'" and rowid = "'+n[1]+'"');
+		            	function eliminafotodb(tx) { //console.log('DELETE from publicarticulos_fotos where id_envio = "'+n[0]+'" and rowid = "'+n[1]+'"');
 							if(n[0]!="null" && n[0] !=""){
 								console.log('DELETE from publicarticulos_fotos where id_envio = "'+n[0]+'" and rowid = "'+n[1]+'"');
 								tx.executeSql('DELETE from publicarticulos_fotos where id_envio = "'+n[0]+'" and rowid = "'+n[1]+'"');
@@ -371,7 +371,7 @@ function ConsultaSincronizarFotos(tx, results) {
 							      }
 						    );
 							//CONTINUA CON LOS NUEVOS ELEMENTOS REGISTRADOS EN EL SISTEMA
-							if((i+1) == len) { //alert("continue a rtas");
+							if((i+1) == len) { //console.log("continue a rtas");
 								   	salir();
 							} 
 						}
@@ -402,7 +402,7 @@ function ConsultaSincronizarFotos(tx, results) {
 		                $("#resultado").html(txtServidor);	$("#resultado").trigger("create");
 
 						//CONTINUA CON LOS NUEVOS ELEMENTOS REGISTRADOS EN EL SISTEMA
-						if((i+1) == len) { //alert("continue a rtas");
+						if((i+1) == len) { //console.log("continue a rtas");
 							   	salir();
 						}
 		            },options
@@ -415,8 +415,14 @@ function ConsultaSincronizarFotos(tx, results) {
 function salir (){
 	$("#resultado").html('');	$("#resultado").trigger("create");
 	$("#Lpregunta").show();
-	alert("Cargue exitoso");
-	db.transaction(Cono_elementos);
+		alerta (
+		    "Cargue exitoso",  		// message
+		    function(){
+		    	db.transaction(Cono_elementos);
+		    },         	// callback
+		    'Activos',            	// title
+		    'Ok'                  	// buttonName
+		);
 }
 
 function errorCB_Inventario(err) {
@@ -424,7 +430,12 @@ function errorCB_Inventario(err) {
 		$("#resultado").before("<br>Error al buscar el Inventario<br>");
 	}else
 	{ 
-		alert("Error procesando SQL: Codigo: " + err.code + " Mensaje: "+err.message);		
+		alerta (
+		    "Error procesando SQL: Codigo: " + err.code + " Mensaje: "+err.message,  // message
+		    function(){},         // callback
+		    'Activos',            // title
+		    'Ok'                  // buttonName
+		);
 	}
 }
 function errorCB_items(err) {
@@ -432,7 +443,12 @@ function errorCB_items(err) {
 		$("#resultado").before("<br>No hay Items para sincronizar.<br>");
 	}else
 	{
-		alert("Error procesando SQL: Codigo: " + err.code + " Mensaje: "+err.message);		
+		alerta (
+		    "Error procesando SQL: Codigo: " + err.code + " Mensaje: "+err.message,  // message
+		    function(){},         // callback
+		    'Activos',            // title
+		    'Ok'                  // buttonName
+		);
 	}
 }
 function errorCB_Fotos(err) {
@@ -440,7 +456,12 @@ function errorCB_Fotos(err) {
 		$("#resultado").before("<br>Error al buscar las fotografias<br>");
 	}else
 	{ 
-		alert("Error procesando SQL: Codigo: " + err.code + " Mensaje: "+err.message);
+		alerta (
+		    "Error procesando SQL: Codigo: " + err.code + " Mensaje: "+err.message,  // message
+		    function(){},         // callback
+		    'Activos',            // title
+		    'Ok'                  // buttonName
+		);
 	}
 	
 }
@@ -449,7 +470,12 @@ function errorCB_Personas(err) {
 		$("#resultado").before("<br>Error al buscar las Personas<br>");
 	}else
 	{ 
-		alert("Error procesando SQL: Codigo: " + err.code + " Mensaje: "+err.message);		
+		alerta (
+		    "Error procesando SQL: Codigo: " + err.code + " Mensaje: "+err.message,  // message
+		    function(){},         // callback
+		    'Activos',            // title
+		    'Ok'                  // buttonName
+		);
 	}
 }
 function errorCB_Elemento(err) {
@@ -457,6 +483,11 @@ function errorCB_Elemento(err) {
 		$("#resultado").before("<br>Error al buscar los Elementos<br>");
 	}else
 	{ 
-		alert("Error procesando SQL: Codigo: " + err.code + " Mensaje: "+err.message);		
+		alerta (
+		    "Error procesando SQL: Codigo: " + err.code + " Mensaje: "+err.message,  // message
+		    function(){},         // callback
+		    'Activos',            // title
+		    'Ok'                  // buttonName
+		);
 	}
 }

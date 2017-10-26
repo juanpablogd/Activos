@@ -25,7 +25,12 @@ function leer(ident){
 			//$("#"+ident).textinput();					
 		},
 		function (error){
-			alert("Error: " + error);
+			alerta (
+			    "Error processing SQL: "+error.message,  		// message
+			    function(){ },         	// callback
+			    'Activos',            	// title
+			    'Ok'                  	// buttonName
+			);
 		}
 	);
 	return false;
@@ -34,11 +39,16 @@ function leer(ident){
 function errorCB(err) {
 	// Esto se puede ir a un Log de Error dir�a el purista de la oficina, pero como este es un ejemplo pongo el MessageBox.Show :P
 	if (err.code != "undefined" && err.message != "undefined"){
-		alert("Error procesando SQL: Codigo: " + err.code + " Mensaje: "+err.message);
+		alerta (
+		    "Error procesando SQL: Codigo: " + err.code + " Mensaje: "+err.message,  // message
+		    function(){},         // callback
+		    'Activos',            // title
+		    'Ok'                  // buttonName
+		);
 	}
 }
 function successCB() {
-    //alert("Ok!");
+    //console.log("Ok!");
 }
 
 /**CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS**/ 
@@ -50,7 +60,7 @@ function ConsultaItemSelect(tx) { console.log("ConsultaItemSelect");
 }
 
 function ConsultaLoadEstado(tx, results) {
-	var len = results.rows.length;	//alert(len);
+	var len = results.rows.length;	//console.log(len);
 	var seleccionado;
 	for (i = 0; i < len; i++){
 		seleccionado = "";
@@ -69,7 +79,7 @@ function ConsultaLoadEstado(tx, results) {
 /****************************************************************************************************************************************************************/
 /**CARGAR LÍNEA****CARGAR LÍNEA****CARGAR LÍNEA****CARGAR LÍNEA****CARGAR LÍNEA****CARGAR LÍNEA****CARGAR LÍNEA****CARGAR LÍNEA****CARGAR LÍNEA****CARGAR ITEMS**/ 
 function ConsultaLineaCarga(tx, results) {
-	var lenl = results.rows.length;	//alert(lenl);
+	var lenl = results.rows.length;	//console.log(lenl);
 	var seleccionado;
 	for (l = 0; l < lenl; l++){
 		seleccionado = "";
@@ -102,7 +112,7 @@ function ConsultaSubLinea(tx) {
 		tx.executeSql('select idslinea,nombre from publicsublineas where idlinea = "'+localStorage.busqueda+'" order by nombre', [], ConsultaSubLineaCarga,errorCB);
 }
 function ConsultaSubLineaCarga(tx, results) {
-	var len = results.rows.length;	//alert(len);
+	var len = results.rows.length;	//console.log(len);
 	var seleccionado;
 	$('#sb'+vida).empty();
 	
@@ -122,7 +132,7 @@ function ConsultaSubLineaCarga(tx, results) {
 /* BUSQUEDA EN LA TABLA PERSONA*/
 function CargarListado(tx) {
 	if(busqueda!=null){	
-	      console.log("SELECT sub.idlinea,sub.idslinea,art.nombre,art.referencia,art.numero_serie_af,plaqueta_af,plaqueta_anterior1_af,art.id_envio,marca_af,id_estado,art.idarticulo FROM publicarticulos art left join publicsublineas sub on sub.idslinea = art.idslinea  where art.rowid ='"+res[3]+"'"); //alert("Busqueda: "+busqueda);
+	      console.log("SELECT sub.idlinea,sub.idslinea,art.nombre,art.referencia,art.numero_serie_af,plaqueta_af,plaqueta_anterior1_af,art.id_envio,marca_af,id_estado,art.idarticulo FROM publicarticulos art left join publicsublineas sub on sub.idslinea = art.idslinea  where art.rowid ='"+res[3]+"'");
 	    tx.executeSql("SELECT sub.idlinea,sub.idslinea,art.nombre,art.referencia,art.numero_serie_af,plaqueta_af,plaqueta_anterior1_af,art.id_envio,marca_af,id_estado,art.idarticulo FROM publicarticulos art left join publicsublineas sub on sub.idslinea = art.idslinea  where art.rowid ='"+res[3]+"'", [], MuestraItems);
 	}
 }
@@ -141,7 +151,7 @@ function MuestraItems(tx, results) {
     for (var i=0;i<encontrados;i++)
 	{
 	 	var id = res[3];		//console.log("Id: "+id);
-	 	var nombre = results.rows.item(i).nombre;					//alert( "nombre = " + sessionStorage.getItem("nombre"));
+	 	var nombre = results.rows.item(i).nombre;					//console.log( "nombre = " + sessionStorage.getItem("nombre"));
 	 	var sublinea = results.rows.item(i).sublinea;
 	 	var referencia = results.rows.item(i).referencia;
 	 	var numero_serie_af = results.rows.item(i).numero_serie_af;
@@ -198,7 +208,16 @@ function MuestraItems(tx, results) {
 			    			var numero_serie_af = txtOk($("#ns"+id).val());
 			    			var id_estado = $("#es"+id).val();
 			    			if(texto_plaqueta != undefined && texto_plaquetanterior != undefined){
-								function errorCBU(err) { if (err.code != "undefined" && err.message != "undefined") alert("Error al guardar, revise los caracteres especiales: \n" + " Mensaje: " + err.message + err.code); }
+								function errorCBU(err) { 
+									if (err.code != "undefined" && err.message != "undefined"){
+										alerta (
+										    "Error al guardar, revise los caracteres especiales: \n" + " Mensaje: " + err.message + err.code,  		// message
+										    function(){ },         	// callback
+										    'Activos',            	// title
+										    'Ok'                  	// buttonName
+										);
+									}  
+								}
 								function successCBU() {
 								   db.transaction(function(tx) {
 								   		if(res[0]!="" && res[0]!="null"){
@@ -215,7 +234,7 @@ function MuestraItems(tx, results) {
 										//CARGA FOTOS
 										var data = JSON.parse(localStorage.getItem('Fotos')); console.log(data);
 										$.each(data, function(i, item) {	
-											db.transaction(function(tx) {	//alert(item);
+											db.transaction(function(tx) {	//console.log(item);
 												if(res[0]!="" && res[0]!="null"){
 													  console.log('INSERT INTO publicarticulos_fotos (url,idarticulo) values ("'+item+'","'+res[0]+'")');
 													tx.executeSql('INSERT INTO publicarticulos_fotos (url,idarticulo) values ("'+item+'","'+res[0]+'")');	
@@ -234,8 +253,12 @@ function MuestraItems(tx, results) {
 										setTimeout(function() { //idarticulo+"|"+plaqueta_af+"|"+nombre+"|"+rowid+"|"+id_estado+"|"+id_envio
 											localStorage.elemento_valor = res[0]+"|"+texto_plaqueta+"|"+nombre+"|"+res[3]+"|"+id_estado+"|"+res[5];
 											console.log(localStorage.elemento_valor);
-     										alert("Registro Almacenado correctamente");
-									   		window.location = "p2_elemento_buscar.html";
+											alerta (
+											    "Elemento editado Exitosamente!",  		// message
+											    function(){ window.location = "p2_elemento_buscar.html"; },         	// callback
+											    'Activos',            	// title
+											    'Ok'                  	// buttonName
+											);
 										}, 450);
 								    }
 								}
@@ -305,7 +328,7 @@ function MuestraFotos(tx, results) {
 				img_disponible = true;
 				return false; 											//Espacio Disponible
 			}
-		});																	//	alert(img_disponible);
+		});																	//	console.log(img_disponible);
 		//SI NO EXISTE CREA EL ELEMENTO IMG PARA ALMACENAR LA FOTO
 		if(img_disponible==false){
 			$("#lista_fotos").append('<div id="bloque'+i_foto+'"><img id="cameraImage'+i_foto+'" src="" width="320" height="210" align="center"/><button onclick="elimina_foto('+i_foto+')" id="btn_elimina'+i_foto+'" data-theme="a" data-icon="arrow-u" data-mini="true" data-iconpos="left" value="0">Eliminar Foto</button></div>');
@@ -315,14 +338,14 @@ function MuestraFotos(tx, results) {
 		}
 	
 	    image = document.getElementById(NomIdimage);
-	    image.style.display = 'block';	//alert(imageData);
-	    image.src = src;				//alert(imageData);
+	    image.style.display = 'block';
+	    image.src = src;
 
 	    arr_tmp_fotos.push(src); 									//guarda URL de la imagen en array
     }
 
     localStorage.setItem('Fotos', JSON.stringify(arr_tmp_fotos));
-    arr_tmp_fotos.length=0;		//alert(localStorage.Fotos);
+    arr_tmp_fotos.length=0;		//console.log(localStorage.Fotos);
 			
 	$("#api-camera").trigger("create");
 	$("#lista_fotos").trigger("create");
@@ -346,39 +369,80 @@ function comprobarCamposRequired(){
 	   $(':input').each(function () {	console.log("valor:" + $(this).val() + " id: " + $(this).attr('id'));
 	   		var currentId = $(this).attr('id');	//console.log(currentId);
 			if(currentId == "sb"+vida && ($(this).val() == "" || $(this).val() ==null)){
-				alert("Seleccione una Sublinea");
+				alerta (
+				    "Seleccione una Sublinea",  		// message
+				    function(){ },         	// callback
+				    'Activos',            	// title
+				    'Ok'                  	// buttonName
+				);
 				$("#sb"+vida).focus();
 				correcto=false; return false;
 			}else if(currentId == "nb"+vida && $(this).val().trim() == ""){
-				alert("Digite el Nombre");
+				alerta (
+				    "Digite el Nombre",  		// message
+				    function(){ },         	// callback
+				    'Activos',            	// title
+				    'Ok'                  	// buttonName
+				);
 				$("#nb"+vida).focus();
 				correcto=false; return false;
 			}else if(currentId == "p"+vida && $(this).val().trim() == ""){
-				alert("Escanee la plaqueta");
+				alerta (
+				    "Escanee la plaqueta",  		// message
+				    function(){ },         	// callback
+				    'Activos',            	// title
+				    'Ok'                  	// buttonName
+				);
 				$("#p"+vida).focus();
 				correcto=false; return false;
 			}else if(currentId == "es"+vida && $(this).val().trim() == ""){
-				alert("Seleccione un estado");
+				alerta (
+				    "Seleccione un estado",  		// message
+				    function(){ },         	// callback
+				    'Activos',            	// title
+				    'Ok'                  	// buttonName
+				);
 				$("#es"+vida).focus();
 				correcto=false; return false;
 			}	
 	   });
 	   if(correcto==true){	//console.log(localStorage.Fotos);
 			if(localStorage.Fotos == "" || localStorage.Fotos == undefined || localStorage.Fotos == "[]"){
-				alert("Debe añadir mínimo dos(2) Fotos!");
+				alerta (
+				    "Debe añadir mínimo dos(2) Fotos!",  // message
+				    function(){
+						//window.location = "principal.html";
+				    },         // callback
+				    'Activos',            // title
+				    'Ok'                  // buttonName
+				);
 				correcto=false; return false;
 			}else{
 				dataf = JSON.parse(localStorage.getItem('Fotos')); console.log(dataf.length);
 				if(dataf.length<2){
-					alert("Debe añadir mínimo dos(2) Fotos!");
+					alerta (
+					    "Debe añadir mínimo dos(2) Fotos!",  // message
+					    function(){
+							//window.location = "principal.html";
+					    },         // callback
+					    'Activos',            // title
+					    'Ok'                  // buttonName
+					);
 					correcto=false; return false;
 				}else if(dataf.length>3){
-					alert("Debe añadir máximo tres(3) Fotos!");
+					alerta (
+					    "Debe añadir mínimo dos(2) Fotos!",  // message
+					    function(){
+							//window.location = "principal.html";
+					    },         // callback
+					    'Activos',            // title
+					    'Ok'                  // buttonName
+					);
 					correcto=false; return false;
 				}
 			} 
 		}
-	}
+	}	console.log(correcto);
 	return correcto;
 }
 

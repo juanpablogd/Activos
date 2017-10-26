@@ -11,16 +11,21 @@ function editarElemento(cod){	console.log(cod);
 function errorCB(err) {
 	// Esto se puede ir a un Log de Error dir�a el purista de la oficina, pero como este es un ejemplo pongo el MessageBox.Show :P
 	if (err.code != "undefined" && err.message != "undefined"){
-		alert("Error procesando SQL: Codigo: " + err.code + " Mensaje: "+err.message);
+		alerta (
+		    "Error procesando SQL: Codigo: " + err.code + " Mensaje: "+err.message,  // message
+		    function(){},         // callback
+		    'Activos',            // title
+		    'Ok'                  // buttonName
+		);
 	}
 }
 function successCB() {
-    //alert("Ok!");
+    //console.log("Ok!");
 }
 
 /* BUSQUEDA EN LA TABLA ELEMENTO*/
 function CargarListado(tx) {
-	var busqueda=localStorage.busqueda;				//alert("Busqueda: "+busqueda+"!"); //console.log("SELECT el.idarticulo id,el.referencia,el.plaqueta,el.nombre,se.nombre seccion,sl.nombre clasificacion FROM publicarticulos el inner join publicsecciones se on se.idseccion = el.idseccion inner join publicsublineas sl on sl.idslinea = el.idslinea where numero_serie like '%"+busqueda+"%' or plaqueta like '%"+busqueda+"%' or plaqueta_anterior like '%"+busqueda+"%' or el.nombre like '%"+busqueda+"%' order by el.nombre");
+	var busqueda=localStorage.busqueda;				//console.log("Busqueda: "+busqueda+"!"); //console.log("SELECT el.idarticulo id,el.referencia,el.plaqueta,el.nombre,se.nombre seccion,sl.nombre clasificacion FROM publicarticulos el inner join publicsecciones se on se.idseccion = el.idseccion inner join publicsublineas sl on sl.idslinea = el.idslinea where numero_serie like '%"+busqueda+"%' or plaqueta like '%"+busqueda+"%' or plaqueta_anterior like '%"+busqueda+"%' or el.nombre like '%"+busqueda+"%' order by el.nombre");
 	
 	if(busqueda!=null){
 		  console.log("SELECT el.idarticulo id,el.referencia,el.plaqueta_af,el.nombre,se.nombre seccion,sl.nombre clasificacion,el.id_envio,el.rowid,el.id_estado FROM publicarticulos el left join publicsecciones se on se.idseccion = el.idseccion left join publicsublineas sl on sl.idslinea = el.idslinea where numero_serie_af = '"+busqueda+"' or plaqueta_af = '"+busqueda+"' or plaqueta_anterior1_af = '"+busqueda+"' order by id_envio desc,el.idarticulo desc limit 1");
@@ -29,19 +34,19 @@ function CargarListado(tx) {
 }
 /* RESULTADO DE LA TABLA ELEMENTO*/
 function MuestraItems(tx, results) {
-	//alert("Busqueda MuestraItems: "+localStorage.busqueda+"!");
+	//console.log("Busqueda MuestraItems: "+localStorage.busqueda+"!");
 	//CORRIGE BUG
 	if(localStorage.busqueda == "") return false;
 	
     var li = "";
 	 	//li += '<li data-role="searchpage-list">Resultados </li>';				//<span class="ui-li-count">2</span>
-	var encontrados = results.rows.length;		console.log('Encontrados:'+encontrados); //alert('Encontrados:'+encontrados);
+	var encontrados = results.rows.length;		console.log('Encontrados:'+encontrados); //console.log('Encontrados:'+encontrados);
     for (var i=0;i<encontrados;i++)
 	{
 	 	var id = results.rows.item(i).id;
 	 	var referencia = results.rows.item(i).referencia;
 	 	var plaqueta = results.rows.item(i).plaqueta_af; var plaqueta = plaqueta.trim();
-	 	var nombre = results.rows.item(i).nombre;					//alert( "nombre = " + sessionStorage.getItem("nombre"));
+	 	var nombre = results.rows.item(i).nombre;					//console.log( "nombre = " + sessionStorage.getItem("nombre"));
 	 	var seccion = results.rows.item(i).seccion;
 	 	var clasificacion = results.rows.item(i).clasificacion;
 	 	var id_envio_art = results.rows.item(i).id_envio;
@@ -66,7 +71,7 @@ function MuestraItems(tx, results) {
     }else{ console.log('SELECT rowid,url,id_envio FROM publicarticulos_fotos where (id_envio = "'+results.rows.item(0).id_envio+'" and id_envio != "") or (idarticulo= "'+results.rows.item(0).id+'" and idarticulo != "null")');
     	 tx.executeSql('SELECT rowid,url,id_envio FROM publicarticulos_fotos where (id_envio = "'+results.rows.item(0).id_envio+'" and id_envio != "") or (idarticulo= "'+results.rows.item(0).id+'" and idarticulo != "null")', [], 
     		function ConsultaSincronizarInventario(tx, resFotos) {
-    			var numFotos = resFotos.rows.length;		console.log('numFotos: '+numFotos); //alert('Encontrados:'+encontrados);
+    			var numFotos = resFotos.rows.length;		console.log('numFotos: '+numFotos); //console.log('Encontrados:'+encontrados);
 			    for (var f=0;f<numFotos;f++)
 				{
 					$("#lista_fotos").append('<div id="bloque'+resFotos.rows.item(f).rowid+'"><img id="cameraImage'+resFotos.rows.item(f).rowid+'" src="'+resFotos.rows.item(f).url+'" width="320" height="210" align="center"/></div>');
@@ -95,7 +100,7 @@ function MuestraItems(tx, results) {
 			}
     	);
     }
-    //console.log(li); //alert(li);
+    //console.log(li);
 	$("ul#lista").empty().append(li).listview("refresh");
 	
 		if(encontrados==1){
@@ -106,7 +111,7 @@ function MuestraItems(tx, results) {
 			$("#seleccionado").html('<h4 align="center"> '+res[2]+" -  "+res[1]+'</h4>');
 			$("#btn2").removeAttr("disabled");
 			//$("#btn3").removeAttr("disabled");
-	//		alert(plaqueta);
+	//		console.log(plaqueta);
 			 
 		}	
 }

@@ -3,7 +3,7 @@
 $(window).load(function () {
 		var idcorredor = localStorage.idcorredor;		 	
 		var nombre = localStorage.nombre;
-		var idinscripcion = localStorage.idinscripcion;	//alert("Nombre: "+nombre+"   Insss: "+idinscripcion);
+		var idinscripcion = localStorage.idinscripcion;	//console.log("Nombre: "+nombre+"   Insss: "+idinscripcion);
 		//if (nombre != null && nombre != "" && idinscripcion != null && idinscripcion != "") window.location = "main.html";
 		 /* db.transaction(AlmacenaUsr);
 		db.transaction(CargarAtletas); */
@@ -37,8 +37,14 @@ $(document).ready(function() {
             $("#lista").listview( "refresh" );
             $("#lista").trigger( "updatelayout");
         }else{
-        	alert("Debe digitar el número de CC/TI");
-        	$("#txtBuscar").focus();
+			alerta (
+			    "Debe digitar el número de CC/TI!",  		// message
+			    function(){
+			    	$("#txtBuscar").focus();
+			    },         	// callback
+			    'Activos',            	// title
+			    'Ok'                  	// buttonName
+			);
         }
     });
 	
@@ -77,14 +83,26 @@ $(document).ready(function() {
 	//GUARDAR FORMULARIO
 	$('#btn_ok').click(function() {
 		if ($( "#seccion" ).val()==0){
-			alert("Seleccione una Dependencia/Sección por favor");
-			$("#seccion").focus();
+			alerta (
+			    "Seleccione una Dependencia/Sección por favor!",  		// message
+			    function(){
+			    	$("input[data-type='search']").focus();
+			    },         	// callback
+			    'Activos',            	// title
+			    'Ok'                  	// buttonName
+			);
 			return false;
 		}
 		
 		if(localStorage.persona_valor == undefined || localStorage.persona_valor == ""){
-			alert("Busque una persona por favor!");
-			$("input[data-type='search']").focus();
+			alerta (
+			    "Busque una persona por favor!",  		// message
+			    function(){
+			    	$("input[data-type='search']").focus();
+			    },         	// callback
+			    'Activos',            	// title
+			    'Ok'                  	// buttonName
+			);
 			return false;
 		}
 		localStorage.iddependencia = $( "#dependencia" ).val(); 
@@ -94,12 +112,6 @@ $(document).ready(function() {
 		console.log(localStorage.persona_valor);
 		console.log("GUARDAR");
 		window.location = "p2_elemento_buscar.html";
-/*		if ($( "#select-native-1" ).val()==0){
-			alert("Seleccione un estado por favor");
-			$("#select-native-1").focus();
-			return false;
-		}
-		db.transaction(GuardaElemento); */
 	});
 	
 });

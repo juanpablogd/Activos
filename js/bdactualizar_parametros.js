@@ -5,13 +5,17 @@ var arr_ListaTabla = new Array();
 function errorCB(err) {
 	// Esto se puede ir a un Log de Error dir�a el purista de la oficina, pero como este es un ejemplo pongo el MessageBox.Show :P
 	if (err.code != "undefined" && err.message != "undefined"){
-		//console.clear();
-    	alert("Error procesando SQL: Codigo: " + err.code + " Mensaje: "+err.message);
+		alerta (
+		    "Error procesando SQL: Codigo: " + err.code + " Mensaje: "+err.message,  		// message
+		    function(){ },         	// callback
+		    'Activos',            	// title
+		    'Ok'                  	// buttonName
+		);
    	}
 }
 
 function successCB() {
-    //alert("TRANSACION Ok!");
+    //console.log("TRANSACION Ok!");
 }
 
 function TablaGuardar(){
@@ -21,8 +25,8 @@ function TablaGuardar(){
 function TablaGuardarExe(tx) {
 	$.mobile.loading( 'show', { text: 'Almacenando Información....', textVisible: true, theme: 'a', html: "" });
 	
-	for(var fil = 0; fil < arr_ListaTabla.length; fil++) {																	//alert('Registro: '+fil+': '+arr_ListaTabla[fil]);				
-		$.mobile.loading( 'show', { text: 'Creando '+arr_ListaTabla[fil][0], textVisible: true, theme: 'a', html: "" });	//alert('DROP TABLE IF EXISTS '+arr_ListaTabla[fil][0]+';');
+	for(var fil = 0; fil < arr_ListaTabla.length; fil++) {																	//console.log('Registro: '+fil+': '+arr_ListaTabla[fil]);				
+		$.mobile.loading( 'show', { text: 'Creando '+arr_ListaTabla[fil][0], textVisible: true, theme: 'a', html: "" });	//console.log('DROP TABLE IF EXISTS '+arr_ListaTabla[fil][0]+';');
 		tx.executeSql('DROP TABLE IF EXISTS '+arr_ListaTabla[fil][0]);														//console.log('CREATE TABLE IF NOT EXISTS '+arr_ListaTabla[fil][0]+' ('+arr_ListaTabla[fil][1]+')');
 		tx.executeSql('CREATE TABLE IF NOT EXISTS '+arr_ListaTabla[fil][0]+' ('+arr_ListaTabla[fil][1]+')');
 		if(arr_ListaTabla[fil][0] == "publicinventario"){
@@ -32,13 +36,13 @@ function TablaGuardarExe(tx) {
 			tx.executeSql('CREATE INDEX idx_inv_publicinventariodet_id_envio_art ON publicinventario_det (id_envio_art);');
 			tx.executeSql('CREATE INDEX idx_inv_publicinventariodet_idarticulo ON publicinventario_det (idarticulo);');
 		}
-	}																														//alert("Longitud: "+arr_tabla.length);
-	
+	}
+
 	$.mobile.loading( 'show', { text: 'Ingresando datos... ', textVisible: true, theme: 'a', html: "" });
 
 	for(var fil = 0; fil < arr_tabla.length; fil++) { //arr_tabla.length					
 		//console.log('INSERT INTO '+arr_tabla[fil][0]+' ('+arr_tabla[fil][1]+') values ('+arr_tabla[fil][2]+');');
-		tx.executeSql('INSERT INTO '+arr_tabla[fil][0]+' ('+arr_tabla[fil][1]+') values ('+arr_tabla[fil][2]+');'); //alert('INSERT INTO '+arr_tabla[fil][0]+' ('+arr_tabla[fil][1]+') values ('+arr_tabla[fil][2]+');');
+		tx.executeSql('INSERT INTO '+arr_tabla[fil][0]+' ('+arr_tabla[fil][1]+') values ('+arr_tabla[fil][2]+');');
 	}
 	
 	$.mobile.loading( 'hide' );
@@ -46,6 +50,12 @@ function TablaGuardarExe(tx) {
 	localStorage.persona_valor = "";
 	localStorage.busqueda = "";
 	localStorage.consulta = "";
-	alert("Actualización exitosa");
-	window.location = "principal.html";
+	alerta (
+	    'Actualización exitosa!',  // message
+	    function(){
+			window.location = "principal.html";	    	
+	    },         // callback
+	    'Activos',            // title
+	    'Ok'                  // buttonName
+	);
 }

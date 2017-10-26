@@ -17,6 +17,19 @@
  * under the License.
  */
 var opcionesCamara;
+function alerta(msj,callback,titulo,nomBoton){
+    if(navigator.notification == undefined){
+        alert(msj);
+        callback();
+    }else{
+        navigator.notification.alert(
+            msj,  // message
+            callback,         // callback
+            titulo,            // title
+            nomBoton                  // buttonName
+        );
+    }
+}
 
 var app = {
     // Application Constructor
@@ -36,7 +49,6 @@ var app = {
     // function, we must explicity call 'app.receivedEvent(...);'
     onDeviceReady: function() {
         console.log('deviceready');
-        //alert("Device Readdy jp!");
         var devicePlatform = device.platform;   console.log(devicePlatform);
         if(devicePlatform == "iOS"){
             opcionesCamara = {   quality : 20                                 

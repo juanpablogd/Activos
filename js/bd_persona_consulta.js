@@ -6,16 +6,21 @@ var db = window.openDatabase("bdactivos", "1.0", "Proyecto SFK Activos", 3355443
 function errorCB(err) {
 	// Esto se puede ir a un Log de Error dir�a el purista de la oficina, pero como este es un ejemplo pongo el MessageBox.Show :P
 	if (err.code != "undefined" && err.message != "undefined"){
-		alert("Error procesando SQL: Codigo: " + err.code + " Mensaje: "+err.message);
+		alerta (
+		    "Error procesando SQL: Codigo: " + err.code + " Mensaje: "+err.message,  // message
+		    function(){},         // callback
+		    'Activos',            // title
+		    'Ok'                  // buttonName
+		);
 	}
 }
 function successCB() {
-    //alert("Ok!");
+    //console.log("Ok!");
 }
 
 /* BUSQUEDA EN LA TABLA ELEMENTO*/
 function CargarListado(tx) {
-	var busqueda=localStorage.consulta;			console.log("Busqueda: "+busqueda+""); //alert("Busqueda: "+busqueda); alert("SELECT * FROM publicp_elemento where referencia like '%"+busqueda+"%'");
+	var busqueda=localStorage.consulta;			console.log("Busqueda: "+busqueda+"");
 	if(busqueda!=null){ console.log("SELECT cc,nombres,apellidos,telefono FROM publicusuarios te  where nombres like '%"+busqueda+"%' or apellidos like '%"+busqueda+"%' or cc like '%"+busqueda+"%' or nombres||' '||apellidos like '%"+busqueda+"%'");
 	    tx.executeSql("SELECT cc,nombres,apellidos,telefono FROM publicusuarios te  where nombres like '%"+busqueda+"%' or apellidos like '%"+busqueda+"%' or cc like '%"+busqueda+"%' or nombres||' '||apellidos like '%"+busqueda+"%'", [], MuestraItems);
    }
@@ -27,7 +32,7 @@ function MuestraItems(tx, results) {
     for (var i=0;i<encontrados;i++)
 	{
 	 	var cc = results.rows.item(i).cc;
-	 	var nombres = results.rows.item(i).nombres;					//alert( "nombre = " + sessionStorage.getItem("nombre"));
+	 	var nombres = results.rows.item(i).nombres;					//console.log( "nombre = " + sessionStorage.getItem("nombre"));
 	 	var apellidos = results.rows.item(i).apellidos;
 	 	var telefono = results.rows.item(i).telefono;
 
@@ -63,8 +68,12 @@ $(document).ready(function() {
             $("#lista").listview( "refresh" );
             $("#lista").trigger( "updatelayout");
         }else{
-        	alert("Debe digitar el número de CC/TI");
-        	$("#txtBuscar").focus();
+			alerta (
+			    "Debe digitar el número de CC/TI",  		// message
+			    function(){ $("#txtBuscar").focus(); },         	// callback
+			    'Activos',            	// title
+			    'Ok'                  	// buttonName
+			);
         }
     });
 

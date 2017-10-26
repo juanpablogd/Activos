@@ -11,7 +11,12 @@ $(window).load(function () {
 function errorCB(err) {
 	// Esto se puede ir a un Log de Error dir�a el purista de la oficina, pero como este es un ejemplo pongo el MessageBox.Show :P
 	if (err.code != "undefined" && err.message != "undefined"){
-		alert("Error procesando SQL: Codigo: " + err.code + " Mensaje: "+err.message);
+		alerta (
+		    "Error procesando SQL: Codigo: " + err.code + " Mensaje: "+err.message,  		// message
+		    function(){ },         	// callback
+		    'Activos',            	// title
+		    'Ok'                  	// buttonName
+		);
 	}
 }
 
@@ -22,7 +27,7 @@ function ConsultaItems(tx) {	//tx.executeSql('select id,tipo from publicp_tipo_e
 		tx.executeSql('select id_estado,nombre from publicestadoarticulo order by nombre', [], ConsultaLoadEstado,errorCB);
 }
 function ConsultaItemsCarga(tx, results) {
-	var len = results.rows.length;	//alert(len);
+	var len = results.rows.length;	//console.log(len);
 	var viddependencia = localStorage.iddependencia;
 	var seleccionado;
 	for (i = 0; i < len; i++){
@@ -40,7 +45,7 @@ function ConsultaItemsCarga(tx, results) {
 	}
 }
 function ConsultaLoadEstado(tx, results) {
-	var len = results.rows.length;	//alert(len);
+	var len = results.rows.length;	//console.log(len);
 
 	for (i = 0; i < len; i++){
 		var nombre = results.rows.item(i).nombre;
@@ -60,7 +65,7 @@ function ConsultaSecciones(tx) {
 		tx.executeSql('select idseccion,nombre from publicsecciones where iddependencia = "'+localStorage.busqueda+'" order by nombre', [], ConsultaSeccionesCarga,errorCB);
 }
 function ConsultaSeccionesCarga(tx, results) {
-	var len = results.rows.length;	//alert(len);
+	var len = results.rows.length;	//console.log(len);
 	var vidseccion = localStorage.idseccion;
 	var seleccionado;
 	$('#seccion').empty();
@@ -105,7 +110,7 @@ function GuardaElemento(tx) {
 
 	//OBTIENE LA FIRMA 
 	if(localStorage.firma != null && localStorage.firma != ""){
-		var firma = localStorage.firma; 	//alert(Firma);				//Firma = Firma.replace('/""/g','|');	alert(Firma);	seccion	dependencia
+		var firma = localStorage.firma; 	//console.log(Firma);				//Firma = Firma.replace('/""/g','|');	seccion	dependencia
 	}
 
 	//INFO GENERAL DEL ELEMENTO		
@@ -126,7 +131,7 @@ function GuardaElemento(tx) {
 	if(localStorage.Fotos != null && localStorage.Fotos != "" && localStorage.Fotos !== undefined && localStorage.Fotos != "undefined"){
 		//CARGA FOTOS
 		var data = JSON.parse(localStorage.getItem('Fotos'));
-		$.each(data, function(i, item) {	//alert(data[i]);
+		$.each(data, function(i, item) {	//console.log(data[i]);
 			tx.executeSql('INSERT INTO publicinventario_fotos (url,id_envio) values ("'+data[i]+'","'+id_envio+'")');
 		});
 		data.length=0;
@@ -148,16 +153,24 @@ function GuardaElemento(tx) {
 			function MuestraItems(tx, results) {
 				var encontrados = results.rows.length; console.log("Encontrados: " + encontrados);
 				if(encontrados>0) {
-					window.location = "p1_persona_buscar.html";
-					alert("Elemento Guardado exitosamente");
+					alerta (
+					    "Elemento Guardado exitosamente",  		// message
+					    function(){ window.location = "p1_persona_buscar.html"; },         	// callback
+					    'Activos',            	// title
+					    'Ok'                  	// buttonName
+					);
 				}else
 				{
-					alert("Espere un momento por favor!");
-					alert("Elemento Guardado exitosamente");
+					alerta (
+					    "Elemento NO guardado",  		// message
+					    function(){ },         	// callback
+					    'Activos',            	// title
+					    'Ok'                  	// buttonName
+					);
 				}
 			}	
 		);
-	} /*, function errorCB(err) {	alert("Error processing SQL: "+err.code); }
+	} /*, function errorCB(err) {	console.log("Error processing SQL: "+err.code); }
 	,function successCB() {	localStorage.firma = ""; }	*/
 	);
 	
@@ -185,13 +198,21 @@ $(document).ready(function() {
 	//GUARDAR FORMULARIO
 	$('#btn_ok').click(function() {
 		if ($( "#seccion" ).val()==0){
-			alert("Seleccione una Dependencia/Sección por favor");
-			$("#seccion").focus();
+			alerta (
+			    "Seleccione una Dependencia/Sección por favor",  		// message
+			    function(){ $("#seccion").focus(); },         	// callback
+			    'Activos',            	// title
+			    'Ok'                  	// buttonName
+			);
 			return false;
 		}
 		if ($( "#select-native-1" ).val()==0){
-			alert("Seleccione un estado por favor");
-			$("#select-native-1").focus();
+			alerta (
+			    "Seleccione un estado por favor",  		// message
+			    function(){ $("#select-native-1").focus(); },         	// callback
+			    'Activos',            	// title
+			    'Ok'                  	// buttonName
+			);
 			return false;
 		}
 		db.transaction(GuardaElemento);

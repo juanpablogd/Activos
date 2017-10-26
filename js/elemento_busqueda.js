@@ -2,7 +2,7 @@
 $(window).load(function () {
 		/*var idcorredor = localStorage.idcorredor;		 	
 		var nombre = localStorage.nombre;
-		var idinscripcion = localStorage.idinscripcion;	//alert("Nombre: "+nombre+"   Insss: "+idinscripcion);
+		var idinscripcion = localStorage.idinscripcion;	//console.log("Nombre: "+nombre+"   Insss: "+idinscripcion);
 		//if (nombre != null && nombre != "" && idinscripcion != null && idinscripcion != "") window.location = "main.html";
 		  db.transaction(AlmacenaUsr);
 		db.transaction(CargarAtletas); */
@@ -13,12 +13,17 @@ $(document).ready(function() {
     app.initialize();
 	function leer(){
 		cordova.plugins.barcodeScanner.scan(
-			function(result) {			//$val = result.text; alert($val); //var res = $val.split("|");
+			function(result) {			//$val = result.text; console.log($val); //var res = $val.split("|");
 				localStorage.busqueda = result.text; 
 				db.transaction(CargarListado);
 			},
 			function (error){
-				alert("Error: " + error);
+				alerta (
+				    "Error: " + error,  		// message
+				    function(){ window.location = "elemento_editar.html"; },         	// callback
+				    'Activos',            	// title
+				    'Ok'                  	// buttonName
+				);
 			}
 		);
 	}
@@ -33,7 +38,7 @@ $(document).ready(function() {
 		var res_persona = $val.split("|");
 		if(localStorage.elemento_valor !== undefined){
 			var elemento_valor = localStorage.elemento_valor;
-			var res = elemento_valor.split("|");	//alert(res[1]);
+			var res = elemento_valor.split("|");	//console.log(res[1]);
 		}
 		if(elemento_valor != "" && elemento_valor != undefined && elemento_valor != null && elemento_valor != "null" )
 		{
@@ -45,8 +50,12 @@ $(document).ready(function() {
 		$("#btn3").removeAttr("disabled");
 		if(localStorage.elemento_valor !== undefined){
 			if(res[1] == "" ){
-				alert("Registre la plaqueta por favor");
-				window.location = "elemento_editar.html";			
+				alerta (
+				    "Registre la plaqueta por favor",  		// message
+				    function(){ window.location = "elemento_editar.html"; },         	// callback
+				    'Activos',            	// title
+				    'Ok'                  	// buttonName
+				);
 			}else if(res[0] != "" ){
 				localStorage.busqueda=res[1];
 				db.transaction(CargarListado);
@@ -80,8 +89,12 @@ $(document).ready(function() {
             $("#lista").listview( "refresh" );
             $("#lista").trigger( "updatelayout");
         }else{
-        	alert("Debe digitar el número de Placa o Serial");
-        	$("#txtBuscar").focus();
+			alerta (
+			    "Debe digitar el número de Placa o Serial",  		// message
+			    function(){ $("#txtBuscar").focus(); },         	// callback
+			    'Activos',            	// title
+			    'Ok'                  	// buttonName
+			);
         }
     });
 
@@ -99,12 +112,6 @@ $(document).ready(function() {
 		//$("#btn3").removeAttr("disabled");
 
 	});
-/*	$("input[data-type='search']").keydown(function() {
-	  	activo=false; 		console.log(activo);
-		setTimeout(function() { 
-			activo=true;	console.log(activo);
-		}, 2*1000);
-	});	*/
 	
 	//Opción Escanear
     $("#escanear").click(function(){
@@ -172,16 +179,23 @@ $(document).ready(function() {
 								function MuestraItems(tx, results) {
 									var encontrados = results.rows.length; console.log("Encontrados: " + encontrados);
 									if(encontrados>0) {
-										window.location = "p2_elemento_buscar.html";
-										alert("Elemento Guardado exitosamente");
-									}else
-									{
-										alert("Espere un momento por favor!");
-										alert("Elemento Guardado exitosamente");
+										alerta (
+										    "Asignación exitosa",  		// message
+										    function(){ window.location = "p2_elemento_buscar.html"; },         	// callback
+										    'Activos',            	// title
+										    'Ok'                  	// buttonName
+										);
+									}else {
+										alerta (
+										    "Elemento NO Asignado",  		// message
+										    function(){ },         	// callback
+										    'Activos',            	// title
+										    'Ok'                  	// buttonName
+										);
 									}
 								}	
 							);
-						} /*, function errorCB(err) {	alert("Error processing SQL: "+err.code); }
+						} /*, function errorCB(err) {	console.log("Error processing SQL: "+err.code); }
 						,function successCB() {	localStorage.firma = ""; }	*/
 						);
 					}, 300);
@@ -190,46 +204,10 @@ $(document).ready(function() {
 			return false;
 		});
 		return false;
-
-
-/*		if ($( "#seccion" ).val()==0){
-			alert("Seleccione una Dependencia/Sección por favor");
-			$("#seccion").focus();
-			return false;
-		}
-		
-		if(localStorage.persona_valor == undefined || localStorage.persona_valor == ""){
-			alert("Busque una persona por favor!");
-			$("input[data-type='search']").focus();
-			return false;
-		}
-		localStorage.iddependencia = $( "#dependencia" ).val(); 
-		localStorage.idseccion = $( "#seccion" ).val();
-		console.log(localStorage.iddependencia);
-		console.log(localStorage.idseccion);
-		console.log(localStorage.persona_valor);
-		console.log("GUARDAR");
-		window.location = "p2_elemento_buscar.html";	*/
-
-
-/*		if ($( "#select-native-1" ).val()==0){
-			alert("Seleccione un estado por favor");
-			$("#select-native-1").focus();
-			return false;
-		}
-		db.transaction(GuardaElemento); */
 	});
 	//DIRECCIONA SELECCIONAR PERSONA
 	$('#btn3').click(function() {
 		window.location = "persona_verificar.html";		//console.log('<h4 align="center">'+res[1]+" -  "+res[2]+'</h4>');	//$("#btn2").removeAttr("disabled");	//$("#btn3").removeAttr("disabled");
 	});
-/*	//DIRECCIONA OPCION PERSONA
-	$('#btn4').click(function() {
-		window.location= 'p4_firma.html';
-	});
-	//DIRECCIONA OPCION GUARDAR
-	$('#btn5').click(function() {
-		window.location= 'p5_guardar.html';
-	}); */
 
 });

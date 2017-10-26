@@ -6,7 +6,7 @@ var id_usuario = window.localStorage.id_usr;
 
 function descargar()
 {
-	//alert('http://'+localStorage.url_servidor+'/SIG/servicios/activos_actualizar_parametros.php?id_usuario='+id_usuario);
+	//console.log('http://'+localStorage.url_servidor+'/SIG/servicios/activos_actualizar_parametros.php?id_usuario='+id_usuario);
 	cargando = true;
 		$.mobile.loading( 'show', { text: 'Buscando Información....', textVisible: true, theme: 'a', html: "" });
 		$.ajax({
@@ -25,7 +25,7 @@ function descargar()
 
 								var ValTabla="";				
 								var columnas="";			
-						    	for(var j in data[json][i]){ 	//Por cada reg	//alert(j+':'+data[json][i][j]);
+						    	for(var j in data[json][i]){ 	//Por cada reg	//console.log(j+':'+data[json][i][j]);
 						    		if(j==0){
 						    			columnas = data[json][i][j];
 						    		}else
@@ -44,13 +44,12 @@ function descargar()
 										arr_tabla[ttal_reg][2] = col_valores;
 										ttal_reg++;
 						    		}
-						    	}
-								//alert(i);
+						    	}	//console.log(i);
 								if (i != "" && i != null) {
-									var numm  = json-1;								//alert('MMM: '+numm);
+									var numm  = json-1;								//console.log('MMM: '+numm);
 									arr_ListaTabla[json-1] = [];
-									arr_ListaTabla[json-1][0] = i;					//alert('Reg: '+json-1+': '+arr_ListaTabla[json-1][0]);
-									arr_ListaTabla[json-1][1] = columnas;			//alert('Reg: '+json-1+': '+arr_ListaTabla[json-1][1]);
+									arr_ListaTabla[json-1][0] = i;					//console.log('Reg: '+json-1+': '+arr_ListaTabla[json-1][0]);
+									arr_ListaTabla[json-1][1] = columnas;			//console.log('Reg: '+json-1+': '+arr_ListaTabla[json-1][1]);
 								}
 							} 
 						}
@@ -58,13 +57,26 @@ function descargar()
 						TablaGuardar();
 				}else{
 					$.mobile.loading( 'hide' );
-					alert("No hay Actualizaciones pendientes");
+						alerta (
+						    'No hay Actualizaciones pendientes!',  // message
+						    function(){
+								//window.location = "principal.html";	    	
+						    },         // callback
+						    'Activos',            // title
+						    'Ok'                  // buttonName
+						);
 				}
 			},
 			error: function (error) {
-					$.mobile.loading( 'hide' );
-                  	alert("No hay conexión en el servidor Principal");
-					window.location = "principal.html";
+				$.mobile.loading( 'hide' );
+				alerta (
+				    'No hay conexión en el servidor Principal!',  // message
+				    function(){
+						window.location = "principal.html";	    	
+				    },         // callback
+				    'Activos',            // title
+				    'Ok'                  // buttonName
+				);
             }
 		});
 }

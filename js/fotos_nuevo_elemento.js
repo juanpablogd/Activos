@@ -3,7 +3,7 @@
 $(window).load(function () {
 		var idcorredor = localStorage.idcorredor;		 	
 		var nombre = localStorage.nombre;
-		var idinscripcion = localStorage.idinscripcion;	//alert("Nombre: "+nombre+"   Insss: "+idinscripcion);
+		var idinscripcion = localStorage.idinscripcion;	//console.log("Nombre: "+nombre+"   Insss: "+idinscripcion);
 		//if (nombre != null && nombre != "" && idinscripcion != null && idinscripcion != "") window.location = "main.html";
 		 /* db.transaction(AlmacenaUsr);
 		db.transaction(CargarAtletas); */
@@ -36,7 +36,7 @@ $(document).ready(function() {
 	if(localStorage.Fotos != "" )
 	{
 		var data = JSON.parse(localStorage.getItem('Fotos'));
-		$.each(data, function(i, item) {	//alert(data[i]);
+		$.each(data, function(i, item) {	//console.log(data[i]);
 
 			//VERIFICA SI EXISTEN ELEMENTOS IMG, SI HAY VERIFICA SI HAY DISPONIBILIDAD PARA CAPTURA DE FOTOGRAFÍA
 			var img_disponible = false;
@@ -47,7 +47,7 @@ $(document).ready(function() {
 					img_disponible = true;
 					return false; 											//Espacio Disponible
 				}
-			});																	//	alert(img_disponible);
+			});																	//	console.log(img_disponible);
 			//SI NO EXISTE CREA EL ELEMENTO IMG PARA ALMACENAR LA FOTO
 			if(img_disponible==false){
 				$("#lista_fotos").append('<div id="bloque'+i_foto+'"><img id="cameraImage'+i_foto+'" src="" width="320" height="210" align="center"/><button onclick="elimina_foto('+i_foto+')" id="btn_elimina'+i_foto+'" data-theme="a" data-icon="arrow-u" data-mini="true" data-iconpos="left" value="0">Eliminar Foto</button></div>');
@@ -57,8 +57,8 @@ $(document).ready(function() {
 			}
 		
 		    image = document.getElementById(NomIdimage);
-		    image.style.display = 'block';	//alert(imageData);
-		    image.src = data[i];				//alert(imageData);
+		    image.style.display = 'block';		//console.log(imageData);
+		    image.src = data[i];				//console.log(imageData);
 		
 		});
 		
@@ -69,27 +69,3 @@ $(document).ready(function() {
 		data.length=0;
 	}
 });
-/*		 
-	var testObject = { 'one': 1, 'two': 2, 'three': 3 };
-	var mycars = new Array();
-	mycars[0] = "data:image/jpeg;base64,Saab";
-	mycars[1] = "data:image/jpeg;base64,Volvo";
-	mycars[2] = "data:image/jpeg;base64,BMW";
-	mycars.push("Renault Logan jp!");
-	// Put the object into storage
-	localStorage.setItem('Fotos', JSON.stringify(mycars));
-	// Retrieve the object from storage
-	
-	//console.log('retrievedObject: ', JSON.parse(retrievedObject)); 
-	var retrievedObject = localStorage.getItem('Fotos');
-	var data = JSON.parse(retrievedObject);
-	$.each(data, function(i, item) {
-	    alert(data[i]);
-	});
-	//}
-	
-	var index = data.indexOf("data:image/jpeg;base64,BMW"); alert(index);
-	if (index > -1) {
-	    data.splice(index, 1);
-	}
-	localStorage.setItem('Fotos', JSON.stringify(data));	*/

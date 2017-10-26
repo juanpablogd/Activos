@@ -4,7 +4,7 @@ var firma_defecto = "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAApYAAAFkCAYAA
 $(window).load(function () {
 		var idcorredor = localStorage.idcorredor;		 	
 		var nombre = localStorage.nombre;
-		var idinscripcion = localStorage.idinscripcion;	//alert("Nombre: "+nombre+"   Insss: "+idinscripcion);
+		var idinscripcion = localStorage.idinscripcion;	//console.log("Nombre: "+nombre+"   Insss: "+idinscripcion);
 		//if (nombre != null && nombre != "" && idinscripcion != null && idinscripcion != "") window.location = "main.html";
 		 /* db.transaction(AlmacenaUsr);
 		db.transaction(CargarAtletas); */
@@ -26,7 +26,12 @@ $(document).ready(function() {
 			window.location= 'p5_guardar.html';
 		}else
 		{
-			alert("Debe registrar una Firma antes de continuar");
+			alerta (
+			    "Debe registrar una Firma antes de continuar",  		// message
+			    function(){ },         	// callback
+			    'Activos',            	// title
+			    'Ok'                  	// buttonName
+			);
 		}
 	});
 	

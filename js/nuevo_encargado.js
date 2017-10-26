@@ -3,7 +3,12 @@ var tipo = '';
 function errorInsertp(err) {
 	// Esto se puede ir a un Log de Error dir�a el purista de la oficina, pero como este es un ejemplo pongo el MessageBox.Show :P
 	if (err.code != "undefined" && err.message != "undefined"){
-		alert("Error almacenando Persona: \n" + " Mensaje: " + err.message + err.code);
+		alerta (
+		    "Error almacenando Persona: \n" + " Mensaje: " + err.message + err.code,  		// message
+		    function(){ },         	// callback
+		    'Activos',            	// title
+		    'Ok'                  	// buttonName
+		);
 	}
 }
 
@@ -19,23 +24,39 @@ function GuardaElemento(tx) {
 	var apellidos = $( "#apellidos" ).val();
 
 	if(cc.trim() == ""){
-		alert("Digite N° Documento");
-		$("#cc").focus();
+		alerta (
+		    "Digite N° Documento",  		// message
+		    function(){ $("#cc").focus(); },         	// callback
+		    'Activos',            	// title
+		    'Ok'                  	// buttonName
+		);
 		$.mobile.loading( 'hide' );
 		return false;
 	}else if(cc.trim().length > 42){
-		alert("CC no puede tener más de 42 caracteres");
-		$("#cc").focus();
+		alerta (
+		    "CC no puede tener más de 42 caracteres",  		// message
+		    function(){ $("#cc").focus(); },         	// callback
+		    'Activos',            	// title
+		    'Ok'                  	// buttonName
+		);
 		$.mobile.loading( 'hide' );
 		return false;
 	}else if(nombres.trim() == ""){
-		alert("Digite Nombres");
-		$("#nombres").focus();
+		alerta (
+		    "Digite Nombres",  		// message
+		    function(){ $("#nombres").focus(); },         	// callback
+		    'Activos',            	// title
+		    'Ok'                  	// buttonName
+		);
 		$.mobile.loading( 'hide' );
 		return false;
 	}else if(apellidos.trim() == ""){
-		alert("Digite Apellidos");
-		$("#apellidos").focus();
+		alerta (
+		    "Digite Apellidos",  		// message
+		    function(){ $("#apellidos").focus(); },         	// callback
+		    'Activos',            	// title
+		    'Ok'                  	// buttonName
+		);
 		$.mobile.loading( 'hide' );
 		return false;
 	}
@@ -50,7 +71,7 @@ function txtOk(t){
 /* BUSQUEDA EN LA TABLA PERSONA*/
 function consultaPersona(tx) {
 	var busqueda=localStorage.busqueda;
-	console.log("Busqueda: "+busqueda+"!"); //alert("Busqueda: "+busqueda);	3084556|EDGAR ARNULFO|SANABRIA ALDANA
+	console.log("Busqueda: "+busqueda+"!"); //console.log("Busqueda: "+busqueda);	3084556|EDGAR ARNULFO|SANABRIA ALDANA
 	//if(busqueda!=null){
 	    tx.executeSql("SELECT cc,nombres,apellidos FROM publicusuarios where cc = '"+busqueda+"'", [], resultadoCC);
 	//}
@@ -60,10 +81,15 @@ function resultadoCC(tx, results) { console.log('MuestraItems');
 	var encontrados = results.rows.length;	//console.log(encontrados);
 	if(encontrados>0){
 	 	var id = results.rows.item(0).cc;
-	 	var nombres = results.rows.item(0).nombres;					//alert( "nombre = " + sessionStorage.getItem("nombre"));
+	 	var nombres = results.rows.item(0).nombres;					//console.log( "nombre = " + sessionStorage.getItem("nombre"));
 	 	var apellidos = results.rows.item(0).apellidos;
 		localStorage.persona_valor = id+"|"+nombres+"|"+apellidos;
-		alert("Número de cédula ya existe: " +nombres+" "+apellidos );
+		alerta (
+		    "Número de cédula ya existe: " +nombres+" "+apellidos,  		// message
+		    function(){},         	// callback
+		    'Activos',            	// title
+		    'Ok'                  	// buttonName
+		);
 	}else{
 		if(tipo=='guarda'){
 			//OBTIENE EL ID DEL USUARIO
@@ -89,10 +115,16 @@ function resultadoCC(tx, results) { console.log('MuestraItems');
 			},errorInsertp,
 				function successInsertp() {
 					localStorage.persona_valor = cc+"|"+nombres+"|"+apellidos;
-					alert("Persona registrada exitosamente");
-					setTimeout(function() {
-						window.location = "p1_persona_buscar.html";
-					}, 100);
+					alerta (
+					    "Persona registrada exitosamente!",  		// message
+					    function(){
+							setTimeout(function() {
+								window.location = "p1_persona_buscar.html";
+							}, 100);
+					    },         	// callback
+					    'Activos',            	// title
+					    'Ok'                  	// buttonName
+					);
 				}
 			);
 		}

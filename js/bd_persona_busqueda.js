@@ -6,11 +6,16 @@ var db = window.openDatabase("bdactivos", "1.0", "Proyecto SFK Activos", 3355443
 function errorCB(err) {
 	// Esto se puede ir a un Log de Error dir�a el purista de la oficina, pero como este es un ejemplo pongo el MessageBox.Show :P
 	if (err.code != "undefined" && err.message != "undefined"){
-		alert("Error procesando SQL: Codigo: " + err.code + " Mensaje: "+err.message);
+		alerta (
+		    "Error procesando SQL: Codigo: " + err.code + " Mensaje: "+err.message,  // message
+		    function(){},         // callback
+		    'Activos',            // title
+		    'Ok'                  // buttonName
+		);
 	}
 }
 function successCB() {
-    //alert("Ok!");
+    //console.log("Ok!");
 }
 
 function editarPersona(cod){	console.log(cod);
@@ -23,7 +28,7 @@ function ConsultaItems(tx) {	//tx.executeSql('select id,tipo from publicp_tipo_e
 		tx.executeSql('select iddependencia,nombre from publicdependencias order by nombre', [], ConsultaItemsCarga,errorCB);
 }
 function ConsultaItemsCarga(tx, results) {
-	var len = results.rows.length;	//alert(len);
+	var len = results.rows.length;	//console.log(len);
 	var viddependencia = localStorage.iddependencia;
 	var seleccionado;
 	for (i = 0; i < len; i++){
@@ -47,7 +52,7 @@ function ConsultaSecciones(tx) {
 		tx.executeSql('select idseccion,nombre from publicsecciones where iddependencia = "'+localStorage.busqueda+'" order by nombre', [], ConsultaSeccionesCarga,errorCB);
 }
 function ConsultaSeccionesCarga(tx, results) {
-	var len = results.rows.length;	//alert(len);
+	var len = results.rows.length;	//console.log(len);
 	var vidseccion = localStorage.idseccion;
 	var seleccionado;
 	$('#seccion').empty();
@@ -67,7 +72,7 @@ function ConsultaSeccionesCarga(tx, results) {
 /* BUSQUEDA EN LA TABLA PERSONA*/
 function CargarListado(tx) {
 	var busqueda=localStorage.busqueda;
-	console.log("Busqueda: "+busqueda+"!"); //alert("Busqueda: "+busqueda);
+	console.log("Busqueda: "+busqueda+"!"); //console.log("Busqueda: "+busqueda);
 	if(busqueda!=null && busqueda.trim() != ""){
 	    tx.executeSql("SELECT cc,nombres,apellidos,telefono,correo,rowid FROM publicusuarios where cc = '"+busqueda+"' limit 1", [], MuestraItems);
    }
@@ -76,11 +81,11 @@ function CargarListado(tx) {
 function MuestraItems(tx, results) {
     var li = "";
 	 	//li += '<li data-role="searchpage-list">Resultados </li>';				//<span class="ui-li-count">2</span>
-	var encontrados = results.rows.length;		//alert(encontrados);
+	var encontrados = results.rows.length;		//console.log(encontrados);
     for (var i=0;i<encontrados;i++)
 	{
 	 	var id = results.rows.item(i).cc;
-	 	var nombres = results.rows.item(i).nombres;					//alert( "nombre = " + sessionStorage.getItem("nombre"));
+	 	var nombres = results.rows.item(i).nombres;					//console.log( "nombre = " + sessionStorage.getItem("nombre"));
 	 	var apellidos = results.rows.item(i).apellidos;
 	 	var telefono = results.rows.item(i).telefono;
 	 	var correo = results.rows.item(i).correo;

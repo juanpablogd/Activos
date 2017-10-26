@@ -3,7 +3,12 @@ var tipo = '';
 function errorCB(err) {
 	// Esto se puede ir a un Log de Error dir�a el purista de la oficina, pero como este es un ejemplo pongo el MessageBox.Show :P
 	if (err.code != "undefined" && err.message != "undefined"){
-		alert("Error procesando SQL: Codigo: " + err.code + " Mensaje: "+err.message);
+		alerta (
+		    "Error procesando SQL: Codigo: " + err.code + " Mensaje: "+err.message,  		// message
+		    function(){ },         	// callback
+		    'Activos',            	// title
+		    'Ok'                  	// buttonName
+		);
 	}
 }
 
@@ -19,23 +24,39 @@ function GuardaElemento(tx) {
 	var apellidos = $( "#apellidos" ).val();
 
 	if(cc.trim() == ""){
-		alert("Digite N° Documento");
-		$("#cc").focus();
+		alerta (
+		    "Digite N° Documento",  		// message
+		    function(){ $("#cc").focus(); },         	// callback
+		    'Activos',            	// title
+		    'Ok'                  	// buttonName
+		);
 		$.mobile.loading( 'hide' );
 		return false;
 	}else if(cc.trim().length > 42){
-		alert("CC no puede tener más de 42 caracteres");
-		$("#cc").focus();
+		alerta (
+		    "CC no puede tener más de 42 caracteres",  		// message
+		    function(){ $("#cc").focus(); },         	// callback
+		    'Activos',            	// title
+		    'Ok'                  	// buttonName
+		);
 		$.mobile.loading( 'hide' );
 		return false;
 	}else if(nombres.trim() == ""){
-		alert("Digite Nombres");
-		$("#nombres").focus();
+		alerta (
+		    "Digite Nombres",  		// message
+		    function(){ $("#nombres").focus(); },         	// callback
+		    'Activos',            	// title
+		    'Ok'                  	// buttonName
+		);
 		$.mobile.loading( 'hide' );
 		return false;
 	}else if(apellidos.trim() == ""){
-		alert("Digite Apellidos");
-		$("#apellidos").focus();
+		alerta (
+		    "Digite Apellidos",  		// message
+		    function(){ $("#apellidos").focus(); },         	// callback
+		    'Activos',            	// title
+		    'Ok'                  	// buttonName
+		);
 		$.mobile.loading( 'hide' );
 		return false;
 	}
@@ -52,7 +73,7 @@ function consultaPersona(tx) {
 		window.location = "p1_persona_buscar.html";
 	}
 	var res = persona.split("|");
-	console.log("Busqueda: "+busqueda+" - RowID: "+res[5] ); //alert("Busqueda: "+busqueda);	3084556|EDGAR ARNULFO|SANABRIA ALDANA
+	console.log("Busqueda: "+busqueda+" - RowID: "+res[5] );
 	    tx.executeSql("SELECT cc,nombres,apellidos,telefono,correo,rowid FROM publicusuarios where cc = '"+busqueda+"' and rowid != "+res[5], [], resultadoCC);
 	//}
 }
@@ -61,9 +82,14 @@ function resultadoCC(tx, results) { console.log('MuestraItems');
 	var encontrados = results.rows.length;	//console.log(encontrados);
 	if(encontrados>0){
 	 	var id = results.rows.item(0).cc;
-	 	var nombres = results.rows.item(0).nombres;					//alert( "nombre = " + sessionStorage.getItem("nombre"));
+	 	var nombres = results.rows.item(0).nombres;					//console.log( "nombre = " + sessionStorage.getItem("nombre"));
 	 	var apellidos = results.rows.item(0).apellidos;
-		alert("Número de cédula ya existe: " +nombres+" "+apellidos );
+		alerta (
+		    "Número de cédula ya existe: " +nombres+" "+apellidos,  		// message
+		    function(){ },         	// callback
+		    'Activos',            	// title
+		    'Ok'                  	// buttonName
+		);
 	}else{
 		if(tipo=='guarda'){
 			//OBTIENE EL ID DEL USUARIO
@@ -90,8 +116,12 @@ function resultadoCC(tx, results) { console.log('MuestraItems');
 			  console.log('UPDATE publicusuarios SET cc="'+cc+'",nombres="'+nombres+'",apellidos="'+apellidos+'",telefono="'+telefonos+'",correo="'+correo+'",id_envio="'+id_envio+'" WHERE rowid ="'+rowid+'"');
 			tx.executeSql('UPDATE publicusuarios SET cc="'+cc+'",nombres="'+nombres+'",apellidos="'+apellidos+'",telefono="'+telefonos+'",correo="'+correo+'",id_envio="'+id_envio+'" WHERE rowid ="'+rowid+'"');
 			localStorage.persona_valor = cc+"|"+nombres+"|"+apellidos+"|"+telefonos+"|"+correo+"|"+rowid;
-			alert("Persona registrada exitosamente");
-			window.location = "p1_persona_buscar.html";
+			alerta (
+			    "Persona registrada exitosamente",  		// message
+			    function(){ window.location = "p1_persona_buscar.html"; },         	// callback
+			    'Activos',            	// title
+			    'Ok'                  	// buttonName
+			);
 		}
 	}
 }

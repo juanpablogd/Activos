@@ -19,17 +19,22 @@ function txtOk(t){	console.log(t);
 function errorCB(err) {
 	// Esto se puede ir a un Log de Error dir�a el purista de la oficina, pero como este es un ejemplo pongo el MessageBox.Show :P
 	if (err.code != "undefined" && err.message != "undefined"){
-		alert("Error procesando SQL: Codigo: " + err.code + " Mensaje: "+err.message);
+		alerta (
+		    "Error procesando SQL: Codigo: " + err.code + " Mensaje: "+err.message,  // message
+		    function(){},         // callback
+		    'Activos',            // title
+		    'Ok'                  // buttonName
+		);
 	}
 }
 function successCB() {
-    //alert("Ok!");
+    //console.log("Ok!");
 }
 
 /* BUSQUEDA EN LA TABLA PERSONA*/
 function CargarListado(tx) {
 	if(busqueda!=null){
-		var val_ordenar = $('input:radio[name=radio-choice-h-2]:checked').val();		//alert(ordenar);
+		var val_ordenar = $('input:radio[name=radio-choice-h-2]:checked').val();		//console.log(ordenar);
 		if( val_ordenar  == "Plaqueta" ) {
 			var order = "plaqueta_af";
 		}else{
@@ -41,8 +46,7 @@ function CargarListado(tx) {
 	}
 }
 
-function abrir(id){
-	//alert(id);
+function abrir(id){	//console.log(id);
 	localStorage.elemento_valor = id;
 	window.location = "elemento_editar.html";
 }
@@ -62,11 +66,17 @@ function desasignar(videnvio,nombre){ console.log(videnvio+" - "+nombre)
 			tx.executeSql('DELETE FROM publicinventario where id_envio = "'+videnvio+'"');
 		}, function errorCBdeleteok(err) {	console.log("Error processing SQL: "+err.code); }
 		,function successCBdeleteok() {	console.log("Eliminado inventario: "+videnvio); 
-			setTimeout(function() { 
-				console.log("Elemento Desasignado exitosamente");
-				alert("Elemento Desasignado exitosamente");
-				window.location = "persona_verificar.html";
-			}, 300);
+			console.log("Elemento Desasignado exitosamente");
+			alerta (
+			    "Elemento Desasignado exitosamente",  		// message
+			    function(){ 
+					setTimeout(function() { 
+						window.location = "persona_verificar.html";
+					}, 300);
+			    },         	// callback
+			    'Activos',            	// title
+			    'Ok'                  	// buttonName
+			);
 		}
 		);
 
@@ -87,7 +97,7 @@ function MuestraItems(tx, results) {
     for (var i=0;i<encontrados;i++)
 	{
 	 	var id = results.rows.item(i).idinventariodet;		console.log("Id: "+id);
-	 	var nombre = results.rows.item(i).nombre;					//alert( "nombre = " + sessionStorage.getItem("nombre"));
+	 	var nombre = results.rows.item(i).nombre;					//console.log( "nombre = " + sessionStorage.getItem("nombre"));
 	 	var sublinea = results.rows.item(i).sublinea;
 	 	var referencia = results.rows.item(i).referencia;
 	 	var numero_serie_af = results.rows.item(i).numero_serie_af;
@@ -184,7 +194,12 @@ function MuestraItems(tx, results) {
 			if(comprobarCamposRequired()){
 				if($('#div_firma').is(':visible')){
 					if(!(localStorage.firma != "" && localStorage.firma !== undefined && firma_defecto != localStorage.firma)){
-						alert("Debe registrar una Firma antes de continuar");
+						alerta (
+						    "Debe registrar una Firma antes de continuar",  		// message
+						    function(){ },         	// callback
+						    'Activos',            	// title
+						    'Ok'                  	// buttonName
+						);
 						return false;
 					}	
 				}
@@ -204,14 +219,28 @@ function MuestraItems(tx, results) {
 									db.transaction(function(tx) {
 										  console.log('UPDATE publicinventario SET firma = "'+localStorage.firma+'" where rowid = "'+last_rowid+'"');
 										tx.executeSql('UPDATE publicinventario SET firma = "'+localStorage.firma+'" where rowid = "'+last_rowid+'"');
-									}, function errorCB(err) {	alert("Error processing SQL: "+err.code); }
+									}, function errorCB(err) {	
+											alerta (
+											    "Error processing SQL: "+err.code,  		// message
+											    function(){ },         	// callback
+											    'Activos',            	// title
+											    'Ok'                  	// buttonName
+											);
+									}
 									,function successCB() {	localStorage.firma = ""; }
 									);
 								}else{
 									db.transaction(function(tx) {
 								  		  console.log('UPDATE publicinventario SET firma = "'+localStorage.firma+'",id_envio = "'+id_envio+"-"+id+'" where rowid = "'+last_rowid+'"');
 										tx.executeSql('UPDATE publicinventario SET firma = "'+localStorage.firma+'",id_envio = "'+id_envio+"-"+id+'" where rowid = "'+last_rowid+'"');
-									}, function errorCB(err) {	alert("Error processing SQL: "+err.code); }
+									}, function errorCB(err) {	
+											alerta (
+											    "Error processing SQL: "+err.code,  		// message
+											    function(){ },         	// callback
+											    'Activos',            	// title
+											    'Ok'                  	// buttonName
+											);
+									}
 									,function successCB() {	localStorage.firma = ""; }
 									);
 								}
@@ -242,12 +271,24 @@ function MuestraItems(tx, results) {
 		    					console.log("Registro: " + j + " de " + encontrados);
 		    					if(j==encontrados){
 		    						setTimeout(function() {
-								   		alert("Registro Almacenado correctamente!");
-								   		window.location = "p1_persona_buscar.html";
-								   	}, 500);
-	
+										alerta (
+										    "Verificación Exitosa!",  		// message
+										    function(){
+										    	window.location = "p1_persona_buscar.html";
+										    },         	// callback
+										    'Activos',            	// title
+										    'Ok'                  	// buttonName
+										);								   		
+								   	}, 360);
 		    					}	
-							}, function errorCBU(err) {	alert("Error processing SQL: "+err.code); }
+							}, function errorCBU(err) {	
+								alerta (
+								    "Error processing SQL: "+err.code,  		// message
+								    function(){ },         	// callback
+								    'Activos',            	// title
+								    'Ok'                  	// buttonName
+								);
+							}
 						)
 					});
 			   });
@@ -299,8 +340,6 @@ $(document).ready(function() {
 	
 	$("input[name=radio-choice-h-2]").click(function () {
 		db.transaction(CargarListado);    
-/*        alert("La edad seleccionada es: " + $('input:radio[name=radio-choice-h-2]:checked').val());
-        alert("La edad seleccionada es: " + $(this).val());	*/
     });
 	
 	
@@ -313,7 +352,12 @@ function comprobarCamposRequired(){
 		      if($(this).val() =='' || $(this).val() === ""){		console.log("Entró");
 		         correcto=false;
 		         var currentId = $(this).attr('id');	console.log(currentId);
-		         alert("Por favor complete el la información");
+				alerta (
+				    "Por favor complete el la información",  		// message
+				    function(){ },         	// callback
+				    'Activos',            	// title
+				    'Ok'                  	// buttonName
+				);
 		         $("#"+currentId).focus();
 		         return false;
 		      }
@@ -327,7 +371,12 @@ function comprobarCamposRequired(){
 	   			var valabel = $("#nf"+selectid).text();	console.log(valabel);
 	   			if(valabel == "0"){
 	   				correcto=false;
-	   				alert("Debe capturar alguna foto para este elemento");
+					alerta (
+					    "Debe capturar alguna foto para este elemento",  		// message
+					    function(){ },         	// callback
+					    'Activos',            	// title
+					    'Ok'                  	// buttonName
+					);
 	   				$(this).focus();
 	   				return false;
 	   			}

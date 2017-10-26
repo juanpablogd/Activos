@@ -78,7 +78,14 @@
 						$ul.trigger( "updatelayout");	
 					},
 					function (error){
-						alert("Error: " + error);
+						alerta (
+						    "Error: " + error,  // message
+						    function(){
+								//window.location = "principal.html";	    	
+						    },         // callback
+						    'Activos',            // title
+						    'Ok'                  // buttonName
+						);
 					}
 				);
 			}

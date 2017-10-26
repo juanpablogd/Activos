@@ -17,8 +17,7 @@ function elimina_foto(num){											console.log(num);
 					    	return false;
 					    }
 					    index++;
-					});
-				//alert(index);
+					});	//console.log(index);
 				if (index > -1) {
 				    arr_tmp_fotos.splice(index, 1);
 				}
@@ -38,7 +37,12 @@ function onFail(message) {
 			$(this).remove();
 		}
 	});		
-	alert('Falló al capturar Foto'); //message
+	alerta (
+	    'Falló al capturar Foto',  		// message
+	    function(){ },         	// callback
+	    'Activos',            	// title
+	    'Ok'                  	// buttonName
+	);
 }
 
 function adicionarFoto(imageData){
@@ -57,29 +61,28 @@ function adicionarFoto(imageData){
 		$("#lista_fotos").append('<div id="bloque'+i_foto+'"><img id="cameraImage'+i_foto+'" src="" width="320" height="210" align="center"/><button onclick="elimina_foto('+i_foto+')" id="btn_elimina'+i_foto+'" data-theme="a" data-icon="arrow-u" data-mini="true" data-iconpos="left" value="0">Eliminar Foto</button></div>');
 		$("#api-camera").trigger("create");
 		$("#lista_fotos").trigger("create");
-		$("#"+NomIdimage).trigger("create");							//alert('Calidad: '+localStorage.foto_calidad+' FTW: ' + foto_tamano); */
+		$("#"+NomIdimage).trigger("create");							//console.log('Calidad: '+localStorage.foto_calidad+' FTW: ' + foto_tamano); */
 		NomIdimage = "cameraImage"+i_foto;
 		i_foto++;
 	}												//var imageData = "img/prueba.jpeg";
 	//LLAMA OBJETO IMG EL CUAL SE VA A LLENAR
     image = document.getElementById(NomIdimage);
-    image.style.display = 'block';					//MUESTRA OBJETO	//alert(imageData);
-    $("#"+NomIdimage).attr("src",imageData);		//ASIGNA RUTA DE LA IMAGEN AL OBJETO IMG	//alert(imageData);
+    image.style.display = 'block';					//MUESTRA OBJETO	//console.log(imageData);
+    $("#"+NomIdimage).attr("src",imageData);		//ASIGNA RUTA DE LA IMAGEN AL OBJETO IMG	//console.log(imageData);
     var arr_tmp_fotos = new Array();				//CREA NUEVO ARRAY PARA LAS FOTOS
     if(localStorage.getItem('Fotos')!=""){ var arr_tmp_fotos = JSON.parse(localStorage.getItem('Fotos'));}
     arr_tmp_fotos.push(imageData); 									//guarda URL de la imagen en array
     imageData = null; //lIMPIA LA VARIABLE DE LA IMAGEN
     localStorage.setItem('Fotos', JSON.stringify(arr_tmp_fotos));
-    arr_tmp_fotos.length=0;		//alert(localStorage.Fotos);
+    arr_tmp_fotos.length=0;		//console.log(localStorage.Fotos);
 	$("#api-camera").trigger("create");
 	$("#lista_fotos").trigger("create");
-	$("#"+NomIdimage).trigger("create");							//alert('Calidad: '+localStorage.foto_calidad+' FTW: ' + foto_tamano); */
+	$("#"+NomIdimage).trigger("create");							//console.log('Calidad: '+localStorage.foto_calidad+' FTW: ' + foto_tamano); */
 	return false;
 }
 
 function onErrorGetDir(error) {
     console.log("Error:" + error.code + " " + error.message);
-    //alert(error.code);
 }
 
 // api-camera
@@ -108,7 +111,12 @@ function onPhotoDataSuccess(imageData) {	console.log(imageData);
 					              },
 					              function()
 					              {
-					                  alert('Error al copiar el Archivo: '+nuevoArchivo);
+									alerta (
+									    'Error al copiar el Archivo: '+nuevoArchivo,  		// message
+									    function(){ },         	// callback
+									    'Activos',            	// title
+									    'Ok'                  	// buttonName
+									);
 					              });
 						    }
 						);

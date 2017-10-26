@@ -16,8 +16,7 @@
  * specific language governing permissions and limitations
  * under the License.
  */
-var pictureSource;   // picture source
-var destinationType; // sets the format of returned value
+var opcionesCamara;
 
 var app = {
     // Application Constructor
@@ -37,20 +36,18 @@ var app = {
     // function, we must explicity call 'app.receivedEvent(...);'
     onDeviceReady: function() {
         console.log('deviceready');
-		pictureSource=navigator.camera.PictureSourceType;
-        destinationType=navigator.camera.DestinationType;
         //alert("Device Readdy jp!");
         var devicePlatform = device.platform;   console.log(devicePlatform);
         if(devicePlatform == "iOS"){
-            localStorage.opcionesCamara = {   quality : 20                                 
-                            ,destinationType : Camera.DestinationType.FILE_URI
+            opcionesCamara = {   quality : 20                                 
+                            ,destinationType : Camera.DestinationType.NATIVE_URI
                             ,sourceType : Camera.PictureSourceType.CAMERA
                             ,encodingType: Camera.EncodingType.JPEG
                             ,saveToPhotoAlbum:true
                             ,correctOrientation:true
                         };
         }else{
-            localStorage.opcionesCamara = {   quality : 26                                 
+            opcionesCamara = {   quality : 26                                 
                             ,destinationType : Camera.DestinationType.FILE_URI
                             ,sourceType : Camera.PictureSourceType.CAMERA
                             ,encodingType: Camera.EncodingType.JPEG
@@ -61,3 +58,5 @@ var app = {
     }
 
 };
+
+app.initialize();

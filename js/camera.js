@@ -1,15 +1,6 @@
 var NomIdimage=null; //id de la imagen disponible 
 var i_foto=0;
-var foto_calidad;
 var foto_tamano;
-
-
-if(localStorage.foto_calidad=="" || localStorage.foto_calidad == undefined){
-	foto_calidad = "26";
-}else{
-	foto_calidad = localStorage.foto_calidad;
-}	//alert(foto_calidad);
-
 
 function elimina_foto(num){											console.log(num);
 	if($("#cameraImage"+num).attr('src') != "" && $("#cameraImage"+num).attr('src') != undefined){
@@ -66,7 +57,7 @@ function adicionarFoto(imageData){
 		$("#lista_fotos").append('<div id="bloque'+i_foto+'"><img id="cameraImage'+i_foto+'" src="" width="320" height="210" align="center"/><button onclick="elimina_foto('+i_foto+')" id="btn_elimina'+i_foto+'" data-theme="a" data-icon="arrow-u" data-mini="true" data-iconpos="left" value="0">Eliminar Foto</button></div>');
 		$("#api-camera").trigger("create");
 		$("#lista_fotos").trigger("create");
-		$("#"+NomIdimage).trigger("create");							//alert('Calidad: '+foto_calidad+' FTW: ' + foto_tamano); */
+		$("#"+NomIdimage).trigger("create");							//alert('Calidad: '+localStorage.foto_calidad+' FTW: ' + foto_tamano); */
 		NomIdimage = "cameraImage"+i_foto;
 		i_foto++;
 	}												//var imageData = "img/prueba.jpeg";
@@ -82,7 +73,7 @@ function adicionarFoto(imageData){
     arr_tmp_fotos.length=0;		//alert(localStorage.Fotos);
 	$("#api-camera").trigger("create");
 	$("#lista_fotos").trigger("create");
-	$("#"+NomIdimage).trigger("create");							//alert('Calidad: '+foto_calidad+' FTW: ' + foto_tamano); */
+	$("#"+NomIdimage).trigger("create");							//alert('Calidad: '+localStorage.foto_calidad+' FTW: ' + foto_tamano); */
 	return false;
 }
 

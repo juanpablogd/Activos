@@ -103,9 +103,16 @@ function MuestraItems(tx, results) {
     } //console.log(li);
 	$("ul#lista").empty().append(li).listview("refresh");
     if(encontrados==0){
-    	if (confirm("No se encontró la persona!! Desea crear una nueva PERSONA") == true) {
-		    window.location="nuevo_encargado.html";
-		}
+		confirmar (
+		    "No se encontró la persona!! Desea crear una nueva PERSONA",  // message
+		    function(buttonIndex){	console.log(buttonIndex);
+		    	if(buttonIndex == undefined || buttonIndex =="2"){
+		    		window.location="nuevo_encargado.html"; 	
+		    	}
+		    },         				// callback
+		    'Activos',            	// title
+		    ['Si','No']           	// buttonName
+		);
     }else if(encontrados==1){
 		console.log("Seleccionar:" + $('#lista li').attr('value'));
 		if(localStorage.elemento_valor !== undefined){

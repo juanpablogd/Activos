@@ -77,9 +77,16 @@ function MuestraItems(tx, results) {
 
 	localStorage.consulta = null;
     if(encontrados==0){
-    	if (confirm("No se encontró el ELEMENTO!! Desea crear uno nuevo?") == true) {
-		    window.location="nuevo_elemento.html";
-		}
+		confirmar (
+		    "No se encontró el ELEMENTO!! Desea crear uno nuevo?",  // message
+		    function(buttonIndex){	console.log(buttonIndex);
+		    	if(buttonIndex == undefined || buttonIndex =="2"){
+					window.location="nuevo_elemento.html";
+		    	}
+		    },         				// callback
+		    'Activos',            	// title
+		    ['Si','No']           	// buttonName
+		);
     }
 }
 

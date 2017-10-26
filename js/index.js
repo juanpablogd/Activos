@@ -31,6 +31,21 @@ function alerta(msj,callback,titulo,nomBoton){
     }
 }
 
+function confirmar(msj,callback,titulo,nomBotones){
+    if(navigator.notification == undefined){
+        if (confirm(msj) == true) {
+            callback();
+        }
+    }else{
+        navigator.notification.confirm(
+            msj, // message
+            callback,            // callback to invoke with index of button pressed
+            titulo,           // title
+            ['No','Si']     // buttonLabels
+        );
+    }
+}
+
 var app = {
     // Application Constructor
     initialize: function() {

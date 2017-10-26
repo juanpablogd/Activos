@@ -65,9 +65,16 @@ function MuestraItems(tx, results) {
 			  "</li>";
     }
     if(encontrados==0){
-    	if (confirm("No se encontró el ELEMENTO!! Desea crear uno nuevo?") == true) {
-		    window.location="nuevo_elemento.html";
-		}
+		confirmar (
+		    "No se encontró el ELEMENTO!! Desea crear uno nuevo?",  // message
+		    function(buttonIndex){	console.log(buttonIndex);
+		    	if(buttonIndex == undefined || buttonIndex =="2"){
+		    		window.location="nuevo_elemento.html";
+		    	}
+		    },         				// callback
+		    'Activos',            	// title
+		    ['Si','No']           	// buttonName
+		);
     }else{ console.log('SELECT rowid,url,id_envio FROM publicarticulos_fotos where (id_envio = "'+results.rows.item(0).id_envio+'" and id_envio != "") or (idarticulo= "'+results.rows.item(0).id+'" and idarticulo != "null")');
     	 tx.executeSql('SELECT rowid,url,id_envio FROM publicarticulos_fotos where (id_envio = "'+results.rows.item(0).id_envio+'" and id_envio != "") or (idarticulo= "'+results.rows.item(0).id+'" and idarticulo != "null")', [], 
     		function ConsultaSincronizarInventario(tx, resFotos) {
@@ -81,12 +88,18 @@ function MuestraItems(tx, results) {
 				if(numFotos>0 && numFotos<4){
 					$("#btn_ok").show();
 				}else{
-					var r = confirm("No hay fotos, desea adicionarlas?");
-				    if (r == true) {
-						console.log($("#btnEditar").attr("onclick"));
-						var par = $("#btnEditar").attr("onclick").split("'");
-						editarElemento(par[1]);
-				    }
+					confirmar (
+					    "No hay fotos, desea adicionarlas?",  // message
+					    function(buttonIndex){	console.log(buttonIndex);
+					    	if(buttonIndex == undefined || buttonIndex =="2"){
+								console.log($("#btnEditar").attr("onclick"));
+								var par = $("#btnEditar").attr("onclick").split("'");
+								editarElemento(par[1]);
+					    	}
+					    },         				// callback
+					    'Activos',            	// title
+					    ['Si','No']           	// buttonName
+					);
 				}
     		}
     		,

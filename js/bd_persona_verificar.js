@@ -53,34 +53,36 @@ function abrir(id){	//console.log(id);
 
 
 function desasignar(videnvio,nombre){ console.log(videnvio+" - "+nombre)
-	var r = confirm('Seguro que desea DESASIGNAR: "'+nombre+'"?');
-    if (r == true) {
-		db.transaction(function(tx) {
-			  console.log('DELETE FROM publicinventario_det where id_envio = "'+videnvio+'"');
-			tx.executeSql('DELETE FROM publicinventario_det where id_envio = "'+videnvio+'"');
-		}, function errorCBdelete(err) {	console.log("Error processing SQL: "+err.code); }
-		,function successCBdelete() {	console.log("Eliminado inventario Detalle: "+videnvio); }
-		);
-		db.transaction(function(tx) {
-			  console.log('DELETE FROM publicinventario where id_envio = "'+videnvio+'"');
-			tx.executeSql('DELETE FROM publicinventario where id_envio = "'+videnvio+'"');
-		}, function errorCBdeleteok(err) {	console.log("Error processing SQL: "+err.code); }
-		,function successCBdeleteok() {	console.log("Eliminado inventario: "+videnvio); 
-			console.log("Elemento Desasignado exitosamente");
-			alerta (
-			    "Elemento Desasignado exitosamente",  		// message
-			    function(){ 
-					setTimeout(function() { 
-						window.location = "persona_verificar.html";
-					}, 300);
-			    },         	// callback
-			    'Activos',            	// title
-			    'Ok'                  	// buttonName
-			);
-		}
-		);
-
-    }
+	confirmar('Seguro que desea DESASIGNAR: "'+nombre+'"?',
+		    function(buttonIndex){	console.log(buttonIndex);
+		    	if(buttonIndex == undefined || buttonIndex =="2"){
+					db.transaction(function(tx) {
+						  console.log('DELETE FROM publicinventario_det where id_envio = "'+videnvio+'"');
+						tx.executeSql('DELETE FROM publicinventario_det where id_envio = "'+videnvio+'"');
+					}, function errorCBdelete(err) {	console.log("Error processing SQL: "+err.code); }
+					,function successCBdelete() {	console.log("Eliminado inventario Detalle: "+videnvio); }
+					);
+					db.transaction(function(tx) {
+						  console.log('DELETE FROM publicinventario where id_envio = "'+videnvio+'"');
+						tx.executeSql('DELETE FROM publicinventario where id_envio = "'+videnvio+'"');
+					}, function errorCBdeleteok(err) {	console.log("Error processing SQL: "+err.code); }
+					,function successCBdeleteok() {	console.log("Eliminado inventario: "+videnvio); 
+						console.log("Elemento Desasignado exitosamente");
+						alerta (
+						    "Elemento Desasignado exitosamente",  		// message
+						    function(){ 
+								setTimeout(function() { 
+									window.location = "persona_verificar.html";
+								}, 300);
+						    },         	// callback
+						    'Activos',            	// title
+						    'Ok'                  	// buttonName
+						);
+					}
+					);
+		    	}
+		    }  
+			,'Activos',['Si','No'] );
 }
 
 /* RESULTADO DE LA TABLA PERSONA*/

@@ -40,7 +40,7 @@ function ConsultaItemsCarga(tx, results) {
    	}
 	/*Refresca estilo para cada uno de los controles*/
 	$("#dependencia").selectmenu('refresh'); //console.log(viddependencia);
-	if(viddependencia != ""){
+	if(viddependencia != "" && viddependencia != undefined){
 		localStorage.busqueda = viddependencia;
 		db.transaction(ConsultaSecciones);
 	}

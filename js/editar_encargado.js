@@ -12,16 +12,25 @@ function errorCB(err) {
 	}
 }
 
+function txtOk(t){	console.log(t);
+	if (t != "undefined" && t != undefined){
+		t = t.trim();
+		return t.replace(/'/g , "").replace(/"/g , "").replace(/\|/g , " ");
+	}else{
+		return t;
+	}
+}
+
 function GuardaElemento(tx) {
 	tipo = 'guarda';
 	//OBTIENE EL ID DEL USUARIO
 	var id_usr = localStorage.id_usr; 
 	//OBTIENE EL ID DE LA CEDULA
-	var cc = $( "#cc" ).val();
+	var cc = txtOk($( "#cc" ).val());
 	//OBTIENE EL ID DE LOS NOMBRES
-	var nombres = $( "#nombres" ).val();
+	var nombres = txtOk($( "#nombres" ).val());
 		//OBTIENE EL ID DE LOS APELLIDOS
-	var apellidos = $( "#apellidos" ).val();
+	var apellidos = txtOk($( "#apellidos" ).val());
 
 	if(cc.trim() == ""){
 		alerta (
@@ -82,8 +91,8 @@ function resultadoCC(tx, results) { console.log('MuestraItems');
 	var encontrados = results.rows.length;	//console.log(encontrados);
 	if(encontrados>0){
 	 	var id = results.rows.item(0).cc;
-	 	var nombres = results.rows.item(0).nombres;					//console.log( "nombre = " + sessionStorage.getItem("nombre"));
-	 	var apellidos = results.rows.item(0).apellidos;
+	 	var nombres = results.rows.item(0).nombres;			nombres = txtOk(nombres);					//console.log( "nombre = " + sessionStorage.getItem("nombre"));
+	 	var apellidos = results.rows.item(0).apellidos;		apellidos = txtOk(apellidos);
 		alerta (
 		    "Número de cédula ya existe: " +nombres+" "+apellidos,  		// message
 		    function(){ },         	// callback
@@ -96,15 +105,15 @@ function resultadoCC(tx, results) { console.log('MuestraItems');
 			var id_usr = localStorage.id_usr; 
 			
 			//OBTIENE EL ID DE LA CEDULA
-			var cc = $( "#cc" ).val();
+			var cc = $( "#cc" ).val();					cc = txtOk(cc);
 			//OBTIENE EL ID DE LOS NOMBRES
-			var nombres = $( "#nombres" ).val();
+			var nombres = $( "#nombres" ).val();		nombres = txtOk(nombres);
 				//OBTIENE EL ID DE LOS APELLIDOS
-			var apellidos = $( "#apellidos" ).val();
+			var apellidos = $( "#apellidos" ).val();	apellidos = txtOk(apellidos);
 			//OBTIENE EL ID DE LOS TELEFONOS
-			var telefonos = $( "#telefonos" ).val();
+			var telefonos = $( "#telefonos" ).val();	telefonos = txtOk(telefonos);
 			//OBTIENE EL ID DEL CORREO
-			var correo = $( "#correo" ).val();
+			var correo = $( "#correo" ).val();			correo = txtOk(correo);
 			//OBTIENE EL ROWID DEL ELEMENTO A EDITAR
 			var persona = localStorage.persona_valor;
 			var res = persona.split("|");

@@ -349,7 +349,7 @@ $(document).ready(function() {
 
 function comprobarCamposRequired(){
 	var correcto=true;
-	if(correcto==true){
+/*	if(correcto==true){
 	   $(':input').each(function () {	console.log("valor:" + $(this).val() + " id: " + $(this).attr('id'));
 		      if($(this).val() =='' || $(this).val() === ""){		console.log("Entró");
 		         correcto=false;
@@ -364,7 +364,7 @@ function comprobarCamposRequired(){
 		         return false;
 		      }
 	   });
-	}
+	}	*/
 	$('select').each(function () {	//console.log("valor:" + $(this).val() + " id: " + $(this).attr('id'));
 		if(correcto==true){
 	   		var valselect = $(this).val();

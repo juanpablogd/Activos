@@ -87,6 +87,7 @@ function MuestraItems(tx, results) {
 				$("#nf"+results.rows.item(0).rowid).html(numFotos);
 				if(numFotos>0 && numFotos<4){
 					$("#btn_ok").show();
+					$("#divObservaciones").show();
 				}else{
 					confirmar (
 					    "No hay fotos, desea adicionarlas?",  // message

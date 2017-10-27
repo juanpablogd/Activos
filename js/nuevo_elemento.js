@@ -10,19 +10,6 @@ if (localStorage.idempresa == "" || localStorage.idempresa === undefined){
 	);
 } 
 
-// Start with the map page
-$(window).load(function () {
-		/*
-		var idcorredor = localStorage.idcorredor;		 	
-		var nombre = localStorage.nombre;
-		var idinscripcion = localStorage.idinscripcion;	//console.log("Nombre: "+nombre+"   Insss: "+idinscripcion);
-		*/
-		//if (nombre != null && nombre != "" && idinscripcion != null && idinscripcion != "") window.location = "main.html";
-		 /* db.transaction(AlmacenaUsr);
-		db.transaction(CargarAtletas); */
-		
-});
-
 function errorCB(err) {
 	// Esto se puede ir a un Log de Error dir�a el purista de la oficina, pero como este es un ejemplo pongo el MessageBox.Show :P
 	if (err.code != "undefined" && err.message != "undefined"){
@@ -34,7 +21,14 @@ function errorCB(err) {
 		);
 	}
 }
-
+function txtOk(t){	console.log(t);
+	if (t != "undefined" && t != undefined){
+		t = t.trim();
+		return t.replace(/'/g , "").replace(/"/g , "").replace(/\|/g , " ");
+	}else{
+		return t;
+	}
+}
 /****************************************************************************************************************************************************************/
 /**CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS**/ 
 function ConsultaItems(tx) {
@@ -151,7 +145,7 @@ function GuardaElemento(tx) {
 	//OBTIENE EL ID DE LA DEPENDENCIA O AREA
 	var referencia = $( "#ref" ).val();	console.log(referencia);
 	//OBTIENE EL ID DE LA DEPENDENCIA O AREA
-	var nombre = $( "#name" ).val();	console.log(nombre);
+	var nombre = $( "#name" ).val();	nombre = txtOk(nombre); console.log(nombre);
 		//OBTIENE EL ID DE LA DEPENDENCIA O AREA
 	
 	var nserie = $("#nserie").val();		console.log(nserie);
@@ -269,12 +263,6 @@ function GuardaElemento(tx) {
 }
 
 $(document).ready(function() {
-	
-/*	$val = localStorage.elemento_valor; 
-	var res = $val.split("|");
-	$val = localStorage.persona_valor; 
-	var res_persona = $val.split("|");
-	$("#seleccionado").html('<h4 align="center">'+res_persona[1]+" "+res_persona[2]+'<br>'+'Ref: '+res[1]+" -  "+res[2]+'</h4>'); */
 	
 	$("#btn_ok").click(function(){
 	  	db.transaction(GuardaElemento);

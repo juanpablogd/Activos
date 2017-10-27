@@ -1,13 +1,3 @@
-// Start with the map page
-$(window).load(function () {
-		/*var idcorredor = localStorage.idcorredor;		 	
-		var nombre = localStorage.nombre;
-		var idinscripcion = localStorage.idinscripcion;	//console.log("Nombre: "+nombre+"   Insss: "+idinscripcion);
-		//if (nombre != null && nombre != "" && idinscripcion != null && idinscripcion != "") window.location = "main.html";
-		  db.transaction(AlmacenaUsr);
-		db.transaction(CargarAtletas); */
-});
-
 $(document).ready(function() {
 	var activo = false;
     app.initialize();
@@ -26,6 +16,14 @@ $(document).ready(function() {
 				);
 			}
 		);
+	}
+	function txtOk(t){	console.log(t);
+		if (t != "undefined" && t != undefined){
+			t = t.trim();
+			return t.replace(/'/g , "").replace(/"/g , "").replace(/\|/g , " ");
+		}else{
+			return t;
+		}
 	}
 	
 	localStorage.busqueda = "";
@@ -127,7 +125,7 @@ $(document).ready(function() {
 		$val = localStorage.persona_valor;
 		var id_usr = localStorage.id_usr;
 		var cc = $val.split("|");
-		var observaciones = $( "#observaciones" ).val();
+		var observaciones = $( "#observaciones" ).val();	observaciones = txtOk(observaciones);
 		//OBTIENE EL ELEMENTO A MOSTRAR
 		$val = localStorage.elemento_valor; 
 		var id_elemento = $val.split("|");

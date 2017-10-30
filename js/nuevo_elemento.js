@@ -248,7 +248,8 @@ function GuardaElemento(tx) {
 												localStorage.Fotos = "";
 												alerta (
 												    "Elemento Guardado exitosamente",  		// message
-												    function(){ 
+												    function(){
+												    	localStorage.consulta = null; 
 												    	window.location = "p2_elemento_buscar.html";
 												    },         	// callback
 												    'Activos',            	// title
@@ -263,6 +264,10 @@ function GuardaElemento(tx) {
 }
 
 $(document).ready(function() {
+
+	if(localStorage.consulta != null && localStorage.consulta != ""){
+		$("#plaqueta").val(localStorage.consulta);
+	}
 	
 	$("#btn_ok").click(function(){
 	  	db.transaction(GuardaElemento);

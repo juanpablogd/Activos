@@ -70,6 +70,7 @@ function MuestraItems(tx, results) {
 		    function(buttonIndex){	console.log(buttonIndex);
 		    	if(buttonIndex == undefined || buttonIndex =="2"){
 		    		window.location="nuevo_elemento.html";
+		    		localStorage.consulta = localStorage.busqueda;
 		    	}
 		    },         				// callback
 		    'Activos',            	// title

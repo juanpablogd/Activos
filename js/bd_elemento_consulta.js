@@ -75,7 +75,7 @@ function MuestraItems(tx, results) {
     }
 	$("ul#lista").listview("refresh");
 
-	localStorage.consulta = null;
+	
     if(encontrados==0){
 		confirmar (
 		    "No se encontró el ELEMENTO!! Desea crear uno nuevo?",  // message
@@ -87,6 +87,8 @@ function MuestraItems(tx, results) {
 		    'Activos',            	// title
 		    ['Si','No']           	// buttonName
 		);
+    }else {
+    	localStorage.consulta = null;
     }
 }
 

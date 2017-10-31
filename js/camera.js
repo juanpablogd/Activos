@@ -86,7 +86,7 @@ function onErrorGetDir(error) {
 }
 
 // api-camera
-function onPhotoDataSuccess(imageData) {	console.log(imageData);
+function onPhotoDataSuccess(imageData) {	console.log('original: ' + imageData);
 	if (typeof cordova !== 'undefined'){
 		var devicePlatform = device.platform;	console.log(devicePlatform);
         if(devicePlatform == "Android"){
@@ -123,12 +123,11 @@ function onPhotoDataSuccess(imageData) {	console.log(imageData);
 				      }
 			    );
         }else{
+            imageData = imageData.replace("assets-library://", "cdvfile://localhost/assets-library/");
+            console.log('Remplazo: ' + imageData);
         	adicionarFoto(imageData);	
         }
 	} else{
 		adicionarFoto(imageData);
 	}
 }
-
-
-		

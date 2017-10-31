@@ -378,17 +378,22 @@ function ConsultaSincronizarFotos(tx, results) {
 						function sqlfallo(){}
 						function pictureNotfound(){ console.log ("El archivo no fué Encontrado!"); }
 						function pictureRemoved(){ console.log ("El archivo fué eliminado!"); }
-						function notRemoved(){ $("#resultado").html("<br> No se puede Eliminar el archivo, limpie el cache manualmente<br>"); $("#resultado").trigger("create");}
+						function notRemoved(){
+                              var devicePlatform = device.platform;   console.log(devicePlatform);
+                              if(devicePlatform != "iOS"){
+                                  $("#resultado").html("<br> No se puede Eliminar el archivo, limpie el cache manualmente<br>"); $("#resultado").trigger("create");
+                              }
+                          }
 						function no(error) { console.log("Error al consultar el archivo: " +error.message); /* $("#resultado").html("<br> Ubicación incorrecta de la imagen<br>"); */ $("#resultado").trigger("create");}
 		            	//ELIMINA DE LA BASE DE DATOS
 		            	db.transaction(eliminafotodb,sqlfallo,sqlexitoso);
 
 		            },
 		            function(error) {
-		            	var txtServidor;
+		            	var txtServidor = "";
 	                	if(error.code == 1){
 	                		txtServidor = "No se encontró el archivo, pudo haber sido Eliminado: " + url_imagen.substr(26);
-	                	}else if(error.code == 2){
+                        }else if(error.code == 2){
 	                		txtServidor = "Error en la Url del servidor";
 	                	}else if(error.code == 3){
 	                		txtServidor = "Debe contar con buena conexión a internet para cargar las fotos";

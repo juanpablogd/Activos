@@ -21,8 +21,8 @@ function successCB() {
 /* BUSQUEDA EN LA TABLA ELEMENTO*/
 function CargarListado(tx) {
 	var busqueda=localStorage.consulta.trim(); //console.log("Busqueda: "+busqueda+"!"); //console.log("Busqueda: "+busqueda); console.log("SELECT * FROM publicp_elemento where referencia like '%"+busqueda+"%'");
-	if(busqueda!=null){ console.log('SELECT el.idarticulo,el.rowid as id,el.referencia,el.numero_serie_af,plaqueta_af,plaqueta_anterior1_af,el.nombre,te.nombres||" "||te.apellidos as responsable,idusuario_envio,el.id_envio FROM publicarticulos el left join publicusuarios te on (el.cc_responsable_af = te.cc and el.cc_responsable_af != "") where referencia like "%'+busqueda+'%" or nombre like "%'+busqueda+'%" or numero_serie_af like "%'+busqueda+'%" or plaqueta_af like "%'+busqueda+'%" or plaqueta_anterior1_af like "%'+busqueda+'%" limit 200');
-	                  tx.executeSql('SELECT el.idarticulo,el.rowid as id,el.referencia,el.numero_serie_af,plaqueta_af,plaqueta_anterior1_af,el.nombre,te.nombres||" "||te.apellidos as responsable,idusuario_envio,el.id_envio FROM publicarticulos el left join publicusuarios te on (el.cc_responsable_af = te.cc and el.cc_responsable_af != "") where referencia like "%'+busqueda+'%" or nombre like "%'+busqueda+'%" or numero_serie_af like "%'+busqueda+'%" or plaqueta_af like "%'+busqueda+'%" or plaqueta_anterior1_af like "%'+busqueda+'%" limit 200', [], MuestraItems);
+	if(busqueda!=null){ console.log('SELECT el.idarticulo,el.rowid as id,el.referencia,el.numero_serie_af,plaqueta_af,plaqueta_anterior1_af,el.nombre,te.nombres||" "||te.apellidos as responsable,idusuario_envio,el.id_envio,el.id_estado FROM publicarticulos el left join publicusuarios te on (el.cc_responsable_af = te.cc and el.cc_responsable_af != "") where referencia like "%'+busqueda+'%" or nombre like "%'+busqueda+'%" or numero_serie_af like "%'+busqueda+'%" or plaqueta_af like "%'+busqueda+'%" or plaqueta_anterior1_af like "%'+busqueda+'%" limit 200');
+	                  tx.executeSql('SELECT el.idarticulo,el.rowid as id,el.referencia,el.numero_serie_af,plaqueta_af,plaqueta_anterior1_af,el.nombre,te.nombres||" "||te.apellidos as responsable,idusuario_envio,el.id_envio,el.id_estado FROM publicarticulos el left join publicusuarios te on (el.cc_responsable_af = te.cc and el.cc_responsable_af != "") where referencia like "%'+busqueda+'%" or nombre like "%'+busqueda+'%" or numero_serie_af like "%'+busqueda+'%" or plaqueta_af like "%'+busqueda+'%" or plaqueta_anterior1_af like "%'+busqueda+'%" limit 200', [], MuestraItems);
    }
 }
 /* RESULTADO DE LA TABLA ELEMENTO*/
@@ -42,6 +42,7 @@ function MuestraItems(tx, results) {
 	 	var plaqueta_anterior1_af = results.rows.item(i).plaqueta_anterior1_af;
 	 	var bid_envio = results.rows.item(i).id_envio;
 	 	var idusuario_envio = results.rows.item(i).idusuario_envio;
+	 	var id_estado = results.rows.item(i).id_estado;
 	 	var cod_id;
 	 	if(idarticulo != null && idarticulo != "null" && idarticulo != ""){
 	 		cod_id = idarticulo;
@@ -49,7 +50,7 @@ function MuestraItems(tx, results) {
 	 		cod_id = bid_envio;
 	 	}	console.log(cod_id);
 
-	    li = "<li value='"+idarticulo+"|"+plaqueta_af+"|"+nombre+"|"+id+"'>"+
+	    li = "<li value='"+idarticulo+"|"+plaqueta_af+"|"+nombre+"|"+id+"|"+id_estado+"|"+bid_envio+"'>"+
 			"<a href='#'>"+
 			    	"<div class='ui-block'>"+
 				        "<h2>"+nombre+"</h2>"+

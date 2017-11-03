@@ -365,7 +365,7 @@ function comprobarCamposRequired(){
 		      }
 	   });
 	}	*/
-	$('select').each(function () {	//console.log("valor:" + $(this).val() + " id: " + $(this).attr('id'));
+/*	$('select').each(function () {	//console.log("valor:" + $(this).val() + " id: " + $(this).attr('id'));
 		if(correcto==true){
 	   		var valselect = $(this).val();
 	   		var selectid = $(this).attr('id').substring(1);		console.log(selectid);
@@ -384,7 +384,7 @@ function comprobarCamposRequired(){
 	   			}
 	   		}
 	   	}
-	});
+	});	*/
 	//console.log( correcto);
 	return correcto;
 }

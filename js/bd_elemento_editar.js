@@ -264,7 +264,7 @@ function MuestraItems(tx, results) {
 											    'Activos',            	// title
 											    'Ok'                  	// buttonName
 											);
-										}, totalFotos*120);
+										}, totalFotos*130);
 								    }
 								}
 				    			db.transaction(function(tx) {

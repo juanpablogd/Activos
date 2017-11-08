@@ -256,7 +256,7 @@ function GuardaElemento(tx) {
 												    'Activos',            	// title
 												    'Ok'                  	// buttonName
 												);
-											}, dataf.length*120);
+											}, dataf.length*130);
 										}
 									});
 								}

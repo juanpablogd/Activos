@@ -98,7 +98,7 @@ function MuestraItems(tx, results) {
 	localStorage.firma = "";
     for (var i=0;i<encontrados;i++)
 	{
-	 	var id = results.rows.item(i).idinventariodet;		console.log("Id: "+id);
+	 	var id = results.rows.item(i).idinventariodet;		//console.log("Id: "+id);
 	 	var nombre = results.rows.item(i).nombre;					//console.log( "nombre = " + sessionStorage.getItem("nombre"));
 	 	var sublinea = results.rows.item(i).sublinea;
 	 	var referencia = results.rows.item(i).referencia;
@@ -114,7 +114,7 @@ function MuestraItems(tx, results) {
 	 	var estado = results.rows.item(i).estado;
 	 	var desasignar="";
 		//console.log($("#firma_ok").attr('src'));console.log(firma);
-		if($("#firma_ok").attr('src') == undefined){	console.log("indefinido");
+		if($("#firma_ok").attr('src') == undefined){	//console.log("indefinido");
 			if(firma != null && firma != ""){	console.log("set firma");
 				localStorage.firma = firma;
 				console.log("firma OK");
@@ -162,7 +162,7 @@ function MuestraItems(tx, results) {
 			  + "</li>";
 			  //(id_envio = "'+results.rows.item(0).id_envio+'" and id_envio != "") or (idarticulo= "'+results.rows.item(0).id+'" and idarticulo != "null")
 		if(inv_det_id_envio != "null" && inv_det_id_envio != "" && inv_det_id_envio != undefined && inv_det_id_envio != null){
-			console.log('SELECT count(*) as c, "'+cod_id+'" as rowid FROM publicarticulos_fotos where (id_envio ="'+id_envio_art+'" and id_envio != "") or (idarticulo= "'+idarticulo+'" and idarticulo != "null")');
+			//console.log('SELECT count(*) as c, "'+cod_id+'" as rowid FROM publicarticulos_fotos where (id_envio ="'+id_envio_art+'" and id_envio != "") or (idarticulo= "'+idarticulo+'" and idarticulo != "null")');
 			tx.executeSql('SELECT count(*) as c, "'+cod_id+'" as rowid FROM publicarticulos_fotos where (id_envio ="'+id_envio_art+'" and id_envio != "") or (idarticulo= "'+idarticulo+'" and idarticulo != "null")', [], 
 				function ConsultaSincronizarInventario(tx, resultnf) {
 					$("#nf"+resultnf.rows.item(0).rowid).html(resultnf.rows.item(0).c);
@@ -206,6 +206,7 @@ function MuestraItems(tx, results) {
 					}	
 				}
 				console.log("GUARDAR");
+				$.mobile.loading( 'show', { text: 'Guardando Información....', textVisible: true, theme: 'a', html: "" });
 				if($('#div_firma').is(':visible')){
 					db.transaction(function(tx) {
 						tx.executeSql('SELECT rowid,id_envio FROM publicinventario inv where inv.cc_responsable ="'+res[0]+'"', [], 
@@ -221,7 +222,8 @@ function MuestraItems(tx, results) {
 									db.transaction(function(tx) {
 										  console.log('UPDATE publicinventario SET firma = "'+localStorage.firma+'" where rowid = "'+last_rowid+'"');
 										tx.executeSql('UPDATE publicinventario SET firma = "'+localStorage.firma+'" where rowid = "'+last_rowid+'"');
-									}, function errorCB(err) {	
+									}, function errorCB(err) {
+											$.mobile.loading( 'hide' );	
 											alerta (
 											    "Error processing SQL: "+err.code,  		// message
 											    function(){ },         	// callback
@@ -235,13 +237,14 @@ function MuestraItems(tx, results) {
 									db.transaction(function(tx) {
 								  		  console.log('UPDATE publicinventario SET firma = "'+localStorage.firma+'",id_envio = "'+id_envio+"-"+id+'" where rowid = "'+last_rowid+'"');
 										tx.executeSql('UPDATE publicinventario SET firma = "'+localStorage.firma+'",id_envio = "'+id_envio+"-"+id+'" where rowid = "'+last_rowid+'"');
-									}, function errorCB(err) {	
-											alerta (
-											    "Error processing SQL: "+err.code,  		// message
-											    function(){ },         	// callback
-											    'Activos',            	// title
-											    'Ok'                  	// buttonName
-											);
+									}, function errorCB(err) {
+										$.mobile.loading( 'hide' );	
+										alerta (
+										    "Error processing SQL: "+err.code,  		// message
+										    function(){ },         	// callback
+										    'Activos',            	// title
+										    'Ok'                  	// buttonName
+										);
 									}
 									,function successCB() {	localStorage.firma = ""; }
 									);
@@ -268,11 +271,11 @@ function MuestraItems(tx, results) {
 			    	       console.log('UPDATE publicinventario_det SET observacion = "'+texto+'",asignacion = "'+seleccion+'",id_envio = "'+tmp_idenvio+'" WHERE '+condicion);
 			    	db.transaction(function(txu) {
 						txu.executeSql('UPDATE publicinventario_det SET observacion = "'+texto+'",asignacion = "'+seleccion+'",id_envio = "'+tmp_idenvio+'" WHERE '+condicion,[]
-							,function successCBU() { console.log("Web SQL - update ok");
-								j++;
-		    					console.log("Registro: " + j + " de " + encontrados);
+							,function successCBU() { //console.log("Web SQL - update ok");
+								j++;	console.log("Registro: " + j + " de " + encontrados);
 		    					if(j==encontrados){
 		    						setTimeout(function() {
+		    							$.mobile.loading( 'hide' );
 										alerta (
 										    "Verificación Exitosa!",  		// message
 										    function(){
@@ -281,9 +284,10 @@ function MuestraItems(tx, results) {
 										    'Activos',            	// title
 										    'Ok'                  	// buttonName
 										);								   		
-								   	}, 360);
+								   	}, 480);
 		    					}	
 							}, function errorCBU(err) {	
+								$.mobile.loading( 'hide' );
 								alerta (
 								    "Error processing SQL: "+err.code,  		// message
 								    function(){ },         	// callback

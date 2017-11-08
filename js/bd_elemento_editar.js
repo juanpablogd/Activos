@@ -193,6 +193,7 @@ function MuestraItems(tx, results) {
     		var id = res[3];
 			if(comprobarCamposRequired()){ 
 				console.log("GUARDAR");	//return false;
+				$.mobile.loading( 'show', { text: 'Guardando Información....', textVisible: true, theme: 'a', html: "" });
 				var last_id;
 				var count = 0;
 				   $(':input').each(function () {	//console.log("valor:" + $(this).val() + " id: " + $(this).attr('id'));
@@ -208,7 +209,8 @@ function MuestraItems(tx, results) {
 			    			var numero_serie_af = txtOk($("#ns"+id).val());
 			    			var id_estado = $("#es"+id).val();					//console.log(JSON.stringify(res));
 			    			if(texto_plaqueta != undefined && texto_plaquetanterior != undefined){
-								function errorCBU(err) { 
+								function errorCBU(err) {
+									$.mobile.loading( 'hide' );
 									if (err.code != "undefined" && err.message != "undefined"){
 										alerta (
 										    "Error al guardar, revise los caracteres especiales: \n" + " Mensaje: " + err.message + err.code,  		// message
@@ -230,16 +232,18 @@ function MuestraItems(tx, results) {
 								   		
 								   });
 									//GUARDA FOTOS
+									var totalFotos=1;
 									if(localStorage.Fotos != null && localStorage.Fotos != "" && localStorage.Fotos !== undefined && localStorage.Fotos != "undefined"){
 										//CARGA FOTOS
 										var data = JSON.parse(localStorage.getItem('Fotos')); console.log(data);
+										totalFotos = data.length;
 										$.each(data, function(i, item) {	
 											db.transaction(function(tx) {	//console.log(item);
 												if(res[0]!="" && res[0]!="null"){
-													  console.log('INSERT INTO publicarticulos_fotos (url,idarticulo) values ("'+item+'","'+res[0]+'")');
+													  //console.log('INSERT INTO publicarticulos_fotos (url,idarticulo) values ("'+item+'","'+res[0]+'")');
 													tx.executeSql('INSERT INTO publicarticulos_fotos (url,idarticulo) values ("'+item+'","'+res[0]+'")');	
 												}else{
-													  console.log('INSERT INTO publicarticulos_fotos (url,id_envio) values ("'+item+'","'+res[5]+'")');
+													  //console.log('INSERT INTO publicarticulos_fotos (url,id_envio) values ("'+item+'","'+res[5]+'")');
 													tx.executeSql('INSERT INTO publicarticulos_fotos (url,id_envio) values ("'+item+'","'+res[5]+'")');	
 												}
 												
@@ -249,17 +253,18 @@ function MuestraItems(tx, results) {
 										localStorage.Fotos = "";				
 									}
 								    count++;	console.log("Contador:"+count);
-								    if(count==encontrados){
+								    if(count==encontrados){	console.log(totalFotos);
 										setTimeout(function() { //idarticulo+"|"+plaqueta_af+"|"+nombre+"|"+rowid+"|"+id_estado+"|"+id_envio
 											localStorage.elemento_valor = res[0]+"|"+texto_plaqueta+"|"+nombre+"|"+res[3]+"|"+id_estado+"|"+res[5];
 											console.log(localStorage.elemento_valor);
+											$.mobile.loading( 'hide' );
 											alerta (
 											    "Elemento editado Exitosamente!",  		// message
 											    function(){ window.location = "p2_elemento_buscar.html"; },         	// callback
 											    'Activos',            	// title
 											    'Ok'                  	// buttonName
 											);
-										}, 450);
+										}, totalFotos*120);
 								    }
 								}
 				    			db.transaction(function(tx) {
@@ -409,7 +414,7 @@ function comprobarCamposRequired(){
 	   if(correcto==true){	//console.log(localStorage.Fotos);
 			if(localStorage.Fotos == "" || localStorage.Fotos == undefined || localStorage.Fotos == "[]"){
 				alerta (
-				    "Debe añadir mínimo dos(2) Fotos!",  // message
+				    "Mínimo de Fotos: "+minFotos,  // message
 				    function(){
 						//window.location = "principal.html";
 				    },         // callback
@@ -419,9 +424,9 @@ function comprobarCamposRequired(){
 				correcto=false; return false;
 			}else{
 				dataf = JSON.parse(localStorage.getItem('Fotos')); console.log(dataf.length);
-				if(dataf.length<2){
+				if(dataf.length<minFotos){
 					alerta (
-					    "Debe añadir mínimo dos(2) Fotos!",  // message
+					    "Mínimo de Fotos: "+minFotos,  // message
 					    function(){
 							//window.location = "principal.html";
 					    },         // callback
@@ -429,9 +434,9 @@ function comprobarCamposRequired(){
 					    'Ok'                  // buttonName
 					);
 					correcto=false; return false;
-				}else if(dataf.length>3){
+				}else if(dataf.length>maxFotos){
 					alerta (
-					    "Debe añadir mínimo dos(2) Fotos!",  // message
+					    "Máximo de Fotos: "+maxFotos +"\nFotos actuales: "+dataf.length,  // message
 					    function(){
 							//window.location = "principal.html";
 					    },         // callback

@@ -86,7 +86,7 @@ function MuestraItems(tx, results) {
 					
 				}	console.log(results.rows.item(0).rowid);
 				$("#nf"+results.rows.item(0).rowid).html(numFotos);
-				if(numFotos>0 && numFotos<4){
+				if(numFotos>0){
 					$("#btn_ok").show();
 					$("#divObservaciones").show();
 				}else{

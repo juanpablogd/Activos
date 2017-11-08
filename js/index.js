@@ -17,6 +17,8 @@
  * under the License.
  */
 var opcionesCamara;
+var minFotos=2;
+var maxFotos=20;
 function alerta(msj,callback,titulo,nomBoton){
     if(navigator.notification == undefined){
         alert(msj);

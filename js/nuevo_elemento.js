@@ -190,7 +190,7 @@ function GuardaElemento(tx) {
 	}
 	if(localStorage.Fotos == "" || localStorage.Fotos == undefined){
 			alerta (
-			    "Debe añadir mínimo dos(2) Fotos!",  		// message
+			    "Mínimo de Fotos: "+minFotos,  		// message
 			    function(){ },         	// callback
 			    'Activos',            	// title
 			    'Ok'                  	// buttonName
@@ -198,17 +198,17 @@ function GuardaElemento(tx) {
 		return false;
 	}else{
 		dataf = JSON.parse(localStorage.getItem('Fotos')); console.log(dataf.length);
-		if(dataf.length<2){
+		if(dataf.length<minFotos){
 			alerta (
-			    "Debe añadir mínimo dos(2) Fotos!",  		// message
+			    "Mínimo de Fotos: "+minFotos,  		// message
 			    function(){ },         	// callback
 			    'Activos',            	// title
 			    'Ok'                  	// buttonName
 			);
 			return false;
-		}else if(dataf.length>3){
+		}else if(dataf.length>maxFotos){
 			alerta (
-			    "Debe añadir máximo tres(3) Fotos!",  		// message
+			    "Máximo de Fotos: "+maxFotos +"\nFotos actuales: "+dataf.length,  		// message
 			    function(){ },         	// callback
 			    'Activos',            	// title
 			    'Ok'                  	// buttonName
@@ -216,7 +216,7 @@ function GuardaElemento(tx) {
 			return false;
 		}
 	}
-
+	$.mobile.loading( 'show', { text: 'Guardando Información....', textVisible: true, theme: 'a', html: "" });
 	//FECHA - ID_ENVIO
 	var now = new Date();
 	var fecha_captura = now.getFullYear()+'-'+(1+now.getMonth())+'-'+now.getDate()+'-'+now.getHours()+'_'+now.getMinutes()+'_'+now.getSeconds();
@@ -238,7 +238,7 @@ function GuardaElemento(tx) {
 									
 									$.each(dataf, function(i, item) {	
 										db.transaction(function(tx) {	//console.log(item);
-											  console.log('INSERT INTO publicarticulos_fotos (url,id_envio) values ("'+item+'","'+id_envio+'")');
+											//  console.log('INSERT INTO publicarticulos_fotos (url,id_envio) values ("'+item+'","'+id_envio+'")');
 											tx.executeSql('INSERT INTO publicarticulos_fotos (url,id_envio) values ("'+item+'","'+id_envio+'")');
 										});	//console.log(i);
 										if((i+1)==dataf.length){
@@ -246,6 +246,7 @@ function GuardaElemento(tx) {
 											setTimeout(function() { 
 												dataf.length=0;
 												localStorage.Fotos = "";
+												$.mobile.loading( 'hide' );
 												alerta (
 												    "Elemento Guardado exitosamente",  		// message
 												    function(){
@@ -255,7 +256,7 @@ function GuardaElemento(tx) {
 												    'Activos',            	// title
 												    'Ok'                  	// buttonName
 												);
-											}, 360);
+											}, dataf.length*120);
 										}
 									});
 								}

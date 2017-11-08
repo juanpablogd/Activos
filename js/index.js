@@ -18,7 +18,7 @@
  */
 var opcionesCamara;
 var minFotos=2;
-var maxFotos=20;
+var maxFotos=3;
 function alerta(msj,callback,titulo,nomBoton){
     if(navigator.notification == undefined){
         alert(msj);

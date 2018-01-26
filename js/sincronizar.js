@@ -165,7 +165,7 @@ function ConsultaSincronizarInventario(tx, results) {
 				async: false,		//timeout: 30000,
 				beforeSend: function() { $("#resultado").html('<br>Cargando Inventario....'+(lon-i)+'.<br>'); $("#resultado").trigger("create"); }, //Show spinner
             	complete: function() { $("#resultado").html('<br>Carga Completa....'+(lon-i)+'.<br>'); $("#resultado").trigger("create"); },
-				success: function(responser){	//console.log("Inventario: "+responser);
+				success: function(responser){	console.log("Inventario: "+responser); //return false;
 					//db.transaction(function(tx) {
 						var respr = responser.trim();		//console.log(respr);	//var res=respr.split("|");
 						

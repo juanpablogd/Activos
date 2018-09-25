@@ -22,18 +22,18 @@ function errorCB(err) {
 /****************************************************************************************************************************************************************/
 /**CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS**/ 
 function ConsultaItems(tx) {
-		tx.executeSql('select idempresa,nombre from publicempresa order by nombre', [], ConsultaItemsCarga,errorCB);
+		tx.executeSql('select id_empresa,nom_empresa from activosempresa order by nom_empresa', [], ConsultaItemsCarga,errorCB);
 }
 function ConsultaItemsCarga(tx, results) {
 	var len = results.rows.length;	//console.log(len);
 	for (i = 0; i < len; i++){
-		var nombre = results.rows.item(i).nombre;
-		var id = results.rows.item(i).idempresa;
+		var nombre = results.rows.item(i).nom_empresa;
+		var id = results.rows.item(i).id_empresa;
 		$('#empresa').append('<option value="'+id+'">'+nombre+'</option>');
    	}
 	if (len == 1) {
-		localStorage.idempresa = id;
-		localStorage.empresa = nombre;
+		localStorage.id_empresa = id;
+		localStorage.nom_empresa = nombre;
 		$("#nom_empresa").html('<strong>'+nombre+'</strong>');
 	}	
 
@@ -43,6 +43,9 @@ function ConsultaItemsCarga(tx, results) {
 /****************************************************************************************************************************************************************/
 
 $(document).ready(function() {
+
+	if(localStorage.id_empresa != "" && localStorage.nom_empresa != "") window.location='./p1_persona_buscar.html';
+	
 	// CARGAR ITEMS DE LA BASE DE DATOS
 	db.transaction(ConsultaItems);
 	
@@ -50,10 +53,12 @@ $(document).ready(function() {
 		var nombre = $("#empresa option:selected").text();
 		var id = $(this).val();
 
-		localStorage.idempresa = id;
-		localStorage.empresa = nombre;
+		localStorage.id_empresa = id;
+		localStorage.nom_empresa = nombre;
 		
 		$("#nom_empresa").html('<strong>'+nombre+'</strong>');
 	});
+	
+	$("#titulo").html(localStorage.nom_empresa);
 	
 });

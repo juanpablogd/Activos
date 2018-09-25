@@ -6,7 +6,7 @@
   <!-- Always force latest IE rendering engine (even in intranet) & Chrome Frame 
        Remove this if you use the .htaccess -->
 	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1" />
-	<title></title>
+	<title>Sofytek</title>
 	<meta name="description" content="" />
 	<meta name="author" content="Sofytek" />
  	<meta name="viewport" content="width=device-width" />
@@ -47,7 +47,7 @@
 	<div id="custom-format-page" data-role="page" data-theme="b">
 		
 		<div data-role="header" data-position="inline" >
-			<h1>GOBERNACIÓN CUNDINAMARCA - Inventarios</h1>
+			<h1 id="titulo"></h1>
 			<a href="salir.html" target="_top" data-icon="power">Salir</a>
 			<div data-role="navbar">
 				<ul>
@@ -68,15 +68,16 @@
 			    </div><!-- /navbar -->
 			</div><!-- /container -->	
 			<div id="seleccionado"></div>
-			<div id="item_dependencia" data-role="fieldcontain" class="ui-field-contain">
+			<div id="item_dependencia" data-role="content" class="ui-field-contain">
 				<label for="dependencia" class="select">Dependencia:</label>
 					<select name="dependencia" id="dependencia"  tabindex="-1">
 					<option value="">Seleccione...</option>
 				</select>
 			</div>
-			<div id="item_seccion" data-role="fieldcontain" class="ui-field-contain">
+			<div id="item_seccion" data-role="content" class="ui-field-contain">
+				<input type="search" name="txtBuscarSeccion" id="txtBuscarSeccion" value="" placeholder="Busca sección" data-theme="a">
 				<label for="seccion" class="select">Secci&oacute;n:</label>
-					<select name="seccion" id="seccion"  tabindex="-1" required>
+					<select name="seccion" id="seccion" class="filterable-select" tabindex="-1" required >
 						<option value="">Seleccione...</option>
 					</select>
 			</div>

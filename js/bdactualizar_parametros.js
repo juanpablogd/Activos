@@ -29,12 +29,12 @@ function TablaGuardarExe(tx) {
 		$.mobile.loading( 'show', { text: 'Creando '+arr_ListaTabla[fil][0], textVisible: true, theme: 'a', html: "" });	//console.log('DROP TABLE IF EXISTS '+arr_ListaTabla[fil][0]+';');
 		tx.executeSql('DROP TABLE IF EXISTS '+arr_ListaTabla[fil][0]);														//console.log('CREATE TABLE IF NOT EXISTS '+arr_ListaTabla[fil][0]+' ('+arr_ListaTabla[fil][1]+')');
 		tx.executeSql('CREATE TABLE IF NOT EXISTS '+arr_ListaTabla[fil][0]+' ('+arr_ListaTabla[fil][1]+')');
-		if(arr_ListaTabla[fil][0] == "publicinventario"){
-			tx.executeSql('CREATE INDEX idx_inv_publicinventario_cc_responsable ON publicinventario (cc_responsable);');	
+		if(arr_ListaTabla[fil][0] == "activosinventario"){
+			tx.executeSql('CREATE INDEX idx_inv_activosinventarioo_cc_responsable ON activosinventario (cc_responsable);');	
 		}
-		if(arr_ListaTabla[fil][0] == "publicinventario_det"){
-			tx.executeSql('CREATE INDEX idx_inv_publicinventariodet_id_envio_art ON publicinventario_det (id_envio_art);');
-			tx.executeSql('CREATE INDEX idx_inv_publicinventariodet_idarticulo ON publicinventario_det (idarticulo);');
+		if(arr_ListaTabla[fil][0] == "activosinventario_det"){
+			tx.executeSql('CREATE INDEX idx_inv_activosinventariodet_id_envio_art ON activosinventario_det (id_envio_art);');
+			tx.executeSql('CREATE INDEX idx_inv_activosinventariodet_idarticulo ON activosinventario_det (id_articulo);');
 		}
 	}
 
@@ -50,12 +50,16 @@ function TablaGuardarExe(tx) {
 	localStorage.persona_valor = "";
 	localStorage.busqueda = "";
 	localStorage.consulta = "";
-	alerta (
-	    'Actualización exitosa!',  // message
-	    function(){
-			window.location = "principal.html";	    	
-	    },         // callback
-	    'Activos',            // title
-	    'Ok'                  // buttonName
-	);
+	setTimeout(function(){ 
+		alerta (
+		    'Actualización exitosa!',  // message
+		    function(){
+				window.location = "principal.html";	    	
+		    },         // callback
+		    'Activos',            // title
+		    'Ok'                  // buttonName
+		);
+
+	}, 99);
+
 }

@@ -73,14 +73,14 @@ function consultaPersona(tx) {
 	var busqueda=localStorage.busqueda;
 	console.log("Busqueda: "+busqueda+"!"); //console.log("Busqueda: "+busqueda);	3084556|EDGAR ARNULFO|SANABRIA ALDANA
 	//if(busqueda!=null){
-	    tx.executeSql("SELECT cc,nombres,apellidos FROM publicusuarios where cc = '"+busqueda+"'", [], resultadoCC);
+	    tx.executeSql("SELECT cedula,nombres,apellidos FROM activosusuario where cedula = '"+busqueda+"'", [], resultadoCC);
 	//}
 }
 /* RESULTADO DE LA TABLA PERSONA*/
 function resultadoCC(tx, results) { console.log('MuestraItems');
 	var encontrados = results.rows.length;	//console.log(encontrados);
 	if(encontrados>0){
-	 	var id = results.rows.item(0).cc;
+	 	var id = results.rows.item(0).cedula;
 	 	var nombres = results.rows.item(0).nombres;					//console.log( "nombre = " + sessionStorage.getItem("nombre"));
 	 	var apellidos = results.rows.item(0).apellidos;
 		localStorage.persona_valor = id+"|"+nombres+"|"+apellidos;
@@ -110,8 +110,8 @@ function resultadoCC(tx, results) { console.log('MuestraItems');
 			var fecha_captura = now.getFullYear()+'-'+(1+now.getMonth())+'-'+now.getDate()+'-'+now.getHours()+'_'+now.getMinutes()+'_'+now.getSeconds();
 			var id_envio = fecha_captura+'-'+id_usr;
 			db.transaction(function(tx) {
-				console.log('INSERT INTO publicusuarios (cc,nombres,apellidos,telefono,correo,id_envio) values ("'+cc+'","'+nombres+'","'+apellidos+'","'+telefonos+'","'+correo+'","'+id_envio+'")');
-				tx.executeSql('INSERT INTO publicusuarios (cc,nombres,apellidos,telefono,correo,id_envio) values ("'+cc+'","'+nombres+'","'+apellidos+'","'+telefonos+'","'+correo+'","'+id_envio+'")');
+				  console.log('INSERT INTO activosusuario (cedula,nombres,apellidos,telefono,correo,id_envio,id_empresa,nom_empresa) values ("'+cc+'","'+nombres+'","'+apellidos+'","'+telefonos+'","'+correo+'","'+id_envio+'","'+localStorage.id_empresa+'","'+localStorage.nom_empresa+'")');
+				tx.executeSql('INSERT INTO activosusuario (cedula,nombres,apellidos,telefono,correo,id_envio,id_empresa,nom_empresa) values ("'+cc+'","'+nombres+'","'+apellidos+'","'+telefonos+'","'+correo+'","'+id_envio+'","'+localStorage.id_empresa+'","'+localStorage.nom_empresa+'")');
 			},errorInsertp,
 				function successInsertp() {
 					localStorage.persona_valor = cc+"|"+nombres+"|"+apellidos;
@@ -132,6 +132,7 @@ function resultadoCC(tx, results) { console.log('MuestraItems');
 }
 
 $(document).ready(function() {
+	$("#titulo").html(localStorage.nom_empresa);
 	$("#btn_ok").click(function(){
 	  	db.transaction(GuardaElemento);
 	});

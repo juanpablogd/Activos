@@ -1,7 +1,7 @@
 var db = window.openDatabase("bdactivos", "1.0", "Proyecto SFK Activos", 33554432);
 //VALIDA SI NO HAY EMPRESA CREADA
 
-if (localStorage.idempresa == "" || localStorage.idempresa === undefined){
+if (localStorage.id_empresa == "" || localStorage.id_empresa === undefined){
 	alerta (
 	    "No hay empresa seleccionada, creela y sincronice de nuevo",  		// message
 	    function(){ window.location = "principal.html"; },         	// callback
@@ -33,17 +33,17 @@ function txtOk(t){	console.log(t);
 /**CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS**/ 
 function ConsultaItems(tx) {
 		//tx.executeSql('select id,tipo from publicp_tipo_elemento order by tipo', [], ConsultaItemsCarga,errorCB);
-		tx.executeSql('select iddependencia,nombre from publicdependencias order by nombre', [], ConsultaItemsCarga,errorCB);
-		tx.executeSql('select id_estado,nombre from publicestadoarticulo order by nombre', [], ConsultaLoadEstado,errorCB);
+		tx.executeSql('select id_dependencia,nom_dependencia from activosdependencia order by nom_dependencia', [], ConsultaItemsCarga,errorCB);
+		tx.executeSql('select id_estado_art,nom_estado from activosestado_articulo order by nom_estado', [], ConsultaLoadEstado,errorCB);
 }
 function ConsultaItemsCarga(tx, results) {
 	var len = results.rows.length;	//console.log(len);
-	var viddependencia = localStorage.iddependencia;
+	var viddependencia = localStorage.id_dependencia;
 	var seleccionado;
 	for (i = 0; i < len; i++){
 		seleccionado = "";
-		var nombre = results.rows.item(i).nombre;
-		var id = results.rows.item(i).iddependencia;
+		var nombre = results.rows.item(i).nom_dependencia;
+		var id = results.rows.item(i).id_dependencia;
 		if(viddependencia == id) seleccionado = "selected";
 		$('#dependencia').append('<option value="'+id+'" '+seleccionado+'>'+nombre+'</option>');
    	}
@@ -58,8 +58,8 @@ function ConsultaLoadEstado(tx, results) {
 	var len = results.rows.length;	//console.log(len);
 
 	for (i = 0; i < len; i++){
-		var nombre = results.rows.item(i).nombre;
-		var id = results.rows.item(i).id_estado;
+		var nombre = results.rows.item(i).nom_estado;
+		var id = results.rows.item(i).id_estado_art;
 		$('#id_estado').append('<option value="'+id+'">'+nombre+'</option>');
    	}
 	/*Refresca estilo para cada uno de los controles*/
@@ -70,20 +70,20 @@ function ConsultaLoadEstado(tx, results) {
 
 /****************************************************************************************************************************************************************/
 /**CARGAR SECCIONES****CARGAR SECCIONES****CARGAR SECCIONES****CARGAR SECCIONES****CARGAR SECCIONES****CARGAR SECCIONES****CARGAR SECCIONES****CARGAR SECCIONES**/ 
-function ConsultaSecciones(tx) {
-		//tx.executeSql('select id,tipo from publicp_tipo_elemento order by tipo', [], ConsultaItemsCarga,errorCB);
-		tx.executeSql('select idseccion,nombre from publicsecciones where iddependencia = "'+localStorage.busqueda+'" order by nombre', [], ConsultaSeccionesCarga,errorCB);
+function ConsultaSecciones(tx) {	//tx.executeSql('select id,tipo from publicp_tipo_elemento order by tipo', [], ConsultaItemsCarga,errorCB);
+		  console.log('select id_seccion,nom_seccion from activosseccion where id_dependencia = "'+localStorage.busqueda+'" order by nom_seccion');
+		tx.executeSql('select id_seccion,nom_seccion from activosseccion where id_dependencia = "'+localStorage.busqueda+'" order by nom_seccion', [], ConsultaSeccionesCarga,errorCB);
 }
 function ConsultaSeccionesCarga(tx, results) {
 	var len = results.rows.length;	//console.log(len);
-	var vidseccion = localStorage.idseccion;
+	var vidseccion = localStorage.id_seccion;
 	var seleccionado;
 	$('#seccion').empty();
 	$('#seccion').append('<option value="" >Seleccione...</option>');
 	for (i = 0; i < len; i++){
 		seleccionado = "";
-		var nombre = results.rows.item(i).nombre;
-		var id = results.rows.item(i).idseccion;
+		var nombre = results.rows.item(i).nom_seccion;
+		var id = results.rows.item(i).id_seccion;
 		if(vidseccion == id) seleccionado = "selected";
 		$('#seccion').append('<option value="'+id+'" '+seleccionado+'>'+nombre+'</option>');
    	}
@@ -94,14 +94,14 @@ function ConsultaSeccionesCarga(tx, results) {
 
 /****************************************************************************************************************************************************************/
 /**CARGAR LÍNEA****CARGAR LÍNEA****CARGAR LÍNEA****CARGAR LÍNEA****CARGAR LÍNEA****CARGAR LÍNEA****CARGAR LÍNEA****CARGAR LÍNEA****CARGAR LÍNEA****CARGAR ITEMS**/ 
-function ConsultaLinea(tx) {
-		tx.executeSql('select idlinea,nombre from publiclineas order by nombre', [], ConsultaLineaCarga,errorCB);
+function ConsultaLinea(tx) {	console.log('select id_linea,nom_linea from activoslinea order by nom_linea');
+		tx.executeSql('select id_linea,nom_linea from activoslinea order by nom_linea', [], ConsultaLineaCarga,errorCB);
 }
 function ConsultaLineaCarga(tx, results) {
 	var len = results.rows.length;	//console.log(len);
 	for (i = 0; i < len; i++){
-		var nombre = results.rows.item(i).nombre;
-		var id = results.rows.item(i).idlinea;
+		var nombre = results.rows.item(i).nom_linea;
+		var id = results.rows.item(i).id_linea;
 		$('#linea').append('<option value="'+id+'">'+nombre+'</option>');
    	}
    	$('#linea').selectmenu('refresh');
@@ -110,8 +110,8 @@ function ConsultaLineaCarga(tx, results) {
 
 /****************************************************************************************************************************************************************/
 /**CARGAR SUBLÍNEA****CARGAR SUBLÍNEA****CARGAR SUBLÍNEA****CARGAR SUBLÍNEA****CARGAR SUBLÍNEA****CARGAR SUBLÍNEA****CARGAR SUBLÍNEA****CARGAR SUBLÍNEA**/ 
-function ConsultaSubLinea(tx) {
-		tx.executeSql('select idslinea,nombre from publicsublineas where idlinea = "'+localStorage.busqueda+'" order by nombre', [], ConsultaSubLineaCarga,errorCB);
+function ConsultaSubLinea(tx) {	console.log('select id_sublinea,nom_sublinea from activossublinea where id_linea = "'+localStorage.busqueda+'" order by nom_sublinea');
+		tx.executeSql('select id_sublinea,nom_sublinea from activossublinea where id_linea = "'+localStorage.busqueda+'" order by nom_sublinea', [], ConsultaSubLineaCarga,errorCB);
 }
 function ConsultaSubLineaCarga(tx, results) {
 	var len = results.rows.length;	//console.log(len);
@@ -119,8 +119,8 @@ function ConsultaSubLineaCarga(tx, results) {
 	$('#sublinea').empty();
 	
 	for (i = 0; i < len; i++){
-		var nombre = results.rows.item(i).nombre;
-		var id = results.rows.item(i).idslinea;
+		var nombre = results.rows.item(i).nom_sublinea;
+		var id = results.rows.item(i).id_sublinea;
 		$('#sublinea').append('<option value="'+id+'">'+nombre+'</option>');
    	}
    	$('#sublinea').selectmenu('refresh');
@@ -222,10 +222,10 @@ function GuardaElemento(tx) {
 	var fecha_captura = now.getFullYear()+'-'+(1+now.getMonth())+'-'+now.getDate()+'-'+now.getHours()+'_'+now.getMinutes()+'_'+now.getSeconds();
 	var id_envio = fecha_captura+'-'+id_usr;
 	
-	  console.log('INSERT INTO publicarticulos (idseccion,idslinea,marca_af,nombre,referencia,numero_serie_af,plaqueta_af,plaqueta_anterior1_af,id_envio,id_estado,idusuario_envio) values ("'+localStorage.idseccion+'","'+sublinea+'","'+marca+'","'+nombre+'","'+referencia+'","'+nserie+'","'+plaqueta+'","'+plaqueta_anterior+'","'+id_envio+'","'+id_estado+'","'+id_usr+'")');
-	tx.executeSql('INSERT INTO publicarticulos (idseccion,idslinea,marca_af,nombre,referencia,numero_serie_af,plaqueta_af,plaqueta_anterior1_af,id_envio,id_estado,idusuario_envio) values ("'+localStorage.idseccion+'","'+sublinea+'","'+marca+'","'+nombre+'","'+referencia+'","'+nserie+'","'+plaqueta+'","'+plaqueta_anterior+'","'+id_envio+'","'+id_estado+'","'+id_usr+'")');
+	  console.log('INSERT INTO activosarticulo (id_seccion,id_sublinea,marca,nom_articulo,referencia,serie,placa_nueva,placa_anterior,id_envio,id_estado,idusuario_envio) values ("'+localStorage.id_seccion+'","'+sublinea+'","'+marca+'","'+nombre+'","'+referencia+'","'+nserie+'","'+plaqueta+'","'+plaqueta_anterior+'","'+id_envio+'","'+id_estado+'","'+id_usr+'")');
+	tx.executeSql('INSERT INTO activosarticulo (id_seccion,id_sublinea,marca,nom_articulo,referencia,serie,placa_nueva,placa_anterior,id_envio,id_estado,idusuario_envio) values ("'+localStorage.id_seccion+'","'+sublinea+'","'+marca+'","'+nombre+'","'+referencia+'","'+nserie+'","'+plaqueta+'","'+plaqueta_anterior+'","'+id_envio+'","'+id_estado+'","'+id_usr+'")');
 	
-	tx.executeSql('select rowid from publicarticulos where id_envio = "'+id_envio+'"', [], 
+	tx.executeSql('select rowid from activosarticulo where id_envio = "'+id_envio+'"', [], 
 		           function(tx,rs){	console.log("rowidOK");
 		           		var p = rs.rows.item(0);
 						localStorage.elemento_valor = p.rowid+"|"+plaqueta+"|"+nombre+"|"+id_envio;		console.log(localStorage.elemento_valor);	//console.log(localStorage.elemento_valor);
@@ -239,7 +239,7 @@ function GuardaElemento(tx) {
 									$.each(dataf, function(i, item) {	
 										db.transaction(function(tx) {	//console.log(item);
 											//  console.log('INSERT INTO publicarticulos_fotos (url,id_envio) values ("'+item+'","'+id_envio+'")');
-											tx.executeSql('INSERT INTO publicarticulos_fotos (url,id_envio) values ("'+item+'","'+id_envio+'")');
+											tx.executeSql('INSERT INTO activosarticulo_foto (url,id_envio) values ("'+item+'","'+id_envio+'")');
 										});	//console.log(i);
 										if((i+1)==dataf.length){
 											console.log("Elemento Guardado exitosamente");
@@ -265,6 +265,7 @@ function GuardaElemento(tx) {
 }
 
 $(document).ready(function() {
+	$("#titulo").html(localStorage.nom_empresa);
 
 	if(localStorage.consulta != null && localStorage.consulta != ""){
 		$("#plaqueta").val(localStorage.consulta);

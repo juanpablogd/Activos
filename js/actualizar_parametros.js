@@ -109,4 +109,5 @@ $( document ).ready(function() {
     	console.log("NOOoooo!!!");
  		window.location = "principal.html";
 	});
+	$("#titulo").html(localStorage.nom_empresa);
  });

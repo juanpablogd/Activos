@@ -28,8 +28,8 @@ function CargarListado(tx) {
 	var busqueda=localStorage.busqueda;				//console.log("Busqueda: "+busqueda+"!"); //console.log("SELECT el.idarticulo id,el.referencia,el.plaqueta,el.nombre,se.nombre seccion,sl.nombre clasificacion FROM publicarticulos el inner join publicsecciones se on se.idseccion = el.idseccion inner join publicsublineas sl on sl.idslinea = el.idslinea where numero_serie like '%"+busqueda+"%' or plaqueta like '%"+busqueda+"%' or plaqueta_anterior like '%"+busqueda+"%' or el.nombre like '%"+busqueda+"%' order by el.nombre");
 	
 	if(busqueda!=null){
-		  console.log("SELECT el.idarticulo id,el.referencia,el.plaqueta_af,el.nombre,se.nombre seccion,sl.nombre clasificacion,el.id_envio,el.rowid,el.id_estado FROM publicarticulos el left join publicsecciones se on se.idseccion = el.idseccion left join publicsublineas sl on sl.idslinea = el.idslinea where numero_serie_af = '"+busqueda+"' or plaqueta_af = '"+busqueda+"' or plaqueta_anterior1_af = '"+busqueda+"' order by id_envio desc,el.idarticulo desc limit 1");
-	    tx.executeSql("SELECT el.idarticulo id,el.referencia,el.plaqueta_af,el.nombre,se.nombre seccion,sl.nombre clasificacion,el.id_envio,el.rowid,el.id_estado FROM publicarticulos el left join publicsecciones se on se.idseccion = el.idseccion left join publicsublineas sl on sl.idslinea = el.idslinea where numero_serie_af = '"+busqueda+"' or plaqueta_af = '"+busqueda+"' or plaqueta_anterior1_af = '"+busqueda+"' order by id_envio desc,el.idarticulo desc limit 1", [], MuestraItems);
+		  console.log("SELECT el.id_articulo id, el.referencia, el.placa_nueva, el.nom_articulo, se.nom_seccion seccion, sl.nom_sublinea clasificacion, el.id_envio, el.rowid, el.id_estado  FROM   activosarticulo el LEFT JOIN activosseccion se    ON se.id_seccion = el.id_seccion LEFT JOIN activossublinea sl    ON sl.id_sublinea = el.id_sublinea  WHERE serie = '"+busqueda+"' or placa_nueva = '"+busqueda+"' or placa_anterior = '"+busqueda+"' ORDER  BY id_envio DESC, el.id_articulo DESC  LIMIT  1");
+	    tx.executeSql("SELECT el.id_articulo id, el.referencia, el.placa_nueva, el.nom_articulo, se.nom_seccion seccion, sl.nom_sublinea clasificacion, el.id_envio, el.rowid, el.id_estado  FROM   activosarticulo el LEFT JOIN activosseccion se    ON se.id_seccion = el.id_seccion LEFT JOIN activossublinea sl    ON sl.id_sublinea = el.id_sublinea  WHERE serie = '"+busqueda+"' or placa_nueva = '"+busqueda+"' or placa_anterior = '"+busqueda+"' ORDER  BY id_envio DESC, el.id_articulo DESC  LIMIT  1", [], MuestraItems);
    }
 }
 /* RESULTADO DE LA TABLA ELEMENTO*/
@@ -45,8 +45,8 @@ function MuestraItems(tx, results) {
 	{
 	 	var id = results.rows.item(i).id;
 	 	var referencia = results.rows.item(i).referencia;
-	 	var plaqueta = results.rows.item(i).plaqueta_af; var plaqueta = plaqueta.trim();
-	 	var nombre = results.rows.item(i).nombre;					//console.log( "nombre = " + sessionStorage.getItem("nombre"));
+	 	var plaqueta = results.rows.item(i).placa_nueva; var plaqueta = plaqueta.trim();
+	 	var nombre = results.rows.item(i).nom_articulo;					//console.log( "nombre = " + sessionStorage.getItem("nombre"));
 	 	var seccion = results.rows.item(i).seccion;
 	 	var clasificacion = results.rows.item(i).clasificacion;
 	 	var id_envio_art = results.rows.item(i).id_envio;
@@ -76,8 +76,8 @@ function MuestraItems(tx, results) {
 		    'Activos',            	// title
 		    ['Si','No']           	// buttonName
 		);
-    }else{ console.log('SELECT rowid,url,id_envio FROM publicarticulos_fotos where (id_envio = "'+results.rows.item(0).id_envio+'" and id_envio != "") or (idarticulo= "'+results.rows.item(0).id+'" and idarticulo != "null")');
-    	 tx.executeSql('SELECT rowid,url,id_envio FROM publicarticulos_fotos where (id_envio = "'+results.rows.item(0).id_envio+'" and id_envio != "") or (idarticulo= "'+results.rows.item(0).id+'" and idarticulo != "null")', [], 
+    }else{ console.log('SELECT rowid,url,id_envio FROM activosarticulo_foto where (id_envio = "'+results.rows.item(0).id_envio+'" and id_envio != "") or (id_articulo= "'+results.rows.item(0).id+'" and id_articulo != "null")');
+    	 tx.executeSql('SELECT rowid,url,id_envio FROM activosarticulo_foto where (id_envio = "'+results.rows.item(0).id_envio+'" and id_envio != "") or (id_articulo= "'+results.rows.item(0).id+'" and id_articulo != "null")', [], 
     		function ConsultaSincronizarInventario(tx, resFotos) {
     			var numFotos = resFotos.rows.length;		console.log('numFotos: '+numFotos); //console.log('Encontrados:'+encontrados);
 			    for (var f=0;f<numFotos;f++)

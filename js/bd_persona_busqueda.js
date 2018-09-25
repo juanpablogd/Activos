@@ -25,16 +25,16 @@ function editarPersona(cod){	console.log(cod);
 /****************************************************************************************************************************************************************/
 /**CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS**/ 
 function ConsultaItems(tx) {	//tx.executeSql('select id,tipo from publicp_tipo_elemento order by tipo', [], ConsultaItemsCarga,errorCB);
-		tx.executeSql('select iddependencia,nombre from publicdependencias order by nombre', [], ConsultaItemsCarga,errorCB);
+		tx.executeSql('select id_dependencia,nom_dependencia from activosdependencia order by nom_dependencia', [], ConsultaItemsCarga,errorCB);
 }
 function ConsultaItemsCarga(tx, results) {
 	var len = results.rows.length;	//console.log(len);
-	var viddependencia = localStorage.iddependencia;
+	var viddependencia = localStorage.id_dependencia;
 	var seleccionado;
 	for (i = 0; i < len; i++){
 		seleccionado = ""; 
-		var nombre = results.rows.item(i).nombre;
-		var id = results.rows.item(i).iddependencia;
+		var nombre = results.rows.item(i).nom_dependencia;
+		var id = results.rows.item(i).id_dependencia;
 		if(viddependencia == id) seleccionado = "selected";
 		$('#dependencia').append('<option value="'+id+'" '+seleccionado+'>'+nombre+'</option>');
    	}
@@ -48,19 +48,29 @@ function ConsultaItemsCarga(tx, results) {
 /****************************************************************************************************************************************************************/
 /**CARGAR SECCIONES****CARGAR SECCIONES****CARGAR SECCIONES****CARGAR SECCIONES****CARGAR SECCIONES****CARGAR SECCIONES****CARGAR SECCIONES****CARGAR SECCIONES**/ 
 function ConsultaSecciones(tx) {
-		  console.log('select idseccion,nombre from publicsecciones where iddependencia = "'+localStorage.busqueda+'" order by nombre');
-		tx.executeSql('select idseccion,nombre from publicsecciones where iddependencia = "'+localStorage.busqueda+'" order by nombre', [], ConsultaSeccionesCarga,errorCB);
+
+			var InputBuscar=sessionStorage.getItem("txtBuscarSeccion");
+			var where=' ';
+		
+			if(InputBuscar=== null){
+				console.log("no existe");
+			}else{
+				where=where+ " and UPPER(nom_seccion) like '%"+InputBuscar.toUpperCase()+"%' ";	
+			}
+
+		//console.log('select id_seccion,nom_seccion from activosseccion where id_dependencia = "'+localStorage.busqueda+'" '+where+' order by nom_seccion');
+		tx.executeSql('select id_seccion,nom_seccion from activosseccion where id_dependencia = "'+localStorage.busqueda+'" '+where+' order by nom_seccion', [], ConsultaSeccionesCarga,errorCB);
 }
 function ConsultaSeccionesCarga(tx, results) {
 	var len = results.rows.length;	//console.log(len);
-	var vidseccion = localStorage.idseccion;
+	var vidseccion = localStorage.id_seccion;
 	var seleccionado;
 	$('#seccion').empty();
 	$('#seccion').append('<option value="" >Seleccione...</option>');
 	for (i = 0; i < len; i++){
 		seleccionado = "";
-		var nombre = results.rows.item(i).nombre;
-		var id = results.rows.item(i).idseccion;
+		var nombre = results.rows.item(i).nom_seccion;
+		var id = results.rows.item(i).id_seccion;
 		if(vidseccion == id) seleccionado = "selected";
 		$('#seccion').append('<option value="'+id+'" '+seleccionado+'>'+nombre+'</option>');
 
@@ -73,8 +83,8 @@ function ConsultaSeccionesCarga(tx, results) {
 function CargarListado(tx) {
 	var busqueda=localStorage.busqueda;
 	console.log("Busqueda: "+busqueda+"!"); //console.log("Busqueda: "+busqueda);
-	if(busqueda!=null && busqueda.trim() != ""){
-	    tx.executeSql("SELECT cc,nombres,apellidos,telefono,correo,rowid FROM publicusuarios where cc = '"+busqueda+"' limit 1", [], MuestraItems);
+	if(busqueda!=null && busqueda.trim() != ""){	console.log("SELECT cedula,nombres,apellidos,telefono,correo,rowid FROM activosusuario where cc = '"+busqueda+"' limit 1");
+	    tx.executeSql("SELECT cedula,nombres,apellidos,telefono,correo,rowid FROM activosusuario where cedula = '"+busqueda+"' limit 1", [], MuestraItems);
    }
 }
 /* RESULTADO DE LA TABLA PERSONA*/
@@ -84,7 +94,7 @@ function MuestraItems(tx, results) {
 	var encontrados = results.rows.length;		//console.log(encontrados);
     for (var i=0;i<encontrados;i++)
 	{
-	 	var id = results.rows.item(i).cc;
+	 	var id = results.rows.item(i).cedula;
 	 	var nombres = results.rows.item(i).nombres;					//console.log( "nombre = " + sessionStorage.getItem("nombre"));
 	 	var apellidos = results.rows.item(i).apellidos;
 	 	var telefono = results.rows.item(i).telefono;

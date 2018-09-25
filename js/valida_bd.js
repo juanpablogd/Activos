@@ -16,7 +16,7 @@ function errorCBv(err) {
 
 /* BUSQUEDA EN LA TABLA ELEMENTO*/
 function probarCBv(tx) {
-	tx.executeSql("SELECT * FROM publicarticulos limit 0", [], MuestraCBv,errorCBv);
+	tx.executeSql("SELECT * FROM activosarticulo limit 0", [], MuestraCBv,errorCBv);
 }
 /* RESULTADO DE LA TABLA ELEMENTO*/
 function MuestraCBv(tx, results) {

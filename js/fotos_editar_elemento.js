@@ -1,15 +1,5 @@
 // Start with the map page
 
-$(window).load(function () {
-		var idcorredor = localStorage.idcorredor;		 	
-		var nombre = localStorage.nombre;
-		var idinscripcion = localStorage.idinscripcion;	//console.log("Nombre: "+nombre+"   Insss: "+idinscripcion);
-		//if (nombre != null && nombre != "" && idinscripcion != null && idinscripcion != "") window.location = "main.html";
-		 /* db.transaction(AlmacenaUsr);
-		db.transaction(CargarAtletas); */
-		
-});
-
 $(document).ready(function() {
 
 	if (localStorage.getItem("Fotos") === null) {localStorage.Fotos = ""; console.log("Creación var fotos");}

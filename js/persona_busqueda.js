@@ -1,4 +1,11 @@
 // Start with the map page
+var delay = (function(){
+  var timer = 0;
+  return function(callback, ms){
+    clearTimeout (timer);
+    timer = setTimeout(callback, ms);
+  };
+})();
 
 $(window).load(function () {
 		var idcorredor = localStorage.idcorredor;		 	
@@ -11,6 +18,7 @@ $(window).load(function () {
 });
 
 $(document).ready(function() {
+	$("#titulo").html(localStorage.nom_empresa);
 	//SI YA ESTÁ REGISTRADO EL ELEMENTO Y LA PERSONA ENTONCES HABILITA LA OPCIÓN DE LA FIRMA
 	$val = localStorage.persona_valor;	console.log($val);
 	if($val != "" && $val != undefined && $val != null && $val != "null"){
@@ -74,6 +82,9 @@ $(document).ready(function() {
 		var nombre = $("#dependencia option:selected").text();
 		var id = $(this).val();
 		localStorage.busqueda = id;
+		var valTXTsec = $("#txtBuscarSeccion").val(); console.log (valTXTsec);
+		if(valTXTsec.trim() == "")	sessionStorage.removeItem("txtBuscarSeccion");
+
 		// CARGAR ITEMS SECCIONES SEGÚN DEPENDENCIAS
 		db.transaction(ConsultaSecciones);
 	});
@@ -82,6 +93,7 @@ $(document).ready(function() {
 
 	//GUARDAR FORMULARIO
 	$('#btn_ok').click(function() {
+		
 		if ($( "#seccion" ).val()==0){
 			alerta (
 			    "Seleccione una Dependencia/Sección por favor!",  		// message
@@ -94,7 +106,7 @@ $(document).ready(function() {
 			return false;
 		}
 		
-		if(localStorage.persona_valor == undefined || localStorage.persona_valor == ""){
+		if(localStorage.persona_valor == undefined || localStorage.persona_valor == "") {
 			alerta (
 			    "Busque una persona por favor!",  		// message
 			    function(){
@@ -105,14 +117,32 @@ $(document).ready(function() {
 			);
 			return false;
 		}
-		localStorage.iddependencia = $( "#dependencia" ).val(); 
-		localStorage.idseccion = $( "#seccion" ).val();
-		console.log(localStorage.iddependencia);
-		console.log(localStorage.idseccion);
+		localStorage.id_dependencia = $( "#dependencia" ).val(); 
+		localStorage.id_seccion = $( "#seccion" ).val();
+		console.log(localStorage.id_dependencia);
+		console.log(localStorage.id_seccion);
 		console.log(localStorage.persona_valor);
 		console.log("GUARDAR");
 		window.location = "p2_elemento_buscar.html";
 	});
+
+	$('#txtBuscarSeccion').on('keyup', function() {
+		var valor=this.value;
+		 delay(function(){
+			var nombre = $("#dependencia option:selected").text();
+			var id = $("#dependencia option:selected").val();
+			localStorage.busqueda = id;
+	      	if (valor.length > 3) {		console.log("Buscaaaa:"+valor);
+				sessionStorage.setItem("txtBuscarSeccion", valor);
+		     	db.transaction(ConsultaSecciones);
+		    }else{
+		     	sessionStorage.removeItem("txtBuscarSeccion");
+		     	db.transaction(ConsultaSecciones);
+		    }
+		    // console.log("ole papa");
+    	}, 100 );
+	});
+
 	
 });
 

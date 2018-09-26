@@ -108,6 +108,13 @@ function onPhotoDataSuccess(imageData) {	console.log('original: ' + imageData);
 					              {
 					                  console.log('Copia Exitosa: '+nuevoArchivo)
 					                  adicionarFoto(nuevoArchivo);
+					                  //BORRA IMAGEN DEL CACHE
+										function pictureRemoved(){ console.log("Foto ELiminada Ok"); }
+										function notRemoved(){ console.log("Imagen no eliminada!!!"); }
+										function no(error) { console.log(JSON.stringify(error)); }
+										window.resolveLocalFileSystemURL(imageData, function(file) {
+												file.remove(pictureRemoved, notRemoved);
+											  }, no);	//console.log(len);
 					              },
 					              function()
 					              {

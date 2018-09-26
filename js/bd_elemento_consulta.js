@@ -21,8 +21,8 @@ function successCB() {
 /* BUSQUEDA EN LA TABLA ELEMENTO*/
 function CargarListado(tx) {
 	var busqueda=localStorage.consulta.trim(); //console.log("Busqueda: "+busqueda+"!"); //console.log("Busqueda: "+busqueda); console.log("SELECT * FROM publicp_elemento where referencia like '%"+busqueda+"%'");
-	if(busqueda!=null){ console.log('SELECT el.idarticulo,el.rowid as id,el.referencia,el.numero_serie_af,plaqueta_af,plaqueta_anterior1_af,el.nombre,te.nombres||" "||te.apellidos as responsable,idusuario_envio,el.id_envio,el.id_estado FROM publicarticulos el left join publicusuarios te on (el.cc_responsable_af = te.cc and el.cc_responsable_af != "") where referencia like "%'+busqueda+'%" or nombre like "%'+busqueda+'%" or numero_serie_af like "%'+busqueda+'%" or plaqueta_af like "%'+busqueda+'%" or plaqueta_anterior1_af like "%'+busqueda+'%" limit 200');
-	                  tx.executeSql('SELECT el.idarticulo,el.rowid as id,el.referencia,el.numero_serie_af,plaqueta_af,plaqueta_anterior1_af,el.nombre,te.nombres||" "||te.apellidos as responsable,idusuario_envio,el.id_envio,el.id_estado FROM publicarticulos el left join publicusuarios te on (el.cc_responsable_af = te.cc and el.cc_responsable_af != "") where referencia like "%'+busqueda+'%" or nombre like "%'+busqueda+'%" or numero_serie_af like "%'+busqueda+'%" or plaqueta_af like "%'+busqueda+'%" or plaqueta_anterior1_af like "%'+busqueda+'%" limit 200', [], MuestraItems);
+	if(busqueda!=null){ console.log('SELECT el.id_articulo, el.rowid  AS id, el.referencia, el.serie, placa_nueva, placa_anterior, el.nom_articulo, te.nombres || "" || te.apellidos AS responsable, idusuario_envio, el.id_envio, el.id_estado  FROM activosarticulo el LEFT JOIN activosusuario te  ON ( el.cc_responsable = te.cedula   AND el.cc_responsable != "" )  WHERE referencia like "%'+busqueda+'%" or nom_articulo like "%'+busqueda+'%" or serie like "%'+busqueda+'%" or placa_nueva like "%'+busqueda+'%" or placa_anterior like "%'+busqueda+'%" limit 200');
+	                  tx.executeSql('SELECT el.id_articulo, el.rowid  AS id, el.referencia, el.serie, placa_nueva, placa_anterior, el.nom_articulo, te.nombres || "" || te.apellidos AS responsable, idusuario_envio, el.id_envio, el.id_estado  FROM activosarticulo el LEFT JOIN activosusuario te  ON ( el.cc_responsable = te.cedula   AND el.cc_responsable != "" )  WHERE referencia like "%'+busqueda+'%" or nom_articulo like "%'+busqueda+'%" or serie like "%'+busqueda+'%" or placa_nueva like "%'+busqueda+'%" or placa_anterior like "%'+busqueda+'%" limit 200', [], MuestraItems);
    }
 }
 /* RESULTADO DE LA TABLA ELEMENTO*/
@@ -33,13 +33,13 @@ function MuestraItems(tx, results) {
     for (var i=0;i<encontrados;i++)
 	{
 	 	var id = results.rows.item(i).id;
-	 	var idarticulo = results.rows.item(i).idarticulo;
+	 	var idarticulo = results.rows.item(i).id_articulo;
 	 	var referencia = results.rows.item(i).referencia;
-	 	var nombre = results.rows.item(i).nombre;					//console.log( "nombre = " + sessionStorage.getItem("nombre"));
+	 	var nombre = results.rows.item(i).nom_articulo;					//console.log( "nombre = " + sessionStorage.getItem("nombre"));
 	 	var responsable = results.rows.item(i).responsable;	if(responsable==null) responsable = "";
-	 	var numero_serie_af = results.rows.item(i).numero_serie_af;
-	 	var plaqueta_af = results.rows.item(i).plaqueta_af;
-	 	var plaqueta_anterior1_af = results.rows.item(i).plaqueta_anterior1_af;
+	 	var numero_serie_af = results.rows.item(i).serie;
+	 	var plaqueta_af = results.rows.item(i).placa_nueva;
+	 	var plaqueta_anterior1_af = results.rows.item(i).placa_anterior;
 	 	var bid_envio = results.rows.item(i).id_envio;
 	 	var idusuario_envio = results.rows.item(i).idusuario_envio;
 	 	var id_estado = results.rows.item(i).id_estado;
@@ -64,8 +64,8 @@ function MuestraItems(tx, results) {
 			  + "</li>";
 		$("ul#lista").append(li);
 		if(idusuario_envio != null && idusuario_envio != "null" && idusuario_envio != ""){
-			  console.log('SELECT usuario as usr, "'+cod_id+'" as rowid FROM publicusuarios where idusuario ="'+idusuario_envio+'"');
-			tx.executeSql('SELECT usuario as usr, "'+cod_id+'" as rowid FROM publicusuarios where idusuario ="'+idusuario_envio+'"', [], 
+			  console.log('SELECT usuario as usr, "'+cod_id+'" as rowid FROM activosusuario where id_usuario ="'+idusuario_envio+'"');
+			tx.executeSql('SELECT usuario as usr, "'+cod_id+'" as rowid FROM activosusuario where id_usuario ="'+idusuario_envio+'"', [], 
 				function ConsultaCargueusr(tx, resultnf) {	console.log(resultnf.rows.length);
 					if(resultnf.rows.length>0){
 						$("#usr"+resultnf.rows.item(0).rowid).html("Usuario: "+resultnf.rows.item(0).usr);	
@@ -94,7 +94,7 @@ function MuestraItems(tx, results) {
 }
 
 $(document).ready(function() {
-
+	$("#titulo").html(localStorage.nom_empresa);
 	//BOTÓN BUSQUEDA ELEMENTO
     $("#btnBuscar").click(function () {
     	var input = $("#txtBuscar").val();	console.log(input);

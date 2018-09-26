@@ -3,7 +3,7 @@
 	<head>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width,initial-scale=1">
-		<title>jQuery Mobile Bootstrap Theme</title>
+		<title>Sofytek</title>
 		<link rel="stylesheet" href="themes/theme-classic.css">
 		<link rel="stylesheet" href="css/jquery.mobile.structure-1.4.5.min.css" />
 		<link rel="stylesheet" href="themes/jquery.mobile.icons.min.css" />
@@ -16,12 +16,13 @@
 		<!-- CORDOVA CORDOVA CORDOVA CORDOVA CORDOVA CORDOVA -->
 		<script type="text/javascript" src="cordova.js"></script>
 		<script type="text/javascript" src="js/index.js"></script> 
+		<script type="text/javascript" src="js/valida_bd.js"></script> 
 	</head>
 	<body>
 			<div data-role="page" id="demo-page" class="my-page" data-theme="d">
 
 				<div data-role="header" data-position="inline">
-					<h1 >GOBERNACIÓN CUNDINAMARCA - Inventarios</h1>
+					<h1 id="titulo"></h1>
 					<div data-role="navbar">
 						<ul>
 							<li><a href="p1_persona_buscar.html" target="_top" data-icon="bullets">Registro Inv</a></li>
@@ -34,37 +35,37 @@
 				<br><div id="resultado"></div>
 				<div data-role="content" id="contenido">
 				<h1 align="center">Carga de Información</h1>
-<table id="listado_cargue" class="display" cellspacing="0" width="100%">
-        <thead>
-            <tr>
-                <th>Dato</th>
-                <th>Pendiente</th>
-            </tr>
-        </thead>
- 
-        <tbody>
-            <tr>
-                <td>Elementos</td>
-                <td id="no_elementos"></td>
-            </tr>
-            <tr>
-                <td>Inventario</td>
-                <td id="no_inventario">0</td>
-            </tr>
-            <tr>
-                <td>Empleados</td>
-                <td id="no_empleados">0</td>
-            </tr>
-            <tr>
-                <td>Inventario Det.</td>
-                <td id="no_inventario_det">0</td>
-            </tr>
-            <tr>
-                <td>Fotos</td>
-                <td id="no_fotos">0</td>
-            </tr>
-        </tbody>
-    </table>
+				<table id="listado_cargue" class="display" cellspacing="0" width="100%">
+				        <thead>
+				            <tr>
+				                <th>Dato</th>
+				                <th>Pendiente</th>
+				            </tr>
+				        </thead>
+				 
+				        <tbody>
+				            <tr>
+				                <td>Elementos</td>
+				                <td id="no_elementos"></td>
+				            </tr>
+				            <tr>
+				                <td>Empleados</td>
+				                <td id="no_empleados">0</td>
+				            </tr>
+				            <tr>
+				                <td>Inventario</td>
+				                <td id="no_inventario">0</td>
+				            </tr>
+				            <tr>
+				                <td>Inventario Det.</td>
+				                <td id="no_inventario_det">0</td>
+				            </tr>
+				            <tr>
+				                <td>Fotos</td>
+				                <td id="no_fotos">0</td>
+				            </tr>
+				        </tbody>
+				    </table>
 				
 				
 				

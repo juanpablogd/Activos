@@ -6,7 +6,7 @@ var busqueda=localStorage.elemento_valor;
 var res = busqueda.split("|");
 var lineas,sublineas,id_estados,vid_envio,vid_articulo,vida;
 
-function txtOk(t){	console.log(t);
+function txtOk(t){	//console.log(t);
 	if (t != "undefined" && t != undefined){
 		t = t.trim();
 		return t.replace(/'/g , "").replace(/"/g , "").replace(/\|/g , " ");

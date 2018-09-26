@@ -21,8 +21,8 @@ function successCB() {
 /* BUSQUEDA EN LA TABLA ELEMENTO*/
 function CargarListado(tx) {
 	var busqueda=localStorage.consulta;			console.log("Busqueda: "+busqueda+"");
-	if(busqueda!=null){ console.log("SELECT cc,nombres,apellidos,telefono FROM publicusuarios te  where nombres like '%"+busqueda+"%' or apellidos like '%"+busqueda+"%' or cc like '%"+busqueda+"%' or nombres||' '||apellidos like '%"+busqueda+"%'");
-	    tx.executeSql("SELECT cc,nombres,apellidos,telefono FROM publicusuarios te  where nombres like '%"+busqueda+"%' or apellidos like '%"+busqueda+"%' or cc like '%"+busqueda+"%' or nombres||' '||apellidos like '%"+busqueda+"%'", [], MuestraItems);
+	if(busqueda!=null){ console.log("SELECT cedula,nombres,apellidos,telefono FROM activosusuario te  where nombres like '%"+busqueda+"%' or apellidos like '%"+busqueda+"%' or cedula like '%"+busqueda+"%' or nombres||' '||apellidos like '%"+busqueda+"%'");
+	    tx.executeSql("SELECT cedula,nombres,apellidos,telefono FROM activosusuario te  where nombres like '%"+busqueda+"%' or apellidos like '%"+busqueda+"%' or cedula like '%"+busqueda+"%' or nombres||' '||apellidos like '%"+busqueda+"%'", [], MuestraItems);
    }
 }
 /* RESULTADO DE LA TABLA ELEMENTO*/
@@ -31,7 +31,7 @@ function MuestraItems(tx, results) {
 	var encontrados = results.rows.length;		console.log('Encontrados:'+encontrados);
     for (var i=0;i<encontrados;i++)
 	{
-	 	var cc = results.rows.item(i).cc;
+	 	var cc = results.rows.item(i).cedula;
 	 	var nombres = results.rows.item(i).nombres;					//console.log( "nombre = " + sessionStorage.getItem("nombre"));
 	 	var apellidos = results.rows.item(i).apellidos;
 	 	var telefono = results.rows.item(i).telefono;
@@ -65,7 +65,7 @@ function MuestraItems(tx, results) {
 }
 
 $(document).ready(function() {
-
+	$("#titulo").html(localStorage.nom_empresa);
 	//BOTÓN BUSQUEDA PERSONA
     $("#btnBuscar").click(function () {
     	var input = $("#txtBuscar").val();	console.log(input);

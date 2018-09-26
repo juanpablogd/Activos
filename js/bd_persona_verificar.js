@@ -41,8 +41,8 @@ function CargarListado(tx) {
 			var order = "art.nom_articulo";
 		}
 		$.mobile.loading( 'show', { text: 'Buscando... ', textVisible: true, theme: 'b', html: "" }); 
-		  console.log('SELECT id_inventariodet,   sub.nom_sublinea sublinea,   art.nom_articulo,   art.referencia,   art.serie,   inv_det.observacion,   asignacion,   art.id_articulo,   placa_nueva,   art.rowid,   id_envio_art,   inv_det.id_envio,   inv.firma,   sar.nom_estado estado  FROM activosinventario inv  INNER JOIN activosinventario_det inv_det  ON ((   inv.id_inventario = inv_det.id_inventario)   OR (   inv.id_envio = inv_det.id_envio    AND  inv.id_envio != ""))  INNER JOIN activosarticulo art  ON ((   art.id_articulo = inv_det.id_articulo)   OR (   Cast(art.id_envio AS TEXT) = Cast(inv_det.id_envio_art AS TEXT)   AND  art.id_envio != ""))  LEFT JOIN  activosestado_articulo sar  ON sar.id_estado_art = art.id_estado  LEFT JOIN  activossublinea sub  ON sub.id_sublinea = art.id_sublinea  WHERE  inv.cc_responsable = "'+res[0]+'" order by ' + order + ' limit 128');		  
-	    tx.executeSql('SELECT id_inventariodet,   sub.nom_sublinea sublinea,   art.nom_articulo,   art.referencia,   art.serie,   inv_det.observacion,   asignacion,   art.id_articulo,   placa_nueva,   art.rowid,   id_envio_art,   inv_det.id_envio,   inv.firma,   sar.nom_estado estado  FROM activosinventario inv  INNER JOIN activosinventario_det inv_det  ON ((   inv.id_inventario = inv_det.id_inventario)   OR (   inv.id_envio = inv_det.id_envio    AND  inv.id_envio != ""))  INNER JOIN activosarticulo art  ON ((   art.id_articulo = inv_det.id_articulo)   OR (   Cast(art.id_envio AS TEXT) = Cast(inv_det.id_envio_art AS TEXT)   AND  art.id_envio != ""))  LEFT JOIN  activosestado_articulo sar  ON sar.id_estado_art = art.id_estado  LEFT JOIN  activossublinea sub  ON sub.id_sublinea = art.id_sublinea  WHERE  inv.cc_responsable = "'+res[0]+'" order by ' + order + ' limit 128', [], MuestraItems);
+		  console.log('SELECT id_inventariodet,   sub.nom_sublinea sublinea,   art.nom_articulo,   art.referencia,   art.serie,   inv_det.observacion,   asignacion,   art.id_articulo,   placa_nueva,   art.rowid,   id_envio_art,   inv_det.id_envio,   inv.firma,   sar.nom_estado estado  FROM publicinventario inv  INNER JOIN publicinventario_det inv_det  ON ((   inv.id_inventario = inv_det.id_inventario)   OR (   inv.id_envio = inv_det.id_envio    AND  inv.id_envio != ""))  INNER JOIN publicarticulo art  ON ((   art.id_articulo = inv_det.id_articulo)   OR (   Cast(art.id_envio AS TEXT) = Cast(inv_det.id_envio_art AS TEXT)   AND  art.id_envio != ""))  LEFT JOIN  publicestado_articulo sar  ON sar.id_estado_art = art.id_estado  LEFT JOIN  publicsublinea sub  ON sub.id_sublinea = art.id_sublinea  WHERE  inv.cc_responsable = "'+res[0]+'" order by ' + order + ' limit 128');		  
+	    tx.executeSql('SELECT id_inventariodet,   sub.nom_sublinea sublinea,   art.nom_articulo,   art.referencia,   art.serie,   inv_det.observacion,   asignacion,   art.id_articulo,   placa_nueva,   art.rowid,   id_envio_art,   inv_det.id_envio,   inv.firma,   sar.nom_estado estado  FROM publicinventario inv  INNER JOIN publicinventario_det inv_det  ON ((   inv.id_inventario = inv_det.id_inventario)   OR (   inv.id_envio = inv_det.id_envio    AND  inv.id_envio != ""))  INNER JOIN publicarticulo art  ON ((   art.id_articulo = inv_det.id_articulo)   OR (   Cast(art.id_envio AS TEXT) = Cast(inv_det.id_envio_art AS TEXT)   AND  art.id_envio != ""))  LEFT JOIN  publicestado_articulo sar  ON sar.id_estado_art = art.id_estado  LEFT JOIN  publicsublinea sub  ON sub.id_sublinea = art.id_sublinea  WHERE  inv.cc_responsable = "'+res[0]+'" order by ' + order + ' limit 128', [], MuestraItems);
 	}
 }
 
@@ -57,14 +57,14 @@ function desasignar(videnvio,nombre){ console.log(videnvio+" - "+nombre)
 		    function(buttonIndex){	console.log(buttonIndex);
 		    	if(buttonIndex == undefined || buttonIndex =="2"){
 					db.transaction(function(tx) {
-						  console.log('DELETE FROM activosinventario_det where id_envio = "'+videnvio+'"');
-						tx.executeSql('DELETE FROM activosinventario_det where id_envio = "'+videnvio+'"');
+						  console.log('DELETE FROM publicinventario_det where id_envio = "'+videnvio+'"');
+						tx.executeSql('DELETE FROM publicinventario_det where id_envio = "'+videnvio+'"');
 					}, function errorCBdelete(err) {	console.log("Error processing SQL: "+err.code); }
 					,function successCBdelete() {	console.log("Eliminado inventario Detalle: "+videnvio); }
 					);
 					db.transaction(function(tx) {
-						  console.log('DELETE FROM activosinventario where id_envio = "'+videnvio+'"');
-						tx.executeSql('DELETE FROM activosinventario where id_envio = "'+videnvio+'"');
+						  console.log('DELETE FROM publicinventario where id_envio = "'+videnvio+'"');
+						tx.executeSql('DELETE FROM publicinventario where id_envio = "'+videnvio+'"');
 					}, function errorCBdeleteok(err) {	console.log("Error processing SQL: "+err.code); }
 					,function successCBdeleteok() {	console.log("Eliminado inventario: "+videnvio); 
 						console.log("Elemento Desasignado exitosamente");
@@ -162,8 +162,8 @@ function MuestraItems(tx, results) {
 			  + "</li>";
 			  //(id_envio = "'+results.rows.item(0).id_envio+'" and id_envio != "") or (idarticulo= "'+results.rows.item(0).id+'" and idarticulo != "null")
 		if(inv_det_id_envio != "null" && inv_det_id_envio != "" && inv_det_id_envio != undefined && inv_det_id_envio != null){
-			  console.log('SELECT count(*) as c, "'+cod_id+'" as rowid FROM activosarticulo_foto where (id_envio ="'+id_envio_art+'" and id_envio != "") or (id_articulo= "'+idarticulo+'" and id_articulo != "null")');
-			tx.executeSql('SELECT count(*) as c, "'+cod_id+'" as rowid FROM activosarticulo_foto where (id_envio ="'+id_envio_art+'" and id_envio != "") or (id_articulo= "'+idarticulo+'" and id_articulo != "null")', [], 
+			  console.log('SELECT count(*) as c, "'+cod_id+'" as rowid FROM publicarticulo_foto where (id_envio ="'+id_envio_art+'" and id_envio != "") or (id_articulo= "'+idarticulo+'" and id_articulo != "null")');
+			tx.executeSql('SELECT count(*) as c, "'+cod_id+'" as rowid FROM publicarticulo_foto where (id_envio ="'+id_envio_art+'" and id_envio != "") or (id_articulo= "'+idarticulo+'" and id_articulo != "null")', [], 
 				function ConsultaSincronizarInventario(tx, resultnf) {
 					$("#nf"+resultnf.rows.item(0).rowid).html(resultnf.rows.item(0).c);
 				}	//nf2017-10-4-11_12_29-1
@@ -209,7 +209,7 @@ function MuestraItems(tx, results) {
 				$.mobile.loading( 'show', { text: 'Guardando Información....', textVisible: true, theme: 'a', html: "" });
 				if($('#div_firma').is(':visible')){
 					db.transaction(function(tx) {
-						tx.executeSql('SELECT rowid,id_envio FROM activosinventario inv where inv.cc_responsable ="'+res[0]+'"', [], 
+						tx.executeSql('SELECT rowid,id_envio FROM publicinventario inv where inv.cc_responsable ="'+res[0]+'"', [], 
 							function rsp(tx, resultado){	//console.log(resultado.rows.length);	//results.rows.length
 								var num_found = resultado.rows.length;
 								var have_idenvio = false;
@@ -220,8 +220,8 @@ function MuestraItems(tx, results) {
 								}
 								if(have_idenvio){
 									db.transaction(function(tx) {
-										  console.log('UPDATE activosinventario SET firma = "'+localStorage.firma+'" where rowid = "'+last_rowid+'"');
-										tx.executeSql('UPDATE activosinventario SET firma = "'+localStorage.firma+'" where rowid = "'+last_rowid+'"');
+										  console.log('UPDATE publicinventario SET firma = "'+localStorage.firma+'" where rowid = "'+last_rowid+'"');
+										tx.executeSql('UPDATE publicinventario SET firma = "'+localStorage.firma+'" where rowid = "'+last_rowid+'"');
 									}, function errorCB(err) {
 											$.mobile.loading( 'hide' );	
 											alerta (
@@ -235,8 +235,8 @@ function MuestraItems(tx, results) {
 									);
 								}else{
 									db.transaction(function(tx) {
-								  		  console.log('UPDATE activosinventario SET firma = "'+localStorage.firma+'",id_envio = "'+id_envio+"-"+id+'" where rowid = "'+last_rowid+'"');
-										tx.executeSql('UPDATE activosinventario SET firma = "'+localStorage.firma+'",id_envio = "'+id_envio+"-"+id+'" where rowid = "'+last_rowid+'"');
+								  		  console.log('UPDATE publicinventario SET firma = "'+localStorage.firma+'",id_envio = "'+id_envio+"-"+id+'" where rowid = "'+last_rowid+'"');
+										tx.executeSql('UPDATE publicinventario SET firma = "'+localStorage.firma+'",id_envio = "'+id_envio+"-"+id+'" where rowid = "'+last_rowid+'"');
 									}, function errorCB(err) {
 										$.mobile.loading( 'hide' );	
 										alerta (
@@ -268,9 +268,9 @@ function MuestraItems(tx, results) {
 			    		tmp_idenvio = id;
 			    		condicion = 'id_envio = "'+id+'"';
 			    	}
-			    	       console.log('UPDATE activosinventario_det SET observacion = "'+texto+'",asignacion = "'+seleccion+'",id_envio = "'+tmp_idenvio+'" WHERE '+condicion);
+			    	       console.log('UPDATE publicinventario_det SET observacion = "'+texto+'",asignacion = "'+seleccion+'",id_envio = "'+tmp_idenvio+'" WHERE '+condicion);
 			    	db.transaction(function(txu) {
-						txu.executeSql('UPDATE activosinventario_det SET observacion = "'+texto+'",asignacion = "'+seleccion+'",id_envio = "'+tmp_idenvio+'" WHERE '+condicion,[]
+						txu.executeSql('UPDATE publicinventario_det SET observacion = "'+texto+'",asignacion = "'+seleccion+'",id_envio = "'+tmp_idenvio+'" WHERE '+condicion,[]
 							,function successCBU() { //console.log("Web SQL - update ok");
 								j++;	console.log("Registro: " + j + " de " + encontrados);
 		    					if(j==encontrados){

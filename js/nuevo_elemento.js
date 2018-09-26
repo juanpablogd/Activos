@@ -33,8 +33,8 @@ function txtOk(t){	console.log(t);
 /**CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS**/ 
 function ConsultaItems(tx) {
 		//tx.executeSql('select id,tipo from publicp_tipo_elemento order by tipo', [], ConsultaItemsCarga,errorCB);
-		tx.executeSql('select id_dependencia,nom_dependencia from activosdependencia order by nom_dependencia', [], ConsultaItemsCarga,errorCB);
-		tx.executeSql('select id_estado_art,nom_estado from activosestado_articulo order by nom_estado', [], ConsultaLoadEstado,errorCB);
+		tx.executeSql('select id_dependencia,nom_dependencia from publicdependencia order by nom_dependencia', [], ConsultaItemsCarga,errorCB);
+		tx.executeSql('select id_estado_art,nom_estado from publicestado_articulo order by nom_estado', [], ConsultaLoadEstado,errorCB);
 }
 function ConsultaItemsCarga(tx, results) {
 	var len = results.rows.length;	//console.log(len);
@@ -71,8 +71,8 @@ function ConsultaLoadEstado(tx, results) {
 /****************************************************************************************************************************************************************/
 /**CARGAR SECCIONES****CARGAR SECCIONES****CARGAR SECCIONES****CARGAR SECCIONES****CARGAR SECCIONES****CARGAR SECCIONES****CARGAR SECCIONES****CARGAR SECCIONES**/ 
 function ConsultaSecciones(tx) {	//tx.executeSql('select id,tipo from publicp_tipo_elemento order by tipo', [], ConsultaItemsCarga,errorCB);
-		  console.log('select id_seccion,nom_seccion from activosseccion where id_dependencia = "'+localStorage.busqueda+'" order by nom_seccion');
-		tx.executeSql('select id_seccion,nom_seccion from activosseccion where id_dependencia = "'+localStorage.busqueda+'" order by nom_seccion', [], ConsultaSeccionesCarga,errorCB);
+		  console.log('select id_seccion,nom_seccion from publicseccion where id_dependencia = "'+localStorage.busqueda+'" order by nom_seccion');
+		tx.executeSql('select id_seccion,nom_seccion from publicseccion where id_dependencia = "'+localStorage.busqueda+'" order by nom_seccion', [], ConsultaSeccionesCarga,errorCB);
 }
 function ConsultaSeccionesCarga(tx, results) {
 	var len = results.rows.length;	//console.log(len);
@@ -94,8 +94,8 @@ function ConsultaSeccionesCarga(tx, results) {
 
 /****************************************************************************************************************************************************************/
 /**CARGAR LÍNEA****CARGAR LÍNEA****CARGAR LÍNEA****CARGAR LÍNEA****CARGAR LÍNEA****CARGAR LÍNEA****CARGAR LÍNEA****CARGAR LÍNEA****CARGAR LÍNEA****CARGAR ITEMS**/ 
-function ConsultaLinea(tx) {	console.log('select id_linea,nom_linea from activoslinea order by nom_linea');
-		tx.executeSql('select id_linea,nom_linea from activoslinea order by nom_linea', [], ConsultaLineaCarga,errorCB);
+function ConsultaLinea(tx) {	console.log('select id_linea,nom_linea from publiclinea order by nom_linea');
+		tx.executeSql('select id_linea,nom_linea from publiclinea order by nom_linea', [], ConsultaLineaCarga,errorCB);
 }
 function ConsultaLineaCarga(tx, results) {
 	var len = results.rows.length;	//console.log(len);
@@ -110,8 +110,8 @@ function ConsultaLineaCarga(tx, results) {
 
 /****************************************************************************************************************************************************************/
 /**CARGAR SUBLÍNEA****CARGAR SUBLÍNEA****CARGAR SUBLÍNEA****CARGAR SUBLÍNEA****CARGAR SUBLÍNEA****CARGAR SUBLÍNEA****CARGAR SUBLÍNEA****CARGAR SUBLÍNEA**/ 
-function ConsultaSubLinea(tx) {	console.log('select id_sublinea,nom_sublinea from activossublinea where id_linea = "'+localStorage.busqueda+'" order by nom_sublinea');
-		tx.executeSql('select id_sublinea,nom_sublinea from activossublinea where id_linea = "'+localStorage.busqueda+'" order by nom_sublinea', [], ConsultaSubLineaCarga,errorCB);
+function ConsultaSubLinea(tx) {	console.log('select id_sublinea,nom_sublinea from publicsublinea where id_linea = "'+localStorage.busqueda+'" order by nom_sublinea');
+		tx.executeSql('select id_sublinea,nom_sublinea from publicsublinea where id_linea = "'+localStorage.busqueda+'" order by nom_sublinea', [], ConsultaSubLineaCarga,errorCB);
 }
 function ConsultaSubLineaCarga(tx, results) {
 	var len = results.rows.length;	//console.log(len);
@@ -222,10 +222,10 @@ function GuardaElemento(tx) {
 	var fecha_captura = now.getFullYear()+'-'+(1+now.getMonth())+'-'+now.getDate()+'-'+now.getHours()+'_'+now.getMinutes()+'_'+now.getSeconds();
 	var id_envio = fecha_captura+'-'+id_usr;
 	
-	  console.log('INSERT INTO activosarticulo (id_seccion,id_sublinea,marca,nom_articulo,referencia,serie,placa_nueva,placa_anterior,id_envio,id_estado,idusuario_envio) values ("'+localStorage.id_seccion+'","'+sublinea+'","'+marca+'","'+nombre+'","'+referencia+'","'+nserie+'","'+plaqueta+'","'+plaqueta_anterior+'","'+id_envio+'","'+id_estado+'","'+id_usr+'")');
-	tx.executeSql('INSERT INTO activosarticulo (id_seccion,id_sublinea,marca,nom_articulo,referencia,serie,placa_nueva,placa_anterior,id_envio,id_estado,idusuario_envio) values ("'+localStorage.id_seccion+'","'+sublinea+'","'+marca+'","'+nombre+'","'+referencia+'","'+nserie+'","'+plaqueta+'","'+plaqueta_anterior+'","'+id_envio+'","'+id_estado+'","'+id_usr+'")');
+	  console.log('INSERT INTO publicarticulo (id_seccion,id_sublinea,marca,nom_articulo,referencia,serie,placa_nueva,placa_anterior,id_envio,id_estado,idusuario_envio) values ("'+localStorage.id_seccion+'","'+sublinea+'","'+marca+'","'+nombre+'","'+referencia+'","'+nserie+'","'+plaqueta+'","'+plaqueta_anterior+'","'+id_envio+'","'+id_estado+'","'+id_usr+'")');
+	tx.executeSql('INSERT INTO publicarticulo (id_seccion,id_sublinea,marca,nom_articulo,referencia,serie,placa_nueva,placa_anterior,id_envio,id_estado,idusuario_envio) values ("'+localStorage.id_seccion+'","'+sublinea+'","'+marca+'","'+nombre+'","'+referencia+'","'+nserie+'","'+plaqueta+'","'+plaqueta_anterior+'","'+id_envio+'","'+id_estado+'","'+id_usr+'")');
 	
-	tx.executeSql('select rowid from activosarticulo where id_envio = "'+id_envio+'"', [], 
+	tx.executeSql('select rowid from publicarticulo where id_envio = "'+id_envio+'"', [], 
 		           function(tx,rs){	console.log("rowidOK");
 		           		var p = rs.rows.item(0);
 						localStorage.elemento_valor = p.rowid+"|"+plaqueta+"|"+nombre+"|"+id_envio;		console.log(localStorage.elemento_valor);	//console.log(localStorage.elemento_valor);
@@ -239,7 +239,7 @@ function GuardaElemento(tx) {
 									$.each(dataf, function(i, item) {	
 										db.transaction(function(tx) {	//console.log(item);
 											//  console.log('INSERT INTO publicarticulos_fotos (url,id_envio) values ("'+item+'","'+id_envio+'")');
-											tx.executeSql('INSERT INTO activosarticulo_foto (url,id_envio) values ("'+item+'","'+id_envio+'")');
+											tx.executeSql('INSERT INTO publicarticulo_foto (url,id_envio) values ("'+item+'","'+id_envio+'")');
 										});	//console.log(i);
 										if((i+1)==dataf.length){
 											console.log("Elemento Guardado exitosamente");

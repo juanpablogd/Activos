@@ -21,8 +21,8 @@ function successCB() {
 /* BUSQUEDA EN LA TABLA ELEMENTO*/
 function CargarListado(tx) {
 	var busqueda=localStorage.consulta;			console.log("Busqueda: "+busqueda+"");
-	if(busqueda!=null){ console.log("SELECT cedula,nombres,apellidos,telefono FROM activosusuario te  where nombres like '%"+busqueda+"%' or apellidos like '%"+busqueda+"%' or cedula like '%"+busqueda+"%' or nombres||' '||apellidos like '%"+busqueda+"%'");
-	    tx.executeSql("SELECT cedula,nombres,apellidos,telefono FROM activosusuario te  where nombres like '%"+busqueda+"%' or apellidos like '%"+busqueda+"%' or cedula like '%"+busqueda+"%' or nombres||' '||apellidos like '%"+busqueda+"%'", [], MuestraItems);
+	if(busqueda!=null){ console.log("SELECT cedula,nombres,apellidos,telefono FROM publicusuario te  where nombres like '%"+busqueda+"%' or apellidos like '%"+busqueda+"%' or cedula like '%"+busqueda+"%' or nombres||' '||apellidos like '%"+busqueda+"%'");
+	    tx.executeSql("SELECT cedula,nombres,apellidos,telefono FROM publicusuario te  where nombres like '%"+busqueda+"%' or apellidos like '%"+busqueda+"%' or cedula like '%"+busqueda+"%' or nombres||' '||apellidos like '%"+busqueda+"%'", [], MuestraItems);
    }
 }
 /* RESULTADO DE LA TABLA ELEMENTO*/

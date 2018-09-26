@@ -25,7 +25,7 @@ function editarPersona(cod){	console.log(cod);
 /****************************************************************************************************************************************************************/
 /**CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS**/ 
 function ConsultaItems(tx) {	//tx.executeSql('select id,tipo from publicp_tipo_elemento order by tipo', [], ConsultaItemsCarga,errorCB);
-		tx.executeSql('select id_dependencia,nom_dependencia from activosdependencia order by nom_dependencia', [], ConsultaItemsCarga,errorCB);
+		tx.executeSql('select id_dependencia,nom_dependencia from publicdependencia order by nom_dependencia', [], ConsultaItemsCarga,errorCB);
 }
 function ConsultaItemsCarga(tx, results) {
 	var len = results.rows.length;	//console.log(len);
@@ -58,8 +58,8 @@ function ConsultaSecciones(tx) {
 				where=where+ " and UPPER(nom_seccion) like '%"+InputBuscar.toUpperCase()+"%' ";	
 			}
 
-		//console.log('select id_seccion,nom_seccion from activosseccion where id_dependencia = "'+localStorage.busqueda+'" '+where+' order by nom_seccion');
-		tx.executeSql('select id_seccion,nom_seccion from activosseccion where id_dependencia = "'+localStorage.busqueda+'" '+where+' order by nom_seccion', [], ConsultaSeccionesCarga,errorCB);
+		//console.log('select id_seccion,nom_seccion from publicseccion where id_dependencia = "'+localStorage.busqueda+'" '+where+' order by nom_seccion');
+		tx.executeSql('select id_seccion,nom_seccion from publicseccion where id_dependencia = "'+localStorage.busqueda+'" '+where+' order by nom_seccion', [], ConsultaSeccionesCarga,errorCB);
 }
 function ConsultaSeccionesCarga(tx, results) {
 	var len = results.rows.length;	//console.log(len);
@@ -83,8 +83,8 @@ function ConsultaSeccionesCarga(tx, results) {
 function CargarListado(tx) {
 	var busqueda=localStorage.busqueda;
 	console.log("Busqueda: "+busqueda+"!"); //console.log("Busqueda: "+busqueda);
-	if(busqueda!=null && busqueda.trim() != ""){	console.log("SELECT cedula,nombres,apellidos,telefono,correo,rowid FROM activosusuario where cc = '"+busqueda+"' limit 1");
-	    tx.executeSql("SELECT cedula,nombres,apellidos,telefono,correo,rowid FROM activosusuario where cedula = '"+busqueda+"' limit 1", [], MuestraItems);
+	if(busqueda!=null && busqueda.trim() != ""){	console.log("SELECT cedula,nombres,apellidos,telefono,correo,rowid FROM publicusuario where cedula = '"+busqueda+"' limit 1");
+	    tx.executeSql("SELECT cedula,nombres,apellidos,telefono,correo,rowid FROM publicusuario where cedula = '"+busqueda+"' limit 1", [], MuestraItems);
    }
 }
 /* RESULTADO DE LA TABLA PERSONA*/

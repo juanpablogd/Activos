@@ -22,7 +22,7 @@ function errorCB(err) {
 /****************************************************************************************************************************************************************/
 /**CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS**/ 
 function ConsultaItems(tx) {
-		tx.executeSql('select id_empresa,nom_empresa from activosempresa order by nom_empresa', [], ConsultaItemsCarga,errorCB);
+		tx.executeSql('select id_empresa,nom_empresa from publicempresa order by nom_empresa', [], ConsultaItemsCarga,errorCB);
 }
 function ConsultaItemsCarga(tx, results) {
 	var len = results.rows.length;	//console.log(len);

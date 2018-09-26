@@ -83,7 +83,7 @@ function consultaPersona(tx) {
 	}
 	var res = persona.split("|");
 	console.log("Busqueda: "+busqueda+" - RowID: "+res[5] );
-	    tx.executeSql("SELECT cedula,nombres,apellidos,telefono,correo,rowid FROM activosusuario where cedula = '"+busqueda+"' and rowid != "+res[5], [], resultadoCC);
+	    tx.executeSql("SELECT cedula,nombres,apellidos,telefono,correo,rowid FROM publicusuario where cedula = '"+busqueda+"' and rowid != "+res[5], [], resultadoCC);
 	//}
 }
 /* RESULTADO DE LA TABLA PERSONA*/
@@ -122,8 +122,8 @@ function resultadoCC(tx, results) { console.log('MuestraItems');
 			var now = new Date();
 			var fecha_captura = now.getFullYear()+'-'+(1+now.getMonth())+'-'+now.getDate()+'-'+now.getHours()+'_'+now.getMinutes()+'_'+now.getSeconds();
 			var id_envio = fecha_captura+'-'+id_usr;
-			  console.log('UPDATE activosusuario SET cedula="'+cc+'",nombres="'+nombres+'",apellidos="'+apellidos+'",telefono="'+telefonos+'",correo="'+correo+'",id_envio="'+id_envio+'" WHERE rowid ="'+rowid+'"');
-			tx.executeSql('UPDATE activosusuario SET cedula="'+cc+'",nombres="'+nombres+'",apellidos="'+apellidos+'",telefono="'+telefonos+'",correo="'+correo+'",id_envio="'+id_envio+'" WHERE rowid ="'+rowid+'"');
+			  console.log('UPDATE publicusuario SET cedula="'+cc+'",nombres="'+nombres+'",apellidos="'+apellidos+'",telefono="'+telefonos+'",correo="'+correo+'",id_envio="'+id_envio+'" WHERE rowid ="'+rowid+'"');
+			tx.executeSql('UPDATE publicusuario SET cedula="'+cc+'",nombres="'+nombres+'",apellidos="'+apellidos+'",telefono="'+telefonos+'",correo="'+correo+'",id_envio="'+id_envio+'" WHERE rowid ="'+rowid+'"');
 			localStorage.persona_valor = cc+"|"+nombres+"|"+apellidos+"|"+telefonos+"|"+correo+"|"+rowid;
 			alerta (
 			    "Persona registrada exitosamente",  		// message

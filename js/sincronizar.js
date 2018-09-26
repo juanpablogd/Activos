@@ -301,6 +301,7 @@ function ConsultaSincronizarFotos(tx, results) {
 				params.rowid = results.rows.item(i).rowid;
 				params.id_usr = localStorage.id_usr;
 				params.idarticulo = results.rows.item(i).id_articulo;
+				params.id_empresa = localStorage.id_empresa;
 				params.ruta_archivo = url_imagen;
 
 	            options.params = params;			
@@ -328,11 +329,11 @@ function ConsultaSincronizarFotos(tx, results) {
 		            	//REMOVER ARCHIVO DEL DISPOSITIVO
 		            	function eliminafotodb(tx) { //console.log('DELETE from publicarticulos_fotos where id_envio = "'+n[0]+'" and rowid = "'+n[1]+'"');
 							if(n[0]!="null" && n[0] !=""){
-								console.log('DELETE from publicarticulos_fotos where id_envio = "'+n[0]+'" and rowid = "'+n[1]+'"');
-								tx.executeSql('DELETE from publicarticulos_fotos where id_envio = "'+n[0]+'" and rowid = "'+n[1]+'"');
+								  console.log('DELETE from activosarticulo_foto where id_envio = "'+n[0]+'" and rowid = "'+n[1]+'"');
+								tx.executeSql('DELETE from activosarticulo_foto where id_envio = "'+n[0]+'" and rowid = "'+n[1]+'"');
 							}else if(n[3]!="null" && n[3] !=""){
-								  console.log('DELETE from publicarticulos_fotos where idarticulo = "'+n[3]+'" and rowid = "'+n[1]+'"');
-								tx.executeSql('DELETE from publicarticulos_fotos where idarticulo = "'+n[3]+'" and rowid = "'+n[1]+'"');
+								  console.log('DELETE from activosarticulo_foto where id_articulo = "'+n[3]+'" and rowid = "'+n[1]+'"');
+								tx.executeSql('DELETE from activosarticulo_foto where id_articulo = "'+n[3]+'" and rowid = "'+n[1]+'"');
 							}
 						}
 		            	function sqlexitoso ()  {	//console.log(LocalFileSystem.TEMPORARY);

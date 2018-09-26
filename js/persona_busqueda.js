@@ -19,6 +19,7 @@ $(window).load(function () {
 
 $(document).ready(function() {
 	$("#titulo").html(localStorage.nom_empresa);
+	sessionStorage.removeItem("txtBuscarSeccion");
 	//SI YA ESTÁ REGISTRADO EL ELEMENTO Y LA PERSONA ENTONCES HABILITA LA OPCIÓN DE LA FIRMA
 	$val = localStorage.persona_valor;	console.log($val);
 	if($val != "" && $val != undefined && $val != null && $val != "null"){

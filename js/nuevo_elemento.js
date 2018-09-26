@@ -157,7 +157,7 @@ function GuardaElemento(tx) {
 	
 	if(sublinea.trim() == ""){
 		alerta (
-		    "Seleccione una Sublinea",  		// message
+		    "Seleccione una Subclase",  		// message
 		    function(){ $("#sublinea").focus(); },         	// callback
 		    'Activos',            	// title
 		    'Ok'                  	// buttonName
@@ -165,7 +165,7 @@ function GuardaElemento(tx) {
 		return false;
 	}else if(nombre.trim() == ""){
 		alerta (
-		    "Digite el Nombre",  		// message
+		    "Digite la descripción",  		// message
 		    function(){ $("#name").focus(); },         	// callback
 		    'Activos',            	// title
 		    'Ok'                  	// buttonName

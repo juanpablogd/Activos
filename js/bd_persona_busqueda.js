@@ -49,17 +49,17 @@ function ConsultaItemsCarga(tx, results) {
 /**CARGAR SECCIONES****CARGAR SECCIONES****CARGAR SECCIONES****CARGAR SECCIONES****CARGAR SECCIONES****CARGAR SECCIONES****CARGAR SECCIONES****CARGAR SECCIONES**/ 
 function ConsultaSecciones(tx) {
 
-			var InputBuscar=sessionStorage.getItem("txtBuscarSeccion");
-			var where=' ';
-		
-			if(InputBuscar=== null){
-				console.log("no existe");
-			}else{
-				where=where+ " and UPPER(nom_seccion) like '%"+InputBuscar.toUpperCase()+"%' ";	
-			}
+	var InputBuscar=sessionStorage.getItem("txtBuscarSeccion");
+	var where=' ';
 
-		//console.log('select id_seccion,nom_seccion from publicseccion where id_dependencia = "'+localStorage.busqueda+'" '+where+' order by nom_seccion');
-		tx.executeSql('select id_seccion,nom_seccion from publicseccion where id_dependencia = "'+localStorage.busqueda+'" '+where+' order by nom_seccion', [], ConsultaSeccionesCarga,errorCB);
+	if(InputBuscar=== null){
+		console.log("no existe");
+	}else{
+		where=where+ " and UPPER(nom_seccion) like '%"+InputBuscar.toUpperCase()+"%' ";	
+	}
+
+	//console.log('select id_seccion,nom_seccion from publicseccion where id_dependencia = "'+localStorage.busqueda+'" '+where+' order by nom_seccion');
+	tx.executeSql('select id_seccion,nom_seccion from publicseccion where id_dependencia = "'+localStorage.busqueda+'" '+where+' order by nom_seccion', [], ConsultaSeccionesCarga,errorCB);
 }
 function ConsultaSeccionesCarga(tx, results) {
 	var len = results.rows.length;	//console.log(len);
@@ -76,6 +76,17 @@ function ConsultaSeccionesCarga(tx, results) {
 
    	}
    	$("#seccion").selectmenu('refresh');
+   	if(len>0){ //pone foco indicando que ya cargó las secciones
+		var InputBuscar=sessionStorage.getItem("txtBuscarSeccion");
+		var where=' ';
+
+		if(InputBuscar=== null){
+			console.log("no existe");
+		}else{
+			$("#seccion").trigger('mousedown');
+		}
+
+   	}
    	localStorage.busqueda = "";
 }
 /****************************************************************************************************************************************************************/

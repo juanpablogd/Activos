@@ -268,7 +268,7 @@ function MuestraItems(tx, results) {
 										}, totalFotos*130);
 								    }
 								}
-				    			db.transaction(function(tx) {
+				    			db.transaction(function(tx) {	console.log(res[0]);
 				    				if(res[0]!="" && res[0]!="null"){
 				    				  	  console.log('UPDATE activosarticulo SET nom_articulo = "'+nombre+'",id_sublinea = "'+idslinea+'",placa_nueva = "'+texto_plaqueta+'",placa_anterior = "'+texto_plaquetanterior+'",marca = "'+marca_af+'",referencia = "'+referencia+'",serie = "'+numero_serie_af+'",id_estado = "'+id_estado+'",idusuario_envio="'+localStorage.id_usr+'",id_envio = "'+id_envio+'" WHERE rowid = "'+id+'"');
 										tx.executeSql('UPDATE activosarticulo SET nom_articulo = "'+nombre+'",id_sublinea = "'+idslinea+'",placa_nueva = "'+texto_plaqueta+'",placa_anterior = "'+texto_plaquetanterior+'",marca = "'+marca_af+'",referencia = "'+referencia+'",serie = "'+numero_serie_af+'",id_estado = "'+id_estado+'",idusuario_envio="'+localStorage.id_usr+'",id_envio = "'+id_envio+'" WHERE rowid = "'+id+'"');				    					

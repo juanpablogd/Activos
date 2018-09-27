@@ -81,8 +81,24 @@ function descargar()
 		});
 }
 
+function Consulta(tx) {
+	tx.executeSql('SELECT count(*) nreg FROM publicinventario_det where id_envio != ""', [], ConsultaCarga);
+}
+function ConsultaCarga(tx, results) {	console.log(results.rows.item(0).nreg);
+	if(results.rows.item(0).nreg != 0){
+		alerta (
+		    'Debe Enviar la información Pendiente antes de Descargar!',  // message
+		    function(){
+				window.location = "cargar.html";
+		    },         // callback
+		    'Activos',            // title
+		    'Ok'                  // buttonName
+		);
+	}
+}
 
 $( document ).ready(function() {
+	$("#titulo").html(localStorage.nom_empresa);
     //$("#btn_si").click(function( event ) {
 	//$('#btn_si').on('click', function() { 
 /*    	$("#btn_si").remove();
@@ -109,5 +125,8 @@ $( document ).ready(function() {
     	console.log("NOOoooo!!!");
  		window.location = "principal.html";
 	});
-	$("#titulo").html(localStorage.nom_empresa);
+	
+
+	//verifica si hay datos pendientes por envío
+	db.transaction(Consulta);
  });

@@ -28,6 +28,9 @@
 		    color: #f6f6f6 !important;
 		    text-shadow: 0 1px 0 black !important;
 		}
+		.ui-content {
+		    padding: 0.4em !important;
+		}
 	</style>
 	<script src="js/jquery.min.js"></script>
 	<script src="js/jquery.mobile-1.4.5.min.js"></script>
@@ -71,26 +74,25 @@
 			<div id="seleccionado"></div>
 		</div>
 		<div data-role="content">
-			<button class="ui-btn ui-shadow" id="escanear">Scanear</button>
 			<input type="search" name="txtBuscar" id="txtBuscar" value="" placeholder="Digita No. de placa o serial..." data-theme="a">
-			<button class="ui-btn" name="btnBuscar" id="btnBuscar">Buscar Elemento</button>
-			</br><ul id="lista" data-role="listview" data-theme="a"></ul>
+			<button class="ui-btn ui-btn-inline ui-mini" name="btnBuscar" id="btnBuscar">Buscar Elemento</button>
+			<button class="ui-btn ui-btn-inline ui-mini ui-shadow" id="escanear">Scanear</button>
+			</br></br><ul id="lista" data-role="listview" data-theme="a"></ul>
 			<p id="lista_fotos"></p>
 		</div>
 		<div data-role="fieldcontain" class="ui-field-contain" id="divObservaciones" style="overflow:hidden;display: none">
 			<label for="observaciones" class="select">Observaciones:</label>
-				<textarea type="text" name="observaciones" id="observaciones" value="" data-clear-btn="true" rows="3" data-theme="a"> </textarea>
+				<textarea type="text" name="observaciones" id="observaciones" value="" data-clear-btn="true" rows="2" data-theme="a"> </textarea>
 			</select>
 		</div>
 		<div data-role="footer" style="overflow:hidden" align="center">
 			<div data-role="navbar" align="center">
 				<ul><li>
-				<button id="btn_ok" style="overflow:hidden;display: none" class="ui-btn ui-btn-b ui-icon-check ui-btn-icon-left">Asignar Elemento</button>
+				<button id="btn_ok" style="overflow:hidden;display: none" class="ui-btn ui-btn-a ui-icon-check ui-btn-icon-left">Asignar Elemento</button><br>
 				</ul></li>
 			</div>
 		</div>
-	</div> <br><br>
-
+	</div>
 	<script src="js/bd_elemento_busqueda.js"></script>
 	<script src="js/elemento_busqueda.js"></script>	
 

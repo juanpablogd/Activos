@@ -27,6 +27,9 @@
 		    color: #f6f6f6 !important;
 		    text-shadow: 0 1px 0 black !important;
 		}
+		.ui-content {
+		    padding: 0.4em !important;
+		}
 	</style>
 	<script src="js/jquery.min.js"></script>
 	<script src="js/jquery.mobile-1.4.5.min.js"></script>
@@ -68,15 +71,15 @@
 			    </div><!-- /navbar -->
 			</div><!-- /container -->	
 			<div id="seleccionado"></div>
-			<div id="item_dependencia" data-role="content" class="ui-field-contain">
+			<div id="item_dependencia" data-role="content" >
 				<label for="dependencia" class="select">Dependencia:</label>
 					<select name="dependencia" id="dependencia"  tabindex="-1">
 					<option value="">Seleccione...</option>
 				</select>
 			</div>
-			<div id="item_seccion" data-role="content" class="ui-field-contain">
+			<div id="item_seccion" data-role="content">
 				<input type="search" name="txtBuscarSeccion" id="txtBuscarSeccion" value="" placeholder="Busca sección" data-theme="a">
-				<label for="seccion" class="select">Secci&oacute;n:</label>
+				<!-- label for="seccion" class="select">Secci&oacute;n:</label -->
 					<select name="seccion" id="seccion" class="filterable-select" tabindex="-1" required >
 						<option value="">Seleccione...</option>
 					</select>
@@ -85,15 +88,15 @@
 		
 		<div data-role="content">
 			<input type="search" name="txtBuscar" id="txtBuscar" value="" placeholder="Digita CC/TI..." data-theme="a">
-			<button class="ui-btn" name="btnBuscar" id="btnBuscar">Buscar Persona</button>
+			<button class="ui-btn ui-mini" name="btnBuscar" id="btnBuscar">Buscar Persona</button>
 			</br><ul id="lista" data-role="listview" data-theme="a"></ul>
 		</div></br>
 		<div data-role="footer" style="overflow:hidden;" align="center">
 			<div data-role="navbar" align="center"><ul><li>
-				<button id="btn_ok" class="ui-btn ui-btn-b ui-icon-check ui-btn-icon-left">Seleccionar</button>
+				<button id="btn_ok" class="ui-btn ui-btn-a ui-icon-check ui-btn-icon-left">Seleccionar</button>
 				</ul></li>
 			</div>
-		</div>
+		</div><br>
 	</div>
 	<script src="js/bd_persona_busqueda.js"></script>
 	<script src="js/persona_busqueda.js"></script>

@@ -25,7 +25,7 @@ $(document).ready(function() {
 	if($val != "" && $val != undefined && $val != null && $val != "null"){
 			var res_persona = $val.split("|");
 			//$("#seleccionado").html('<h4 align="center">'+res_persona[1]+" "+res_persona[2]+" - "+res[1]+" -  "+res[2]+'</h4>');
-			$("#seleccionado").html('<h4 align="center">'+res_persona[1]+" "+res_persona[2]+'</h4>');
+			$("#seleccionado").html('<h4 align="center" style="margin: 6px;">'+res_persona[1]+" "+res_persona[2]+'</h4>');
 			//$("#btn2").removeAttr("disabled");
 			localStorage.busqueda = res_persona[0];
 			db.transaction(CargarListado);		
@@ -71,7 +71,7 @@ $(document).ready(function() {
 		var res_persona = $val.split("|");
 		
 		//$("#seleccionado").html('<h4 align="center">'+res_persona[1]+" "+res_persona[2]+" - "+res[1]+'</h4>');
-		$("#seleccionado").html('<h4 align="center">'+res_persona[1]+" "+res_persona[2]+'</h4>');
+		$("#seleccionado").html('<h4 align="center" style="margin: 6px;">'+res_persona[1]+" "+res_persona[2]+'</h4>');
 		$("#btn4").removeAttr("disabled");
 	});
 	

@@ -115,10 +115,9 @@ function MuestraItems(tx, results) {
 	    li += "<li value='"+id+"|"+nombres+"|"+apellidos+"|"+telefono+"|"+correo+"|"+rowid+"'>"+
 			    	"<div class='ui-block'>"+
 				        "<h2>"+nombres+" "+apellidos+"</h2>"+
-				        "<p>CC: "+id+"</p>"+
-				        "<p>Tel: "+telefono+"</p>"+
-				        "<p>Correo: "+correo+"</p>"+
-				        "<a href='#' onclick=\"editarPersona('"+id+"|"+nombres+"|"+apellidos+"|"+telefono+"|"+correo+"|"+rowid+"');\"><h2>Editar</h2></a>"+
+				        "<p>CC: "+id+" --- Tel: "+telefono+"</p> "+
+//				        "<p>Correo: "+correo+"</p>"+
+				        "<a href='#' onclick=\"editarPersona('"+id+"|"+nombres+"|"+apellidos+"|"+telefono+"|"+correo+"|"+rowid+"');\"><h4>Editar</h4></a>"+
 					"</div>"+  
 			  "</li>";
     } //console.log(li);
@@ -144,7 +143,7 @@ function MuestraItems(tx, results) {
 		localStorage.persona_valor = $val; 
 		var res_persona = $val.split("|");
 		
-		$("#seleccionado").html('<h4 align="center">'+res_persona[1]+" "+res_persona[2]+'</h4>');
+		$("#seleccionado").html('<h4 align="center" style="margin: 6px;">'+res_persona[1]+" "+res_persona[2]+'</h4>');
 		//$("#btn2").removeAttr("disabled");
 		
 	}

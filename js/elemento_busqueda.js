@@ -41,9 +41,9 @@ $(document).ready(function() {
 		}
 		if(elemento_valor != "" && elemento_valor != undefined && elemento_valor != null && elemento_valor != "null" )
 		{
-			$("#seleccionado").html('<h4 align="center">'+res_persona[1]+" "+res_persona[2]+" - "+'Ref: '+res[1]+" -  "+res[2]+'</h4>');
+			$("#seleccionado").html('<h4 align="center" style="margin: 6px;">'+res_persona[1]+" "+res_persona[2]+" - "+'Ref: '+res[1]+" -  "+res[2]+'</h4>');
 		} else{
-			$("#seleccionado").html('<h4 align="center">'+res_persona[1]+" "+res_persona[2]+" - "+' Busque un elemento por favor</h4>');			
+			$("#seleccionado").html('<h4 align="center" style="margin: 6px;">'+res_persona[1]+" "+res_persona[2]+" - "+' Busque un elemento por favor</h4>');			
 		}
 		$("#btn2").removeAttr("disabled");
 		$("#btn3").removeAttr("disabled");
@@ -106,7 +106,7 @@ $(document).ready(function() {
 		$val = $this.attr('value'); //id|referencia|nombre
 		localStorage.elemento_valor = $val; 
 		var res = $val.split("|");
-		$("#seleccionado").html('<h4 align="center">'+res[2]+" -  "+res[1]+'</h4>');
+		$("#seleccionado").html('<h4 align="center style="margin: 6px;"">'+res[2]+" -  "+res[1]+'</h4>');
 		$("#btn2").removeAttr("disabled");
 		//$("#btn3").removeAttr("disabled");
 

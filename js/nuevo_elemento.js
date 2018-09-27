@@ -182,7 +182,7 @@ function GuardaElemento(tx) {
 	}else if(id_estado.trim() == 0){
 		alerta (
 		    "Seleccione un estado",  		// message
-		    function(){ $("#id_estado").focus(); },         	// callback
+		    function(){ $("#id_estado").trigger('mousedown'); },         	// callback
 		    'Activos',            	// title
 		    'Ok'                  	// buttonName
 		);

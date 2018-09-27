@@ -35,8 +35,7 @@ $(document).ready(function(){
 	
 	db.transaction(Cono_elementos);
 	
-	 setInterval(function(){
-	 	console.log("Buscar pendientes");
+	 setInterval(function(){	//console.log("Buscar pendientes");
 	 	db.transaction(Cono_elementos);
 	}, 2000);
 	
@@ -110,15 +109,17 @@ function ConsultaSincronizarElemento(tx, results) {
 				success: function(responser){	console.log("Articulo:"+responser);
 					db.transaction(function(tx) {
 						var respr = responser.trim();		//console.log(respr);	
-						var res=respr.split("|");			//res[0]=>Id del Elemento en el servidor	res[1]=>Id Envío	res[2]=>Id temporal en la base de datos Local
-						  console.log('update publicarticulo_foto set id_articulo = "'+res[0]+'" where id_envio = "'+res[1]+'"');			
-						tx.executeSql('update publicarticulo_foto set id_articulo = "'+res[0]+'" where id_envio = "'+res[1]+'"');
-						  console.log('update publicarticulo set id_articulo = "'+res[0]+'" where id_envio = "'+res[1]+'"');			
-						tx.executeSql('update publicarticulo set id_articulo = "'+res[0]+'" where id_envio = "'+res[1]+'"');		//tx.executeSql('DELETE from publicp_elemento where id_envio = "'+res+'"');
-						  console.log('update publicinventario_det set id_articulo = "'+res[0]+'" where id_envio_art = "'+res[1]+'"');
-						tx.executeSql('update publicinventario_det set id_articulo = "'+res[0]+'" where  id_envio_art = "'+res[1]+'"');
-						  console.log('update publicarticulo set id_envio = "" where id_envio = "'+res[1]+'"');
-						tx.executeSql('update publicarticulo set id_envio = "" where id_envio = "'+res[1]+'"');		//tx.executeSql('DELETE from publicp_elemento where id_envio = "'+res+'"');
+						var res=respr.split("|");	//res[0]=>Id del Elemento en el servidor	res[1]=>Id Envío	res[2]=>Id temporal en la base de datos Local
+						if($.isNumeric(res[0])){
+							  console.log('update publicarticulo_foto set id_articulo = "'+res[0]+'" where id_envio = "'+res[1]+'"');
+							tx.executeSql('update publicarticulo_foto set id_articulo = "'+res[0]+'" where id_envio = "'+res[1]+'"');
+							  console.log('update publicarticulo set id_articulo = "'+res[0]+'" where id_envio = "'+res[1]+'"');			
+							tx.executeSql('update publicarticulo set id_articulo = "'+res[0]+'" where id_envio = "'+res[1]+'"');		//tx.executeSql('DELETE from publicp_elemento where id_envio = "'+res+'"');
+							  console.log('update publicinventario_det set id_articulo = "'+res[0]+'" where id_envio_art = "'+res[1]+'"');
+							tx.executeSql('update publicinventario_det set id_articulo = "'+res[0]+'" where  id_envio_art = "'+res[1]+'"');
+							  console.log('update publicarticulo set id_envio = "" where id_envio = "'+res[1]+'"');
+							tx.executeSql('update publicarticulo set id_envio = "" where id_envio = "'+res[1]+'"');		//tx.executeSql('DELETE from publicp_elemento where id_envio = "'+res+'"');
+						}
 					});
 				},
 				error: function (error) {

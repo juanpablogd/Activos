@@ -56,11 +56,11 @@ function MuestraItems(tx, results) {
 	    li += "<li value='"+id+"|"+plaqueta+"|"+nombre+"|"+rowid+"|"+id_estado+"|"+id_envio_art+"'>"+
 		    	"<div class='ui-block'>"+
 			        "<h2>"+nombre+"</h2>"+
-			        "<p>Ref: "+referencia+"</p>"+
-			        "<p>"+seccion+" - "+plaqueta+"</p>"+
-			        "<h2>"+clasificacion+"</h2>"+
-			        "<p>Fotos actualizadas: <label id='nf"+rowid+"'><label></p>"+
-			        "<a href='#' id='btnEditar' onclick=\"editarElemento('"+id+"|"+plaqueta+"|"+nombre+"|"+rowid+"');\"><h2>Editar</h2></a>"+
+			        "<p>Ref: "+referencia+" - "+plaqueta+"</p>"+
+			        "<p>"+seccion+"</p>"+
+			        "<p>"+clasificacion+"</p>"+
+			        "<p>Fotos actualizadas: <span id='nf"+rowid+"'></span></p>"+
+			        "<a href='#' id='btnEditar' onclick=\"editarElemento('"+id+"|"+plaqueta+"|"+nombre+"|"+rowid+"');\"><h4>Editar</h4></a>"+
 				"</div>"+  
 			  "</li>";
     }
@@ -123,7 +123,7 @@ function MuestraItems(tx, results) {
 			$val = $('#lista li').attr('value'); //id|referencia|nombre
 			localStorage.elemento_valor = $val; 
 			var res = $val.split("|");
-			$("#seleccionado").html('<h4 align="center"> '+res[2]+" -  "+res[1]+'</h4>');
+			$("#seleccionado").html('<h4 align="center" style="margin: 6px;"> '+res[2]+" -  "+res[1]+'</h4>');
 			$("#btn2").removeAttr("disabled");
 			//$("#btn3").removeAttr("disabled");
 	//		console.log(plaqueta);

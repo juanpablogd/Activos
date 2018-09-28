@@ -149,8 +149,7 @@ function MuestraItems(tx, results) {
 		    	"<div class='ui-block'>"+
 			        "<a href='#' onclick=\"abrir('"+idarticulo+"|"+plaqueta_af+"|"+nombre+"|"+rowid+"');\"><h2>"+nombre+"</h2></a>"+
 			        "<p style='color:#"+color+"'>"+sublinea+"</p>"+
-			        "<p style='color:#"+color+"'>Plaq: "+plaqueta_af+"</p>"+
-			        "<p style='color:#"+color+"'>Serie: "+numero_serie_af+"</p>"+
+			        "<p style='color:#"+color+"'>Plaq: "+plaqueta_af+" --- Serie: "+numero_serie_af+"</p>"+
 			        "<h1 style='color:#"+color+";font-size: 0.9em;font-weight: 100;'>Estado: "+estado+"</h1>"+
 			        "<label for='t"+cod_id+"' style='color:#"+color+"'>Observación:</label><input type='text' name='t"+cod_id+"' id='t"+cod_id+"' style='color:#"+color+"' value='"+observacion+"' "+habilitado+">"+
 			        "<p style='color:#"+color+"'>Fotos actualizadas: <label id='nf"+cod_id+"'><label></p>"+

@@ -33,6 +33,15 @@
 		    background-color: #1f1f1f !important;   
 		    color: #f6f6f6 !important;   
 		}
+		.ui-content {
+		    padding: 0.4em !important;
+		}
+		h4{
+			margin: 0 0 5px 0 !important;
+		}
+		.ui-controlgroup, fieldset.ui-controlgroup {
+		    margin: 0 0 !important;
+		}
 	</style>
 	
 	<script src="js/valida_bd.js"></script>
@@ -59,13 +68,14 @@
 			</div><!-- /container -->	
 			
 			<fieldset data-role="controlgroup" data-type="horizontal">
+				<div id="seleccionado">&nbsp;</div>
 		        <input type="radio" name="radio-choice-h-2" id="radio-choice-h-2a" value="Plaqueta" checked="checked">
 		        <label for="radio-choice-h-2a">Plaqueta</label>
 		        <input type="radio" name="radio-choice-h-2" id="radio-choice-h-2b" value="Nombre">
 		        <label for="radio-choice-h-2b">Nombre</label>
 		    </fieldset>
 			
-			<div id="seleccionado">&nbsp;</div>
+			
 			<label style="color:red" id="Lencontrado">&nbsp;</label>
 		</div>
 		

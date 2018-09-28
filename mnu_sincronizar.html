@@ -9,6 +9,8 @@
 		<link rel="stylesheet" href="themes/jquery.mobile.icons.min.css" />
 		<script src="js/jquery.min.js"></script>
 		<script src="js/jquery.mobile-1.4.5.min.js"></script>
+		<script type="text/javascript" src="cordova.js"></script>
+		<script type="text/javascript" src="js/index.js"></script>
 	</head>
 	<body>
 		<div data-role="page" data-theme="a">
@@ -28,10 +30,10 @@
 				<a href="cargar.html" target="_top" data-role="button" data-theme="a" data-icon="arrow-u">Cargar Información</a>
 				<a href="descargar.html" target="_top" data-role="button" data-theme="a" data-icon="arrow-d">Descargar Información</a>
 			</div>
-			<div data-role="footer" data-theme="none"><h3>Sistema Inventarios</h3></div>
+			<div data-role="footer" data-theme="none" ><h3 id="info_pie">Sistema Inventarios</h3></div>
 		</div>
 	</body>
 	<script type="text/javascript">
 		$("#titulo").html(localStorage.nom_empresa);
-	</script>>
+	</script>
 </html>

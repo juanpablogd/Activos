@@ -84,6 +84,9 @@ var app = {
                             ,correctOrientation:true
                         };
         }
+        cordova.getAppVersion.getVersionNumber().then(function (version) {
+            $('#info_pie').html("Sistema Inventarios: "+version);
+        });
     }
 
 };

@@ -26,10 +26,10 @@ function successCB() {
 /* BUSQUEDA EN LA TABLA ELEMENTO*/
 function CargarListado(tx) {
 	var busqueda=localStorage.busqueda;				//console.log("Busqueda: "+busqueda+"!"); //console.log("SELECT el.idarticulo id,el.referencia,el.plaqueta,el.nombre,se.nombre seccion,sl.nombre clasificacion FROM publicarticulos el inner join publicsecciones se on se.idseccion = el.idseccion inner join publicsublineas sl on sl.idslinea = el.idslinea where numero_serie like '%"+busqueda+"%' or plaqueta like '%"+busqueda+"%' or plaqueta_anterior like '%"+busqueda+"%' or el.nombre like '%"+busqueda+"%' order by el.nombre");
-	
+	busqueda =  busqueda.toUpperCase().trim();
 	if(busqueda!=null){
-		  console.log("SELECT el.id_articulo id, el.referencia, el.placa_nueva, el.nom_articulo, se.nom_seccion seccion, sl.nom_sublinea clasificacion, el.id_envio, el.rowid, el.id_estado  FROM   publicarticulo el LEFT JOIN publicseccion se    ON se.id_seccion = el.id_seccion LEFT JOIN publicsublinea sl    ON sl.id_sublinea = el.id_sublinea  WHERE serie = '"+busqueda+"' or placa_nueva = '"+busqueda+"' or placa_anterior = '"+busqueda+"' ORDER  BY id_envio DESC, el.id_articulo DESC  LIMIT  1");
-	    tx.executeSql("SELECT el.id_articulo id, el.referencia, el.placa_nueva, el.nom_articulo, se.nom_seccion seccion, sl.nom_sublinea clasificacion, el.id_envio, el.rowid, el.id_estado  FROM   publicarticulo el LEFT JOIN publicseccion se    ON se.id_seccion = el.id_seccion LEFT JOIN publicsublinea sl    ON sl.id_sublinea = el.id_sublinea  WHERE serie = '"+busqueda+"' or placa_nueva = '"+busqueda+"' or placa_anterior = '"+busqueda+"' ORDER  BY id_envio DESC, el.id_articulo DESC  LIMIT  1", [], MuestraItems);
+		  console.log("SELECT el.id_articulo id, el.referencia, el.placa_nueva, el.nom_articulo, se.nom_seccion seccion, sl.nom_sublinea clasificacion, el.id_envio, el.rowid, el.id_estado  FROM   publicarticulo el LEFT JOIN publicseccion se    ON se.id_seccion = el.id_seccion LEFT JOIN publicsublinea sl    ON sl.id_sublinea = el.id_sublinea  WHERE UPPER(serie) = '"+busqueda+"' or UPPER(placa_nueva) = '"+busqueda+"' or UPPER(placa_anterior) = '"+busqueda+"' ORDER  BY id_envio DESC, el.id_articulo DESC  LIMIT  1");
+	    tx.executeSql("SELECT el.id_articulo id, el.referencia, el.placa_nueva, el.nom_articulo, se.nom_seccion seccion, sl.nom_sublinea clasificacion, el.id_envio, el.rowid, el.id_estado  FROM   publicarticulo el LEFT JOIN publicseccion se    ON se.id_seccion = el.id_seccion LEFT JOIN publicsublinea sl    ON sl.id_sublinea = el.id_sublinea  WHERE UPPER(serie) = '"+busqueda+"' or UPPER(placa_nueva) = '"+busqueda+"' or UPPER(placa_anterior) = '"+busqueda+"' ORDER  BY id_envio DESC, el.id_articulo DESC  LIMIT  1", [], MuestraItems);
    }
 }
 /* RESULTADO DE LA TABLA ELEMENTO*/

@@ -327,7 +327,7 @@ function ConsultaSincronizarFotos(tx, results) {
 						var respf = result.response.toString();	console.log(respf);
 		            	var n=respf.split("|");
 
-		            	//REMOVER ARCHIVO DEL DISPOSITIVO
+		            	//REMOVER ARCHIVO DEL DISPOSITIVO Ejemplo:	null|1|1538173185696.jpg|282513
 		            	function eliminafotodb(tx) { //console.log('DELETE from publicarticulos_fotos where id_envio = "'+n[0]+'" and rowid = "'+n[1]+'"');
 							if(n[0]!="null" && n[0] !=""){
 								  console.log('DELETE from publicarticulo_foto where id_envio = "'+n[0]+'" and rowid = "'+n[1]+'"');

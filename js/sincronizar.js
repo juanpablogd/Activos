@@ -291,7 +291,7 @@ function ConsultaSincronizarFotos(tx, results) {
 	}else{
 		for (i = 0; i < len; i++){
 
-			var url_imagen = results.rows.item(i).url; //console.log(url_imagen);	console.log(typeof cordova);
+			var url_imagen = results.rows.item(i).url; console.log(url_imagen);	console.log(typeof cordova);
 			if (typeof cordova !== 'undefined'){
 	          	var options = new FileUploadOptions();
 	            options.fileName=url_imagen;
@@ -337,7 +337,7 @@ function ConsultaSincronizarFotos(tx, results) {
 								tx.executeSql('DELETE from publicarticulo_foto where id_articulo = "'+n[3]+'" and rowid = "'+n[1]+'"');
 							}
 						}
-		            	function sqlexitoso ()  {	//console.log(LocalFileSystem.TEMPORARY);
+		            	function sqlexitoso ()  {		console.log(LocalFileSystem.TEMPORARY);
 					      	window.resolveLocalFileSystemURL(
 					      		  n[2],
 							      function gotFile(fileEntry){	console.log(JSON.stringify(fileEntry));

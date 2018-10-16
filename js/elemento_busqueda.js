@@ -49,12 +49,7 @@ $(document).ready(function() {
 		$("#btn3").removeAttr("disabled");
 		if(localStorage.elemento_valor !== undefined){
 			if(res[1] == "" ){
-				alerta (
-				    "Registre la plaqueta por favor",  		// message
-				    function(){ window.location = "elemento_editar.html"; },         	// callback
-				    'Activos',            	// title
-				    'Ok'                  	// buttonName
-				);
+				localStorage.elemento_valor = "";
 			}else if(res[0] != "" ){
 				localStorage.busqueda=res[1];
 				db.transaction(CargarListado);

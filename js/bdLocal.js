@@ -13,7 +13,7 @@ function errorCB(err) {
 function successCB() { /*console.log("Ok!"); */ }
 
 function TBLusuario(tx) {//Si no existe crea la talba USUARIOS	//tx.executeSql('DELETE TABLE IF EXISTS "usuario"');
-    tx.executeSql('CREATE TABLE IF NOT EXISTS usuario ("id" INTEGER PRIMARY KEY  NOT NULL  DEFAULT (null) ,"nombre" CHAR NOT NULL ,"usuario" CHAR NOT NULL ,"contrasegna" CHAR NOT NULL  DEFAULT (null),"id_empresa" CHAR NOT NULL  DEFAULT (null),"nom_empresa" CHAR NOT NULL  DEFAULT (null) ,"activo" CHAR NOT NULL  DEFAULT (1),"conectado" CHAR NOT NULL  DEFAULT (1) )');
+    tx.executeSql('CREATE TABLE IF NOT EXISTS usuario ("id" INTEGER PRIMARY KEY  NOT NULL  DEFAULT (null) ,"nombre" CHAR NOT NULL ,"usuario" CHAR NOT NULL ,"contrasegna" CHAR NOT NULL  DEFAULT (null),"id_empresa" CHAR NOT NULL  DEFAULT (null),"id_proyecto" CHAR NOT NULL  DEFAULT (null),"nom_empresa" CHAR NOT NULL  DEFAULT (null),"nom_proyecto" CHAR NOT NULL  DEFAULT (null) ,"activo" CHAR NOT NULL  DEFAULT (1),"conectado" CHAR NOT NULL  DEFAULT (1) )');
     tx.executeSql('CREATE TABLE IF NOT EXISTS posicion ("id" CHAR ,"usuario" CHAR ,"fecha" CHAR,"longitud" CHAR, "latitud" CHAR, "exactitud" CHAR )');
     db.transaction(TBLusuarioConsulta);
 }
@@ -26,7 +26,7 @@ function TBLusuarioConsulta(tx) {
 function TBLusuarioConsultaGuarda(tx, results) {
 	var len = results.rows.length;	//console.log('Resultados: '+len);
     if(len==0){
-		tx.executeSql('INSERT INTO usuario (id,nombre,usuario,contrasegna,id_empresa,nombre_empresa,activo,conectado) values ("9999","Usuario Maestro","maestro","maestro","1","SOFYTEK","S","2013-01-01")'); 
+		tx.executeSql('INSERT INTO usuario (id,nombre,usuario,contrasegna,id_empresa,id_proyecto,nombre_empresa,activo,conectado) values ("9999","Usuario Maestro","maestro","maestro","1","1","SOFYTEK","S","2013-01-01")'); 
 	}
 }
 /* LOGUEADO EXITOSAMENTE*/
@@ -49,7 +49,9 @@ function AlmacenaUsrConsultaGuarda(tx, results) {
 	var nombre = localStorage.nombre;						console.log(nombre);
 	var activo = localStorage.activo;						console.log(activo);
 	var id_empresa = localStorage.id_empresa;						console.log(id_empresa);
+	var id_proyecto = localStorage.id_proyecto;						console.log(id_proyecto);
 	var nom_empresa = localStorage.nom_empresa;						console.log(nom_empresa);
+	var nom_proyecto = localStorage.nom_proyecto;						console.log(nom_proyecto);
 	if(activo=="1"||activo=="S"){ //SI EL USUARIO ESTÁ ACTIVO EN EL SERVIDOR
 		//Fecha de Ingreso al aplicativo	
 		var now = new Date();
@@ -57,10 +59,10 @@ function AlmacenaUsrConsultaGuarda(tx, results) {
 		
 	    if(len==0){
 	    	//console.log("Insert");
-			tx.executeSql('INSERT INTO usuario (id,nombre,usuario,contrasegna,id_empresa,nom_empresa,activo,conectado) values ("'+id+'","'+nombre+'","'+usr+'","'+pas+'","'+id_empresa+'","'+nom_empresa+'","S","'+fecha_ingreso+'")'); 
+			tx.executeSql('INSERT INTO usuario (id,nombre,usuario,contrasegna,id_empresa,id_proyecto,nom_empresa,nom_proyecto,activo,conectado) values ("'+id+'","'+nombre+'","'+usr+'","'+pas+'","'+id_empresa+'","'+id_proyecto+'","'+nom_empresa+'","'+nom_proyecto+'","S","'+fecha_ingreso+'")'); 
 		}else 
 		{	//console.log("Update");
-			tx.executeSql('UPDATE usuario set nombre = "'+nombre+'",usuario = "'+usr+'",contrasegna = "'+pas+'",id_empresa = "'+id_empresa+'",nom_empresa = "'+nom_empresa+'",conectado = "'+fecha_ingreso+'" where id = "'+id+'"');
+			tx.executeSql('UPDATE usuario set nombre = "'+nombre+'",usuario = "'+usr+'",contrasegna = "'+pas+'",id_empresa = "'+id_empresa+'",id_proyecto = "'+id_proyecto+'",nom_empresa = "'+nom_empresa+'",nom_proyecto = "'+nom_proyecto+'",conectado = "'+fecha_ingreso+'" where id = "'+id+'"');
 		}
 		window.location = "principal.html";	
 	}else {	//SI EL USUARIO ESTÁ INACTIVO LO ELIMINA DE LA BASE DE DATOS LOCAL

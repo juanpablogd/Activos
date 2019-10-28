@@ -24,8 +24,8 @@ function editarPersona(cod){	console.log(cod);
 }
 /****************************************************************************************************************************************************************/
 /**CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS**/ 
-function ConsultaItems(tx) {	//tx.executeSql('select id,tipo from publicp_tipo_elemento order by tipo', [], ConsultaItemsCarga,errorCB);
-		tx.executeSql('select id_dependencia,nom_dependencia from publicdependencia order by nom_dependencia', [], ConsultaItemsCarga,errorCB);
+function ConsultaItems(tx) {	//console.log('select id_dependencia,nom_dependencia from publicdependencia where id_empresa = '+localStorage.id_empresa+' order by nom_dependencia');
+		tx.executeSql('select id_dependencia,nom_dependencia from publicdependencia where id_empresa = "'+localStorage.id_empresa+'" order by nom_dependencia', [], ConsultaItemsCarga,errorCB);
 }
 function ConsultaItemsCarga(tx, results) {
 	var len = results.rows.length;	//console.log(len);
@@ -94,8 +94,8 @@ function ConsultaSeccionesCarga(tx, results) {
 function CargarListado(tx) {
 	var busqueda=localStorage.busqueda;
 	console.log("Busqueda: "+busqueda+"!"); //console.log("Busqueda: "+busqueda);
-	if(busqueda!=null && busqueda.trim() != ""){	console.log("SELECT cedula,nombres,apellidos,telefono,correo,rowid FROM publicusuario where cedula = '"+busqueda+"' limit 1");
-	    tx.executeSql("SELECT cedula,nombres,apellidos,telefono,correo,rowid FROM publicusuario where cedula = '"+busqueda+"' limit 1", [], MuestraItems);
+	if(busqueda!=null && busqueda.trim() != ""){	console.log("SELECT cedula,nombres,apellidos,cargo,rowid FROM publicusuario where cedula = '"+busqueda+"' and id_proyecto = '"+localStorage.id_proyecto+"' limit 1");
+	    tx.executeSql("SELECT cedula,nombres,apellidos,cargo,rowid FROM publicusuario where cedula = '"+busqueda+"' and id_proyecto = '"+localStorage.id_proyecto+"' limit 1", [], MuestraItems);
    }
 }
 /* RESULTADO DE LA TABLA PERSONA*/
@@ -108,11 +108,13 @@ function MuestraItems(tx, results) {
 	 	var id = results.rows.item(i).cedula;
 	 	var nombres = results.rows.item(i).nombres;					//console.log( "nombre = " + sessionStorage.getItem("nombre"));
 	 	var apellidos = results.rows.item(i).apellidos;
-	 	var telefono = results.rows.item(i).telefono;
-	 	var correo = results.rows.item(i).correo;
+	 	var cargo = results.rows.item(i).cargo;
+	 	var telefono,correo;
+/*	 	var telefono = results.rows.item(i).telefono;
+	 	var correo = results.rows.item(i).correo;*/
 	 	var rowid = results.rows.item(i).rowid;
-
-	    li += "<li value='"+id+"|"+nombres+"|"+apellidos+"|"+telefono+"|"+correo+"|"+rowid+"'>"+
+	 	//li += "<li value='"+id+"|"+nombres+"|"+apellidos+"|"+telefono+"|"+correo+"|"+rowid+"'>"+
+	    li += "<li value='"+id+"|"+nombres+"|"+apellidos+"|"+telefono+"|"+correo+"|"+rowid+"|"+cargo+"'>"+
 			    	"<div class='ui-block'>"+
 				        "<h2>"+nombres+" "+apellidos+"</h2>"+
 				        "<p>CC: "+id+" --- Tel: "+telefono+"</p> "+

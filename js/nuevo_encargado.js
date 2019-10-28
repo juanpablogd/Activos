@@ -73,7 +73,7 @@ function consultaPersona(tx) {
 	var busqueda=localStorage.busqueda;
 	console.log("Busqueda: "+busqueda+"!"); //console.log("Busqueda: "+busqueda);	3084556|EDGAR ARNULFO|SANABRIA ALDANA
 	//if(busqueda!=null){
-	    tx.executeSql("SELECT cedula,nombres,apellidos FROM publicusuario where cedula = '"+busqueda+"'", [], resultadoCC);
+	    tx.executeSql("SELECT cedula,nombres,apellidos FROM publicusuario where cedula = '"+busqueda+"' and id_proyecto = '"+localStorage.id_proyecto+"'", [], resultadoCC);
 	//}
 }
 /* RESULTADO DE LA TABLA PERSONA*/
@@ -101,17 +101,19 @@ function resultadoCC(tx, results) { console.log('MuestraItems');
 			var nombres = txtOk($( "#nombres" ).val());
 				//OBTIENE EL ID DE LOS APELLIDOS
 			var apellidos = txtOk($( "#apellidos" ).val());
-			//OBTIENE EL ID DE LOS TELEFONOS
+			//CARGO DEL ENCARGAO
+			var cargo = txtOk($( "#cargo" ).val());
+/*			//OBTIENE EL ID DE LOS TELEFONOS
 			var telefonos = txtOk($( "#telefonos" ).val());
 			//OBTIENE EL ID DEL CORREO
-			var correo = txtOk($( "#correo" ).val());
+			var correo = txtOk($( "#correo" ).val()); 	*/
 			//FECHA - ID_ENVIO
 			var now = new Date();
 			var fecha_captura = now.getFullYear()+'-'+(1+now.getMonth())+'-'+now.getDate()+'-'+now.getHours()+'_'+now.getMinutes()+'_'+now.getSeconds();
 			var id_envio = fecha_captura+'-'+id_usr;
 			db.transaction(function(tx) {
-				  console.log('INSERT INTO publicusuario (cedula,nombres,apellidos,telefono,correo,id_envio,id_empresa,nom_empresa) values ("'+cc+'","'+nombres+'","'+apellidos+'","'+telefonos+'","'+correo+'","'+id_envio+'","'+localStorage.id_empresa+'","'+localStorage.nom_empresa+'")');
-				tx.executeSql('INSERT INTO publicusuario (cedula,nombres,apellidos,telefono,correo,id_envio,id_empresa,nom_empresa) values ("'+cc+'","'+nombres+'","'+apellidos+'","'+telefonos+'","'+correo+'","'+id_envio+'","'+localStorage.id_empresa+'","'+localStorage.nom_empresa+'")');
+				  console.log('INSERT INTO publicusuario (cedula,nombres,apellidos,cargo,id_envio,id_empresa,id_proyecto,nom_empresa) values ("'+cc+'","'+nombres+'","'+apellidos+'","'+cargo+'","'+id_envio+'","'+localStorage.id_empresa+'","'+localStorage.id_proyecto+'","'+localStorage.nom_empresa+'")');
+				tx.executeSql('INSERT INTO publicusuario (cedula,nombres,apellidos,cargo,id_envio,id_empresa,id_proyecto,nom_empresa) values ("'+cc+'","'+nombres+'","'+apellidos+'","'+cargo+'","'+id_envio+'","'+localStorage.id_empresa+'","'+localStorage.id_proyecto+'","'+localStorage.nom_empresa+'")');
 			},errorInsertp,
 				function successInsertp() {
 					localStorage.persona_valor = cc+"|"+nombres+"|"+apellidos;

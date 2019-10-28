@@ -20,8 +20,10 @@ function GuardaElemento(tx) {
 	var cc = $( "#cc" ).val();
 	//OBTIENE EL ID DE LOS NOMBRES
 	var nombres = $( "#nombres" ).val();
-		//OBTIENE EL ID DE LOS APELLIDOS
+	//OBTIENE EL ID DE LOS APELLIDOS
 	var apellidos = $( "#apellidos" ).val();
+	//OBTIENE EL ID DE LOS APELLIDOS
+	var cargo = $( "#cargo" ).val();
 
 	if(cc.trim() == ""){
 		alerta (
@@ -54,6 +56,15 @@ function GuardaElemento(tx) {
 		alerta (
 		    "Digite Apellidos",  		// message
 		    function(){ $("#apellidos").focus(); },         	// callback
+		    'Activos',            	// title
+		    'Ok'                  	// buttonName
+		);
+		$.mobile.loading( 'hide' );
+		return false;
+	}else if(cargo.trim() == ""){
+		alerta (
+		    "Digite Cargo",  		// message
+		    function(){ $("#cargo").focus(); },         	// callback
 		    'Activos',            	// title
 		    'Ok'                  	// buttonName
 		);
@@ -112,8 +123,8 @@ function resultadoCC(tx, results) { console.log('MuestraItems');
 			var fecha_captura = now.getFullYear()+'-'+(1+now.getMonth())+'-'+now.getDate()+'-'+now.getHours()+'_'+now.getMinutes()+'_'+now.getSeconds();
 			var id_envio = fecha_captura+'-'+id_usr;
 			db.transaction(function(tx) {
-				  console.log('INSERT INTO publicusuario (cedula,nombres,apellidos,cargo,id_envio,id_empresa,id_proyecto,nom_empresa) values ("'+cc+'","'+nombres+'","'+apellidos+'","'+cargo+'","'+id_envio+'","'+localStorage.id_empresa+'","'+localStorage.id_proyecto+'","'+localStorage.nom_empresa+'")');
-				tx.executeSql('INSERT INTO publicusuario (cedula,nombres,apellidos,cargo,id_envio,id_empresa,id_proyecto,nom_empresa) values ("'+cc+'","'+nombres+'","'+apellidos+'","'+cargo+'","'+id_envio+'","'+localStorage.id_empresa+'","'+localStorage.id_proyecto+'","'+localStorage.nom_empresa+'")');
+				  console.log('INSERT INTO publicusuario (cedula,nombres,apellidos,cargo,id_envio,id_empresa,id_proyecto) values ("'+cc+'","'+nombres+'","'+apellidos+'","'+cargo+'","'+id_envio+'","'+localStorage.id_empresa+'","'+localStorage.id_proyecto+'")');
+				tx.executeSql('INSERT INTO publicusuario (cedula,nombres,apellidos,cargo,id_envio,id_empresa,id_proyecto) values ("'+cc+'","'+nombres+'","'+apellidos+'","'+cargo+'","'+id_envio+'","'+localStorage.id_empresa+'","'+localStorage.id_proyecto+'")');
 			},errorInsertp,
 				function successInsertp() {
 					localStorage.persona_valor = cc+"|"+nombres+"|"+apellidos;

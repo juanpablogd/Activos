@@ -94,8 +94,8 @@ function ConsultaSeccionesCarga(tx, results) {
 function CargarListado(tx) {
 	var busqueda=localStorage.busqueda;
 	console.log("Busqueda: "+busqueda+"!"); //console.log("Busqueda: "+busqueda);
-	if(busqueda!=null && busqueda.trim() != ""){	console.log("SELECT cedula,nombres,apellidos,cargo,rowid FROM publicusuario where cedula = '"+busqueda+"' and id_proyecto = '"+localStorage.id_proyecto+"' limit 1");
-	    tx.executeSql("SELECT cedula,nombres,apellidos,cargo,rowid FROM publicusuario where cedula = '"+busqueda+"' and id_proyecto = '"+localStorage.id_proyecto+"' limit 1", [], MuestraItems);
+	if(busqueda!=null && busqueda.trim() != ""){	console.log("SELECT cedula,nombres,apellidos,telefono,cargo,rowid FROM publicusuario where cedula = '"+busqueda+"' and id_proyecto = '"+localStorage.id_proyecto+"' limit 1");
+	    tx.executeSql("SELECT cedula,nombres,apellidos,telefono,cargo,rowid FROM publicusuario where cedula = '"+busqueda+"' and id_proyecto = '"+localStorage.id_proyecto+"' limit 1", [], MuestraItems);
    }
 }
 /* RESULTADO DE LA TABLA PERSONA*/
@@ -109,9 +109,9 @@ function MuestraItems(tx, results) {
 	 	var nombres = results.rows.item(i).nombres;					//console.log( "nombre = " + sessionStorage.getItem("nombre"));
 	 	var apellidos = results.rows.item(i).apellidos;
 	 	var cargo = results.rows.item(i).cargo;
-	 	var telefono,correo;
-/*	 	var telefono = results.rows.item(i).telefono;
-	 	var correo = results.rows.item(i).correo;*/
+	 	var telefono = results.rows.item(i).telefono;
+	 	var correo;
+/*	 	var correo = results.rows.item(i).correo;*/
 	 	var rowid = results.rows.item(i).rowid;
 	 	//li += "<li value='"+id+"|"+nombres+"|"+apellidos+"|"+telefono+"|"+correo+"|"+rowid+"'>"+
 	    li += "<li value='"+id+"|"+nombres+"|"+apellidos+"|"+telefono+"|"+correo+"|"+rowid+"|"+cargo+"'>"+
@@ -119,7 +119,7 @@ function MuestraItems(tx, results) {
 				        "<h2>"+nombres+" "+apellidos+"</h2>"+
 				        "<p>CC: "+id+" --- Tel: "+telefono+"</p> "+
 //				        "<p>Correo: "+correo+"</p>"+
-				        "<a href='#' onclick=\"editarPersona('"+id+"|"+nombres+"|"+apellidos+"|"+telefono+"|"+correo+"|"+rowid+"');\"><h4>Editar</h4></a>"+
+				        "<a href='#' onclick=\"editarPersona('"+id+"|"+nombres+"|"+apellidos+"|"+telefono+"|"+correo+"|"+rowid+"|"+cargo+"');\"><h4>Editar</h4></a>"+
 					"</div>"+  
 			  "</li>";
     } //console.log(li);

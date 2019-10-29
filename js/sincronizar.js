@@ -56,10 +56,6 @@ function Cono_inventarioResp(tx, results) {
 }
 function Cono_usuariosResp(tx, results) {
 	$("#no_empleados").html(results.rows.item(0).nreg);
-	tx.executeSql('SELECT count(*) nreg FROM publicinventario_det where id_envio != ""', [], Cono_inventario_detResp,errorCB_Inventario);
-}
-function Cono_inventario_detResp(tx, results) {
-	$("#no_inventario_det").html(results.rows.item(0).nreg);
 	tx.executeSql('SELECT count(*) nreg FROM publicarticulo_foto', [], Cono_fotosResp,errorCB_Fotos);
 }
 function Cono_fotosResp(tx, results) {
@@ -69,16 +65,16 @@ function Cono_fotosResp(tx, results) {
 //--------------------------------------------------------------------------------------------------------------
 
 function ConsultaSincronizar(tx) {
-	  console.log('SELECT id_articulo,id_seccion,id_sublinea,marca,nom_articulo,referencia,serie,placa_nueva,placa_anterior,id_envio,id_estado,idusuario_envio,cc_responsable FROM publicarticulo where id_envio != ""');
-	tx.executeSql('SELECT id_articulo,id_seccion,id_sublinea,marca,nom_articulo,referencia,serie,placa_nueva,placa_anterior,id_envio,id_estado,idusuario_envio,cc_responsable FROM publicarticulo where id_envio != ""', [],
+	  console.log('SELECT id_articulo,id_seccion,id_sublinea,marca,nom_articulo,referencia,serie,placa_nueva,placa_anterior,id_envio,id_estado,idusuario_envio,cc_responsable,id_proyecto FROM publicarticulo where id_envio != ""');
+	tx.executeSql('SELECT id_articulo,id_seccion,id_sublinea,marca,nom_articulo,referencia,serie,placa_nueva,placa_anterior,id_envio,id_estado,idusuario_envio,cc_responsable,id_proyecto FROM publicarticulo where id_envio != ""', [],
 		           ConsultaSincronizarElemento,errorCB_Elemento);
 }
 
 function ConsultaSincronizarElemento(tx, results) {
-	var lon = results.rows.length;		//console.log("Rta Elemento: " + lon);		//console.log("Respuestas: "+lon);  //$("#resultado").before("<br>Cuestionarios encontrados: "+len+".<br>");	
+	var lon = results.rows.length;		console.log("Rta Elemento: " + lon);		//console.log("Respuestas: "+lon);  //$("#resultado").before("<br>Cuestionarios encontrados: "+len+".<br>");	
 	if(lon==0){	
-		  console.log('SELECT cedula,nombres,apellidos,telefono,correo,id_envio FROM publicusuario where id_envio != ""');
-	   	tx.executeSql('SELECT cedula,nombres,apellidos,telefono,correo,id_envio FROM publicusuario where id_envio != ""', [],
+		  console.log('SELECT cedula,nombres,apellidos,telefono,cargo,id_envio FROM publicusuario where id_envio != ""');
+	   	tx.executeSql('SELECT cedula,nombres,apellidos,telefono,cargo,id_envio FROM publicusuario where id_envio != ""', [],
 	           ConsultaSincronizarPersonas,errorCB_Personas);
 	}else{
 		for (i = 0; i < lon; i++){
@@ -98,7 +94,8 @@ function ConsultaSincronizarElemento(tx, results) {
 			parametros['id_envio'] = results.rows.item(i).id_envio;
 			parametros['id_estado'] = results.rows.item(i).id_estado;
 			parametros['idusuario_envio'] = results.rows.item(i).idusuario_envio;
-			parametros['cc_responsable_af'] = results.rows.item(i).cc_responsable_af;
+			parametros['cc_responsable_af'] = results.rows.item(i).cc_responsable;
+			parametros['id_proyecto'] = results.rows.item(i).id_proyecto;
 			parametros['id_empresa'] = localStorage.id_empresa;
 			$("#resultado").html("<br>Articulos restantes: "+(lon-i)+".<br>"); $("#resultado").trigger("create");
 			$.ajax({
@@ -115,8 +112,8 @@ function ConsultaSincronizarElemento(tx, results) {
 							tx.executeSql('update publicarticulo_foto set id_articulo = "'+res[0]+'" where id_envio = "'+res[1]+'"');
 							  console.log('update publicarticulo set id_articulo = "'+res[0]+'" where id_envio = "'+res[1]+'"');			
 							tx.executeSql('update publicarticulo set id_articulo = "'+res[0]+'" where id_envio = "'+res[1]+'"');		//tx.executeSql('DELETE from publicp_elemento where id_envio = "'+res+'"');
-							  console.log('update publicinventario_det set id_articulo = "'+res[0]+'" where id_envio_art = "'+res[1]+'"');
-							tx.executeSql('update publicinventario_det set id_articulo = "'+res[0]+'" where  id_envio_art = "'+res[1]+'"');
+							  console.log('update publicinventario set id_articulo = "'+res[0]+'" where id_envio_art = "'+res[1]+'"');
+							tx.executeSql('update publicinventario set id_articulo = "'+res[0]+'" where  id_envio_art = "'+res[1]+'"');
 							  console.log('update publicarticulo set id_envio = "" where id_envio = "'+res[1]+'"');
 							tx.executeSql('update publicarticulo set id_envio = "" where id_envio = "'+res[1]+'"');		//tx.executeSql('DELETE from publicp_elemento where id_envio = "'+res+'"');
 						}
@@ -127,8 +124,8 @@ function ConsultaSincronizarElemento(tx, results) {
 			    },
 			    complete: function(){	//CONTINUA CON LOS RESPONSABLES
 					if((i+1) == lon) {
-						  console.log('SELECT cedula,nombres,apellidos,telefono,correo,id_envio FROM publicusuario where id_envio != ""');
-					   	tx.executeSql('SELECT cedula,nombres,apellidos,telefono,correo,id_envio FROM publicusuario where id_envio != ""', [],
+						  console.log('SELECT cedula,nombres,apellidos,telefono,cargo,id_envio FROM publicusuario where id_envio != ""');
+					   	tx.executeSql('SELECT cedula,nombres,apellidos,telefono,cargo,id_envio FROM publicusuario where id_envio != ""', [],
 					           ConsultaSincronizarPersonas,errorCB_Personas);
 						$("#resultado").html('<br>Carga Articulos Completa....'+(lon-i)+'.<br>'); $("#resultado").trigger("create");
 					}
@@ -141,8 +138,8 @@ function ConsultaSincronizarElemento(tx, results) {
 function ConsultaSincronizarPersonas(tx, results) {
 	var lon = results.rows.length;	console.log("Rta Personas: " + lon);								//console.log(lon);//$("#resultado").before("<br>Cuestionarios encontrados: "+len+".<br>");	
 	if(lon==0){	
-		console.log('SELECT id_seccion,id_usuario,cc_responsable,firma,id_envio,id_inventario FROM publicinventario where id_envio != ""');
-      tx.executeSql('SELECT id_seccion,id_usuario,cc_responsable,firma,id_envio,id_inventario FROM publicinventario where id_envio != ""', [],
+		console.log('SELECT id_seccion,id_usuario,cc_responsable,firma,id_envio,id_inventario,id_articulo,id_estado,id_envio_art,observacion,asignacion FROM publicinventario where id_envio != ""');
+      tx.executeSql('SELECT id_seccion,id_usuario,cc_responsable,firma,id_envio,id_inventario,id_articulo,id_estado,id_envio_art,observacion,asignacion FROM publicinventario where id_envio != ""', [],
       	ConsultaSincronizarInventario,errorCB_Inventario);
 	}else{
 		for (i = 0; i < lon; i++){
@@ -153,7 +150,7 @@ function ConsultaSincronizarPersonas(tx, results) {
 			parametros['nombres'] = results.rows.item(i).nombres;
 			parametros['apellidos'] = results.rows.item(i).apellidos;
 			parametros['telefono'] = results.rows.item(i).telefono;
-			parametros['correo'] = results.rows.item(i).correo;
+			parametros['cargo'] = results.rows.item(i).cargo;
 			parametros['id_envio'] = results.rows.item(i).id_envio;
 			parametros['id_empresa'] = localStorage.id_empresa;
 
@@ -176,8 +173,8 @@ function ConsultaSincronizarPersonas(tx, results) {
 			    },
             	complete: function() { console.log("Complete"); 
 					if((i+1) == lon) { //console.log("continue a rtas");
-						  console.log('SELECT id_seccion,id_usuario,cc_responsable,firma,id_envio,id_inventario FROM publicinventario where id_envio != ""');
-					   	tx.executeSql('SELECT id_seccion,id_usuario,cc_responsable,firma,id_envio,id_inventario FROM publicinventario where id_envio != ""', [],
+						  console.log('SELECT id_seccion,id_usuario,cc_responsable,firma,id_envio,id_inventario,id_articulo,id_estado,id_envio_art,observacion,asignacion FROM publicinventario where id_envio != ""');
+					   	tx.executeSql('SELECT id_seccion,id_usuario,cc_responsable,firma,id_envio,id_inventario,id_articulo,id_estado,id_envio_art,observacion,asignacion FROM publicinventario where id_envio != ""', [],
 					           ConsultaSincronizarInventario,errorCB_Inventario);
 					   	$("#resultado").html('<br>Carga completa de responsables....'+(lon-i)+'.<br>'); $("#resultado").trigger("create"); 
 					}
@@ -190,9 +187,8 @@ function ConsultaSincronizarPersonas(tx, results) {
 function ConsultaSincronizarInventario(tx, results) {
 	var lon = results.rows.length;		//console.log("N Inventario: " + lon);		//console.log("Respuestas: "+lon);  //$("#resultado").before("<br>Cuestionarios encontrados: "+len+".<br>");
 	if(lon==0){
-			  console.log('SELECT id_inventario,id_inventariodet,id_articulo,id_estado,id_envio,id_envio_art,observacion,asignacion FROM publicinventario_det where id_envio != ""');
-		   	tx.executeSql('SELECT id_inventario,id_inventariodet,id_articulo,id_estado,id_envio,id_envio_art,observacion,asignacion FROM publicinventario_det where id_envio != ""', [],
-		           ConsultaSincronizarInventarioDetalle,errorCB_Inventario);
+		  console.log('SELECT rowid,url,id_envio,id_articulo FROM publicarticulo_foto');
+		tx.executeSql('SELECT rowid,url,id_envio,id_articulo FROM publicarticulo_foto', [], ConsultaSincronizarFotos,errorCB_Fotos);
 	}else{
 		for (i = 0; i < lon; i++){
 			var parametros = new Object();
@@ -204,8 +200,13 @@ function ConsultaSincronizarInventario(tx, results) {
 			parametros['cc_responsable'] = results.rows.item(i).cc_responsable;
 			parametros['id_envio'] = results.rows.item(i).id_envio;
 			parametros['idinventario'] = results.rows.item(i).id_inventario;		//console.log(parametros['idinventario']);
-			parametros['id_empresa'] = localStorage.id_empresa;
+			parametros['id_proyecto'] = localStorage.id_empresa;
 			parametros['firma'] = results.rows.item(i).firma;
+			parametros['id_articulo'] = results.rows.item(i).id_articulo;
+			parametros['id_estado'] = results.rows.item(i).id_estado;
+			parametros['id_envio_art'] = results.rows.item(i).id_envio_art;
+			parametros['observacion'] = results.rows.item(i).observacion;
+			parametros['asignacion'] = results.rows.item(i).asignacion;
 			
 			$.ajax({
 				data:  parametros,
@@ -225,9 +226,9 @@ function ConsultaSincronizarInventario(tx, results) {
 			    },
 			    complete: function(){
 					if((i+1) == lon) { //console.log("continue a rtas");
-						  console.log('SELECT id_inventario,id_inventariodet,id_articulo,id_estado,id_envio,id_envio_art,observacion,asignacion FROM publicinventario_det where id_envio != ""');
-					   	tx.executeSql('SELECT id_inventario,id_inventariodet,id_articulo,id_estado,id_envio,id_envio_art,observacion,asignacion FROM publicinventario_det where id_envio != ""', [],
-					           ConsultaSincronizarInventarioDetalle,errorCB_Inventario);
+						  console.log('SELECT rowid,url,id_envio,id_articulo FROM publicarticulo_foto');
+					   	tx.executeSql('SELECT rowid,url,id_envio,id_articulo FROM publicarticulo_foto', [], ConsultaSincronizarFotos,errorCB_Fotos);
+					   	$("#resultado").html('<br>Carga completa de asignaciones....'+(lon-i)+'.<br>'); $("#resultado").trigger("create"); 
 					}			    	
 			    }
 			});
@@ -235,7 +236,7 @@ function ConsultaSincronizarInventario(tx, results) {
 	}
 }
 
-function ConsultaSincronizarInventarioDetalle(tx, results) {
+/*function ConsultaSincronizarInventarioDetalle(tx, results) {
 	var lon = results.rows.length;	console.log("InventarioDetalle: " + lon);		//console.log("Respuestas: "+lon);  //$("#resultado").before("<br>Cuestionarios encontrados: "+len+".<br>");
 	if(lon==0){ //SI NO HAY INVENTARIO NOTIFICA AL USUARIO
 		  console.log('SELECT rowid,url,id_envio,id_articulo FROM publicarticulo_foto');
@@ -281,7 +282,7 @@ function ConsultaSincronizarInventarioDetalle(tx, results) {
 			});
 	   	}
 	}
-}
+}*/
 
 //SINCRONIZAR FOTOS
 function ConsultaSincronizarFotos(tx, results) {	

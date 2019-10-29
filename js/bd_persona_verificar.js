@@ -34,6 +34,7 @@ function successCB() {
 /* BUSQUEDA EN LA TABLA PERSONA*/
 function CargarListado(tx) {
 	if(busqueda!=null){
+		$("#Lencontrado").html('');
 		var val_ordenar = $('input:radio[name=radio-choice-h-2]:checked').val();		//console.log(ordenar);
 		if( val_ordenar  == "Plaqueta" ) {
 			var order = "placa_nueva";
@@ -41,8 +42,8 @@ function CargarListado(tx) {
 			var order = "art.nom_articulo";
 		}
 		$.mobile.loading( 'show', { text: 'Buscando... ', textVisible: true, theme: 'b', html: "" }); 
-		  console.log('SELECT id_inventariodet,   sub.nom_sublinea sublinea,   art.nom_articulo,   art.referencia,   art.serie,   inv_det.observacion,   asignacion,   art.id_articulo,   placa_nueva,   art.rowid,   id_envio_art,   inv_det.id_envio,   inv.firma,   sar.nom_estado estado  FROM publicinventario inv  INNER JOIN publicinventario_det inv_det  ON ((   inv.id_inventario = inv_det.id_inventario)   OR (   inv.id_envio = inv_det.id_envio    AND  inv.id_envio != ""))  INNER JOIN publicarticulo art  ON ((   art.id_articulo = inv_det.id_articulo)   OR (   Cast(art.id_envio AS TEXT) = Cast(inv_det.id_envio_art AS TEXT)   AND  art.id_envio != ""))  LEFT JOIN  publicestado_articulo sar  ON sar.id_estado_art = art.id_estado  LEFT JOIN  publicsublinea sub  ON sub.id_sublinea = art.id_sublinea  WHERE  inv.cc_responsable = "'+res[0]+'" order by ' + order + ' limit 128');		  
-	    tx.executeSql('SELECT id_inventariodet,   sub.nom_sublinea sublinea,   art.nom_articulo,   art.referencia,   art.serie,   inv_det.observacion,   asignacion,   art.id_articulo,   placa_nueva,   art.rowid,   id_envio_art,   inv_det.id_envio,   inv.firma,   sar.nom_estado estado  FROM publicinventario inv  INNER JOIN publicinventario_det inv_det  ON ((   inv.id_inventario = inv_det.id_inventario)   OR (   inv.id_envio = inv_det.id_envio    AND  inv.id_envio != ""))  INNER JOIN publicarticulo art  ON ((   art.id_articulo = inv_det.id_articulo)   OR (   Cast(art.id_envio AS TEXT) = Cast(inv_det.id_envio_art AS TEXT)   AND  art.id_envio != ""))  LEFT JOIN  publicestado_articulo sar  ON sar.id_estado_art = art.id_estado  LEFT JOIN  publicsublinea sub  ON sub.id_sublinea = art.id_sublinea  WHERE  inv.cc_responsable = "'+res[0]+'" order by ' + order + ' limit 128', [], MuestraItems);
+		  console.log('SELECT sub.nom_sublinea sublinea,   art.nom_articulo,   art.referencia,   art.serie,   inv.observacion,   asignacion,   art.id_articulo,   placa_nueva,   art.rowid,   id_envio_art,   inv.id_envio,   inv.firma,   sar.nom_estado estado  FROM publicinventario inv INNER JOIN publicarticulo art  ON ((   art.id_articulo = inv.id_articulo)   OR (   Cast(art.id_envio AS TEXT) = Cast(inv.id_envio_art AS TEXT)   AND  art.id_envio != ""))  LEFT JOIN  publicestado_articulo sar  ON sar.id_estado_art = art.id_estado  LEFT JOIN  publicsublinea sub  ON sub.id_sublinea = art.id_sublinea  WHERE  inv.cc_responsable = "'+res[0]+'" order by ' + order + ' limit 128');		  
+	    tx.executeSql('SELECT sub.nom_sublinea sublinea,   art.nom_articulo,   art.referencia,   art.serie,   inv.observacion,   asignacion,   art.id_articulo,   placa_nueva,   art.rowid,   id_envio_art,   inv.id_envio,   inv.firma,   sar.nom_estado estado  FROM publicinventario inv INNER JOIN publicarticulo art  ON ((   art.id_articulo = inv.id_articulo)   OR (   Cast(art.id_envio AS TEXT) = Cast(inv.id_envio_art AS TEXT)   AND  art.id_envio != ""))  LEFT JOIN  publicestado_articulo sar  ON sar.id_estado_art = art.id_estado  LEFT JOIN  publicsublinea sub  ON sub.id_sublinea = art.id_sublinea  WHERE  inv.cc_responsable = "'+res[0]+'" order by ' + order + ' limit 128', [], MuestraItems);
 	}
 }
 
@@ -56,12 +57,6 @@ function desasignar(videnvio,nombre){ console.log(videnvio+" - "+nombre)
 	confirmar('Seguro que desea DESASIGNAR: "'+nombre+'"?',
 		    function(buttonIndex){	console.log(buttonIndex);
 		    	if(buttonIndex == undefined || buttonIndex =="2"){
-					db.transaction(function(tx) {
-						  console.log('DELETE FROM publicinventario_det where id_envio = "'+videnvio+'"');
-						tx.executeSql('DELETE FROM publicinventario_det where id_envio = "'+videnvio+'"');
-					}, function errorCBdelete(err) {	console.log("Error processing SQL: "+err.code); }
-					,function successCBdelete() {	console.log("Eliminado inventario Detalle: "+videnvio); }
-					);
 					db.transaction(function(tx) {
 						  console.log('DELETE FROM publicinventario where id_envio = "'+videnvio+'"');
 						tx.executeSql('DELETE FROM publicinventario where id_envio = "'+videnvio+'"');
@@ -219,7 +214,7 @@ function MuestraItems(tx, results) {
 								}
 								if(have_idenvio){
 									db.transaction(function(tx) {
-										  console.log('UPDATE publicinventario SET firma = "'+localStorage.firma+'" where rowid = "'+last_rowid+'"');
+										  //console.log('UPDATE publicinventario SET firma = "'+localStorage.firma+'" where rowid = "'+last_rowid+'"');
 										tx.executeSql('UPDATE publicinventario SET firma = "'+localStorage.firma+'" where rowid = "'+last_rowid+'"');
 									}, function errorCB(err) {
 											$.mobile.loading( 'hide' );	
@@ -267,9 +262,9 @@ function MuestraItems(tx, results) {
 			    		tmp_idenvio = id;
 			    		condicion = 'id_envio = "'+id+'"';
 			    	}
-			    	       console.log('UPDATE publicinventario_det SET observacion = "'+texto+'",asignacion = "'+seleccion+'",id_envio = "'+tmp_idenvio+'" WHERE '+condicion);
+			    	       console.log('UPDATE publicinventario SET observacion = "'+texto+'",asignacion = "'+seleccion+'",id_envio = "'+tmp_idenvio+'" WHERE '+condicion);
 			    	db.transaction(function(txu) {
-						txu.executeSql('UPDATE publicinventario_det SET observacion = "'+texto+'",asignacion = "'+seleccion+'",id_envio = "'+tmp_idenvio+'" WHERE '+condicion,[]
+						txu.executeSql('UPDATE publicinventario SET observacion = "'+texto+'",asignacion = "'+seleccion+'",id_envio = "'+tmp_idenvio+'" WHERE '+condicion,[]
 							,function successCBU() { //console.log("Web SQL - update ok");
 								j++;	console.log("Registro: " + j + " de " + encontrados);
 		    					if(j==encontrados){

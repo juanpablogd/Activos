@@ -145,8 +145,8 @@ $(document).ready(function() {
 					console.log("GUARDAR");
 					db.transaction(function guardarInv(tx){
 						//INFO GENERAL DEL ELEMENTO		
-						  console.log('INSERT INTO publicinventario (id_seccion,id_usuario,cc_responsable,id_envio,activo,id_articulo,observacion,asignacion,id_estado,id_envio_art) values ("'+seccion+'","'+id_usr+'","'+cc[0]+'","'+id_envio+'","1","'+id_elemento[0]+'","'+observaciones+'","R","'+id_elemento[4]+'","'+id_elemento[5]+'")');
-						tx.executeSql('INSERT INTO publicinventario (id_seccion,id_usuario,cc_responsable,id_envio,activo,id_articulo,observacion,asignacion,id_estado,id_envio_art) values ("'+seccion+'","'+id_usr+'","'+cc[0]+'","'+id_envio+'","1","'+id_elemento[0]+'","'+observaciones+'","R","'+id_elemento[4]+'","'+id_elemento[5]+'")');
+						  console.log('INSERT INTO publicinventario (id_seccion,id_usuario,cc_responsable,id_envio,activo,id_articulo,observacion,asignacion,id_estado,id_envio_art,id_proyecto) values ("'+seccion+'","'+id_usr+'","'+cc[0]+'","'+id_envio+'","1","'+id_elemento[0]+'","'+observaciones+'","R","'+id_elemento[4]+'","'+id_elemento[5]+'","'+localStorage.id_proyecto+'")');
+						tx.executeSql('INSERT INTO publicinventario (id_seccion,id_usuario,cc_responsable,id_envio,activo,id_articulo,observacion,asignacion,id_estado,id_envio_art,id_proyecto) values ("'+seccion+'","'+id_usr+'","'+cc[0]+'","'+id_envio+'","1","'+id_elemento[0]+'","'+observaciones+'","R","'+id_elemento[4]+'","'+id_elemento[5]+'","'+localStorage.id_proyecto+'")');
 						//DETALLE DEL ELMENTO
 /*						console.log('INSERT INTO publicinventario_det (id_articulo,observacion,asignacion,id_estado,id_envio,id_envio_art)' + 
 						'values ("'+id_elemento[0]+'","'+observaciones+'","R","'+id_elemento[4]+'","'+id_envio+'","'+id_elemento[5]+'")');

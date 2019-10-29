@@ -55,8 +55,8 @@ function successCB() {
 function ConsultaItemSelect(tx) { console.log("ConsultaItemSelect");
 		  console.log('select id_estado_art,nom_estado from publicestado_articulo  order by nom_estado');
 		tx.executeSql('select id_estado_art,nom_estado from publicestado_articulo order by nom_estado', [], ConsultaLoadEstado,errorCB);
-		  console.log('select id_linea,nom_linea from publiclinea order by nom_linea');
-		tx.executeSql('select id_linea,nom_linea from publiclinea order by nom_linea', [], ConsultaLineaCarga,errorCB);
+		  console.log("select id_linea,nom_linea from publiclinea where id_empresa = '"+localStorage.id_empresa+"' order by nom_linea");
+		tx.executeSql("select id_linea,nom_linea from publiclinea where id_empresa = '"+localStorage.id_empresa+"' order by nom_linea", [], ConsultaLineaCarga,errorCB);
 }
 
 function ConsultaLoadEstado(tx, results) {

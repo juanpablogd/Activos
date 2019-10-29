@@ -132,8 +132,8 @@ $(document).ready(function() {
 		var seccion = localStorage.id_seccion;
 
 		db.transaction(function(tx) {
-			  console.log('select nombres,apellidos from publicinventario inv inner join publicinventario_det inv_det on ((inv.id_inventario = inv_det.id_inventario) or (inv.id_envio = inv_det.id_envio and inv.id_envio != "")) left join publicusuario usr on usr.cedula = inv.cc_responsable where (id_envio_art = "'+id_elemento[5]+'" and id_envio_art != "" and id_envio_art != "null") or (id_articulo = "'+id_elemento[0]+'" and id_articulo != "" and id_articulo != "null") order by inv.rowid desc limit 1'); 
-			tx.executeSql('select nombres,apellidos from publicinventario inv inner join publicinventario_det inv_det on ((inv.id_inventario = inv_det.id_inventario) or (inv.id_envio = inv_det.id_envio and inv.id_envio != "")) left join publicusuario usr on usr.cedula = inv.cc_responsable where (id_envio_art = "'+id_elemento[5]+'" and id_envio_art != "" and id_envio_art != "null") or (id_articulo = "'+id_elemento[0]+'" and id_articulo != "" and id_articulo != "null") order by inv.rowid desc limit 1', [],
+			  console.log('select nombres,apellidos from publicinventario inv left join publicusuario usr on usr.cedula = inv.cc_responsable where (id_envio_art = "'+id_elemento[5]+'" and id_envio_art != "" and id_envio_art != "null") or (id_articulo = "'+id_elemento[0]+'" and id_articulo != "" and id_articulo != "null") order by inv.rowid desc limit 1'); 
+			tx.executeSql('select nombres,apellidos from publicinventario inv left join publicusuario usr on usr.cedula = inv.cc_responsable where (id_envio_art = "'+id_elemento[5]+'" and id_envio_art != "" and id_envio_art != "null") or (id_articulo = "'+id_elemento[0]+'" and id_articulo != "" and id_articulo != "null") order by inv.rowid desc limit 1', [],
 				function consultaEle(tx, results) {
 					var encontrados = results.rows.length; console.log("Encontrados: " + encontrados);
 					if(encontrados>0) {
@@ -145,13 +145,13 @@ $(document).ready(function() {
 					console.log("GUARDAR");
 					db.transaction(function guardarInv(tx){
 						//INFO GENERAL DEL ELEMENTO		
-						  console.log('INSERT INTO publicinventario (id_seccion,id_usuario,cc_responsable,id_envio,activo) values ("'+seccion+'","'+id_usr+'","'+cc[0]+'","'+id_envio+'","1")');
-						tx.executeSql('INSERT INTO publicinventario (id_seccion,id_usuario,cc_responsable,id_envio,activo) values ("'+seccion+'","'+id_usr+'","'+cc[0]+'","'+id_envio+'","1")');
+						  console.log('INSERT INTO publicinventario (id_seccion,id_usuario,cc_responsable,id_envio,activo,id_articulo,observacion,asignacion,id_estado,id_envio_art) values ("'+seccion+'","'+id_usr+'","'+cc[0]+'","'+id_envio+'","1","'+id_elemento[0]+'","'+observaciones+'","R","'+id_elemento[4]+'","'+id_elemento[5]+'")');
+						tx.executeSql('INSERT INTO publicinventario (id_seccion,id_usuario,cc_responsable,id_envio,activo,id_articulo,observacion,asignacion,id_estado,id_envio_art) values ("'+seccion+'","'+id_usr+'","'+cc[0]+'","'+id_envio+'","1","'+id_elemento[0]+'","'+observaciones+'","R","'+id_elemento[4]+'","'+id_elemento[5]+'")');
 						//DETALLE DEL ELMENTO
-						console.log('INSERT INTO publicinventario_det (id_articulo,observacion,asignacion,id_estado,id_envio,id_envio_art)' + 
+/*						console.log('INSERT INTO publicinventario_det (id_articulo,observacion,asignacion,id_estado,id_envio,id_envio_art)' + 
 						'values ("'+id_elemento[0]+'","'+observaciones+'","R","'+id_elemento[4]+'","'+id_envio+'","'+id_elemento[5]+'")');
 						tx.executeSql('INSERT INTO publicinventario_det (id_articulo,observacion,asignacion,id_estado,id_envio,id_envio_art)' + 
-						'values ("'+id_elemento[0]+'","'+observaciones+'","R","'+id_elemento[4]+'","'+id_envio+'","'+id_elemento[5]+'")');
+						'values ("'+id_elemento[0]+'","'+observaciones+'","R","'+id_elemento[4]+'","'+id_envio+'","'+id_elemento[5]+'")'); */
 						//ASIGNA RESPONSABLE AL articulo
 						if(id_elemento[0]!="" && id_elemento[0]!="null"){
 			                console.log('UPDATE publicarticulo set cc_responsable = "'+cc[0]+'" where id_articulo = "'+id_elemento[0]+'"');
@@ -168,8 +168,8 @@ $(document).ready(function() {
 						localStorage.Fotos = "";
 						localStorage.busqueda = "";
 						db.transaction(function(tx) {
-							  console.log('select * from publicinventario_det where id_envio = "'+id_envio+'"');
-							tx.executeSql('select * from publicinventario_det where id_envio = "'+id_envio+'"', [],
+							  console.log('select * from publicinventario where id_envio = "'+id_envio+'"');
+							tx.executeSql('select * from publicinventario where id_envio = "'+id_envio+'"', [],
 								function MuestraItems(tx, results) {
 									var encontrados = results.rows.length; console.log("Encontrados: " + encontrados);
 									if(encontrados>0) {

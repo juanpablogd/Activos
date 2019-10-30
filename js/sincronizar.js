@@ -65,8 +65,8 @@ function Cono_fotosResp(tx, results) {
 //--------------------------------------------------------------------------------------------------------------
 
 function ConsultaSincronizar(tx) {
-	  console.log('SELECT id_articulo,id_seccion,id_sublinea,marca,nom_articulo,referencia,serie,placa_nueva,placa_anterior,id_envio,id_estado,idusuario_envio,cc_responsable,id_proyecto FROM publicarticulo where id_envio != ""');
-	tx.executeSql('SELECT id_articulo,id_seccion,id_sublinea,marca,nom_articulo,referencia,serie,placa_nueva,placa_anterior,id_envio,id_estado,idusuario_envio,cc_responsable,id_proyecto FROM publicarticulo where id_envio != ""', [],
+	  console.log('SELECT id_articulo,id_origen,id_seccion,id_sublinea,marca,nom_articulo,referencia,serie,placa_nueva,placa_anterior,id_envio,id_estado,idusuario_envio,cc_responsable,id_proyecto FROM publicarticulo where id_envio != ""');
+	tx.executeSql('SELECT id_articulo,id_origen,id_seccion,id_sublinea,marca,nom_articulo,referencia,serie,placa_nueva,placa_anterior,id_envio,id_estado,idusuario_envio,cc_responsable,id_proyecto FROM publicarticulo where id_envio != ""', [],
 		           ConsultaSincronizarElemento,errorCB_Elemento);
 }
 
@@ -83,6 +83,7 @@ function ConsultaSincronizarElemento(tx, results) {
 			parametros['tabla'] = 'p_elemento';
 			
 			parametros['id'] = results.rows.item(i).id_articulo;					//			parametros['idempresa'] = results.rows.item(i).idempresa;
+			parametros['id_origen'] = results.rows.item(i).id_origen;  if(parametros['id_origen'] == "") parametros['id_origen'] = localStorage.id_origen;
 			parametros['idseccion'] = results.rows.item(i).id_seccion;			//			parametros['idlinea'] = results.rows.item(i).idlinea;
 			parametros['idslinea'] = results.rows.item(i).id_sublinea;
 			parametros['marca_af'] = results.rows.item(i).marca;
@@ -138,8 +139,8 @@ function ConsultaSincronizarElemento(tx, results) {
 function ConsultaSincronizarPersonas(tx, results) {
 	var lon = results.rows.length;	console.log("Rta Personas: " + lon);								//console.log(lon);//$("#resultado").before("<br>Cuestionarios encontrados: "+len+".<br>");	
 	if(lon==0){	
-		console.log('SELECT id_seccion,id_usuario,cc_responsable,firma,id_envio,id_inventario,id_articulo,id_estado,id_envio_art,observacion,asignacion FROM publicinventario where id_envio != ""');
-      tx.executeSql('SELECT id_seccion,id_usuario,cc_responsable,firma,id_envio,id_inventario,id_articulo,id_estado,id_envio_art,observacion,asignacion FROM publicinventario where id_envio != ""', [],
+		console.log('SELECT id_origen,id_seccion,id_usuario,cc_responsable,firma,id_envio,id_inventario,id_articulo,id_estado,id_envio_art,observacion,asignacion FROM publicinventario where id_envio != ""');
+      tx.executeSql('SELECT id_origen,id_seccion,id_usuario,cc_responsable,firma,id_envio,id_inventario,id_articulo,id_estado,id_envio_art,observacion,asignacion FROM publicinventario where id_envio != ""', [],
       	ConsultaSincronizarInventario,errorCB_Inventario);
 	}else{
 		for (i = 0; i < lon; i++){
@@ -173,8 +174,8 @@ function ConsultaSincronizarPersonas(tx, results) {
 			    },
             	complete: function() { console.log("Complete"); 
 					if((i+1) == lon) { //console.log("continue a rtas");
-						  console.log('SELECT id_seccion,id_usuario,cc_responsable,firma,id_envio,id_inventario,id_articulo,id_estado,id_envio_art,observacion,asignacion FROM publicinventario where id_envio != ""');
-					   	tx.executeSql('SELECT id_seccion,id_usuario,cc_responsable,firma,id_envio,id_inventario,id_articulo,id_estado,id_envio_art,observacion,asignacion FROM publicinventario where id_envio != ""', [],
+						  console.log('SELECT id_origen,id_seccion,id_usuario,cc_responsable,firma,id_envio,id_inventario,id_articulo,id_estado,id_envio_art,observacion,asignacion FROM publicinventario where id_envio != ""');
+					   	tx.executeSql('SELECT id_origen,id_seccion,id_usuario,cc_responsable,firma,id_envio,id_inventario,id_articulo,id_estado,id_envio_art,observacion,asignacion FROM publicinventario where id_envio != ""', [],
 					           ConsultaSincronizarInventario,errorCB_Inventario);
 					   	$("#resultado").html('<br>Carga completa de responsables....'+(lon-i)+'.<br>'); $("#resultado").trigger("create"); 
 					}
@@ -195,6 +196,7 @@ function ConsultaSincronizarInventario(tx, results) {
 			
 			parametros['tabla'] = 't_inventario';
 			
+			parametros['id_origen'] = results.rows.item(i).id_origen; if(parametros['id_origen'] == "") parametros['id_origen'] = localStorage.id_origen;
 			parametros['idseccion'] = results.rows.item(i).id_seccion;
 			parametros['idusuario'] = results.rows.item(i).id_usuario;
 			parametros['cc_responsable'] = results.rows.item(i).cc_responsable;

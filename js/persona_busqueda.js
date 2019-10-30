@@ -79,7 +79,7 @@ $(document).ready(function() {
 		window.location= 'p2_elemento_buscar.html';
 	}); */
 	//EVENTO CUANDO SE SELECCIONA ALGUNA DEPENDENCIA
-	$("#dependencia").change(function() {
+/*	$("#dependencia").change(function() {
 		var nombre = $("#dependencia option:selected").text();
 		var id = $(this).val();
 		localStorage.busqueda = id;
@@ -88,12 +88,26 @@ $(document).ready(function() {
 
 		// CARGAR ITEMS SECCIONES SEGÚN DEPENDENCIAS
 		db.transaction(ConsultaSecciones);
-	});
-	// CARGAR ITEMS DE LA BASE DE DATOS
+	});	*/
+	// CARGAR ORIGEN DE LA BASE DE DATOS
 	db.transaction(ConsultaItems);
+	// CARGAR SECCIÓN DE LA BASE DE DATOS
+	db.transaction(ConsultaSecciones);
 
 	//GUARDAR FORMULARIO
 	$('#btn_ok').click(function() {
+
+		if ($( "#origen" ).val()==0){
+			alerta (
+			    "Seleccione un Origen por favor!",  		// message
+			    function(){
+			    	$( "#origen" ).focus();
+			    },         	// callback
+			    'Activos',            	// title
+			    'Ok'                  	// buttonName
+			);
+			return false;
+		}
 		
 		if ($( "#seccion" ).val()==0){
 			alerta (
@@ -118,9 +132,9 @@ $(document).ready(function() {
 			);
 			return false;
 		}
-		localStorage.id_dependencia = $( "#dependencia" ).val(); 
+		localStorage.id_origen = $( "#origen" ).val(); 
 		localStorage.id_seccion = $( "#seccion" ).val();
-		console.log(localStorage.id_dependencia);
+		console.log(localStorage.id_origen);
 		console.log(localStorage.id_seccion);
 		console.log(localStorage.persona_valor);
 		console.log("GUARDAR");
@@ -130,7 +144,7 @@ $(document).ready(function() {
 	$('#txtBuscarSeccion').on('keyup', function() {
 		var valor=this.value;
 		 delay(function(){
-			var nombre = $("#dependencia option:selected").text();
+			//var nombre = $("#dependencia option:selected").text();
 			var id = $("#dependencia option:selected").val();
 			localStorage.busqueda = id;
 	      	if (valor.length > 3) {		console.log("Buscaaaa:"+valor);

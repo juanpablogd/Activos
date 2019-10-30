@@ -257,7 +257,7 @@ function MuestraItems(tx, results) {
 			    	var seleccion = $("#s"+id).val();
 			    	if(tipo.length==1){
 			    		tmp_idenvio = id_envio+"-"+id;
-			    		condicion = 'id_inventariodet = "'+id+'"';
+			    		condicion = 'id_inventario = "'+id+'"';
 			    	}else{
 			    		tmp_idenvio = id;
 			    		condicion = 'id_envio = "'+id+'"';

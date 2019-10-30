@@ -130,6 +130,7 @@ $(document).ready(function() {
 		var fecha_captura = now.getFullYear()+'-'+(1+now.getMonth())+'-'+now.getDate()+'-'+now.getHours()+'_'+now.getMinutes()+'_'+now.getSeconds();
 		var id_envio = fecha_captura+'-'+id_usr;
 		var seccion = localStorage.id_seccion;
+		var origen = localStorage.id_origen;
 
 		db.transaction(function(tx) {
 			  console.log('select nombres,apellidos from publicinventario inv left join publicusuario usr on usr.cedula = inv.cc_responsable where (id_envio_art = "'+id_elemento[5]+'" and id_envio_art != "" and id_envio_art != "null") or (id_articulo = "'+id_elemento[0]+'" and id_articulo != "" and id_articulo != "null") order by inv.rowid desc limit 1'); 
@@ -145,8 +146,8 @@ $(document).ready(function() {
 					console.log("GUARDAR");
 					db.transaction(function guardarInv(tx){
 						//INFO GENERAL DEL ELEMENTO		
-						  console.log('INSERT INTO publicinventario (id_seccion,id_usuario,cc_responsable,id_envio,activo,id_articulo,observacion,asignacion,id_estado,id_envio_art,id_proyecto) values ("'+seccion+'","'+id_usr+'","'+cc[0]+'","'+id_envio+'","1","'+id_elemento[0]+'","'+observaciones+'","R","'+id_elemento[4]+'","'+id_elemento[5]+'","'+localStorage.id_proyecto+'")');
-						tx.executeSql('INSERT INTO publicinventario (id_seccion,id_usuario,cc_responsable,id_envio,activo,id_articulo,observacion,asignacion,id_estado,id_envio_art,id_proyecto) values ("'+seccion+'","'+id_usr+'","'+cc[0]+'","'+id_envio+'","1","'+id_elemento[0]+'","'+observaciones+'","R","'+id_elemento[4]+'","'+id_elemento[5]+'","'+localStorage.id_proyecto+'")');
+						  console.log('INSERT INTO publicinventario (id_origen,id_seccion,id_usuario,cc_responsable,id_envio,activo,id_articulo,observacion,asignacion,id_estado,id_envio_art,id_proyecto) values ("'+origen+'","'+seccion+'","'+id_usr+'","'+cc[0]+'","'+id_envio+'","1","'+id_elemento[0]+'","'+observaciones+'","R","'+id_elemento[4]+'","'+id_elemento[5]+'","'+localStorage.id_proyecto+'")');
+						tx.executeSql('INSERT INTO publicinventario (id_origen,id_seccion,id_usuario,cc_responsable,id_envio,activo,id_articulo,observacion,asignacion,id_estado,id_envio_art,id_proyecto) values ("'+origen+'","'+seccion+'","'+id_usr+'","'+cc[0]+'","'+id_envio+'","1","'+id_elemento[0]+'","'+observaciones+'","R","'+id_elemento[4]+'","'+id_elemento[5]+'","'+localStorage.id_proyecto+'")');
 						//DETALLE DEL ELMENTO
 /*						console.log('INSERT INTO publicinventario_det (id_articulo,observacion,asignacion,id_estado,id_envio,id_envio_art)' + 
 						'values ("'+id_elemento[0]+'","'+observaciones+'","R","'+id_elemento[4]+'","'+id_envio+'","'+id_elemento[5]+'")');
@@ -192,7 +193,7 @@ $(document).ready(function() {
 						} /*, function errorCB(err) {	console.log("Error processing SQL: "+err.code); }
 						,function successCB() {	localStorage.firma = ""; }	*/
 						);
-					}, 300);
+					}, 350);
 				}	
 			);	
 			return false;

@@ -91,9 +91,19 @@ function MuestraItems(tx, results) {
     }else{
 		$("#equivocado").text('Ingreso exitoso,espere por favor...');
 	 	var id = results.rows.item(0).id;			
-	 	var nombre = results.rows.item(0).nombre;	
+	 	var nombre = results.rows.item(0).nombre + " " + results.rows.item(0).apellidos;
+	 	var activo = results.rows.item(0).activo.trim();
+
 	 	localStorage.id_usr = id;	
 	 	localStorage.nombre = nombre;				//console.log( "nombre = " + localStorage.nombre);
+	 	localStorage.activo = activo;
+	 	localStorage.id_empresa = results.rows.item(0).id_empresa;
+		localStorage.id_proyecto = results.rows.item(0).id_proyecto;
+		localStorage.nom_proyecto = results.rows.item(0).nom_proyecto;
+	 	localStorage.nom_empresa = results.rows.item(0).nom_empresa;
+	 	localStorage.foto_obligatorio = results.rows.item(0).foto_obligatorio;
+	 	localStorage.firma_obligatoria = results.rows.item(0).firma_obligatoria;
+
 		window.location = "principal.html";	
     }
 }
@@ -111,13 +121,21 @@ function BuscaUsuarioLogueado(tx) {
 function MuestraUsuarioLogueado(tx, results) {
     var len = results.rows.length;        //console.log('Resultados: '+len);
     if(len>0){
-                $("#equivocado").text('Ingreso exitoso,espere por favor...');
-                 var id = results.rows.item(0).id;
-                 var nombre = results.rows.item(0).nombre;					//console.log( "nombre = " + sessionStorage.getItem("nombre"));
+        $("#equivocado").text('Ingreso exitoso,espere por favor...');
+	 	var id = results.rows.item(0).id;			
+	 	var nombre = results.rows.item(0).nombre + " " + results.rows.item(0).apellidos;
+	 	var activo = results.rows.item(0).activo.trim();
 
-                 localStorage.nombre=nombre;
-                 localStorage.id_usr=id;
+	 	localStorage.id_usr = id;	
+	 	localStorage.nombre = nombre;				//console.log( "nombre = " + localStorage.nombre);
+	 	localStorage.activo = activo;
+	 	localStorage.id_empresa = results.rows.item(0).id_empresa;
+		localStorage.id_proyecto = results.rows.item(0).id_proyecto;
+		localStorage.nom_proyecto = results.rows.item(0).nom_proyecto;
+	 	localStorage.nom_empresa = results.rows.item(0).nom_empresa;
+	 	localStorage.foto_obligatorio = results.rows.item(0).foto_obligatorio;
+	 	localStorage.firma_obligatoria = results.rows.item(0).firma_obligatoria;
                                  
-                 window.location = "principal.html";        
+        window.location = "principal.html";        
     }
 }

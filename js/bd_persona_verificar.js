@@ -188,16 +188,18 @@ function MuestraItems(tx, results) {
     	
     	$("#guardar").click(function(){		//console.log(comprobarCamposRequired());
 			if(comprobarCamposRequired()){
-				if($('#div_firma').is(':visible')){
-					if(!(localStorage.firma != "" && localStorage.firma !== undefined && firma_defecto != localStorage.firma)){
-						alerta (
-						    "Debe registrar una Firma antes de continuar",  		// message
-						    function(){ },         	// callback
-						    'Activos',            	// title
-						    'Ok'                  	// buttonName
-						);
-						return false;
-					}	
+				if(localStorage.firma_obligatoria != "0"){
+					if($('#div_firma').is(':visible')){
+						if(!(localStorage.firma != "" && localStorage.firma !== undefined && firma_defecto != localStorage.firma)){
+							alerta (
+							    "Debe registrar una Firma antes de continuar",  		// message
+							    function(){ },         	// callback
+							    'Activos',            	// title
+							    'Ok'                  	// buttonName
+							);
+							return false;
+						}	
+					}
 				}
 				console.log("GUARDAR");
 				$.mobile.loading( 'show', { text: 'Guardando Información....', textVisible: true, theme: 'a', html: "" });

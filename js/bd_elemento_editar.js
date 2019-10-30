@@ -417,19 +417,9 @@ function comprobarCamposRequired(){
 			}	
 	   });
 	   if(correcto==true){	//console.log(localStorage.Fotos);
-			if(localStorage.Fotos == "" || localStorage.Fotos == undefined || localStorage.Fotos == "[]"){
-				alerta (
-				    "Mínimo de Fotos: "+minFotos,  // message
-				    function(){
-						//window.location = "principal.html";
-				    },         // callback
-				    'Activos',            // title
-				    'Ok'                  // buttonName
-				);
-				correcto=false; return false;
-			}else{
-				dataf = JSON.parse(localStorage.getItem('Fotos')); console.log(dataf.length);
-				if(dataf.length<minFotos){
+	   		console.log(minFotos);
+			if(minFotos > 0 ){
+				if(localStorage.Fotos == "" || localStorage.Fotos == undefined || localStorage.Fotos == "[]"){
 					alerta (
 					    "Mínimo de Fotos: "+minFotos,  // message
 					    function(){
@@ -439,16 +429,29 @@ function comprobarCamposRequired(){
 					    'Ok'                  // buttonName
 					);
 					correcto=false; return false;
-				}else if(dataf.length>maxFotos){
-					alerta (
-					    "Máximo de Fotos: "+maxFotos +"\nFotos actuales: "+dataf.length,  // message
-					    function(){
-							//window.location = "principal.html";
-					    },         // callback
-					    'Activos',            // title
-					    'Ok'                  // buttonName
-					);
-					correcto=false; return false;
+				}else{
+					dataf = JSON.parse(localStorage.getItem('Fotos')); console.log(dataf.length);
+					if(dataf.length<minFotos){
+						alerta (
+						    "Mínimo de Fotos: "+minFotos,  // message
+						    function(){
+								//window.location = "principal.html";
+						    },         // callback
+						    'Activos',            // title
+						    'Ok'                  // buttonName
+						);
+						correcto=false; return false;
+					}else if(dataf.length>maxFotos){
+						alerta (
+						    "Máximo de Fotos: "+maxFotos +"\nFotos actuales: "+dataf.length,  // message
+						    function(){
+								//window.location = "principal.html";
+						    },         // callback
+						    'Activos',            // title
+						    'Ok'                  // buttonName
+						);
+						correcto=false; return false;
+					}
 				}
 			} 
 		}

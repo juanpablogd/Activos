@@ -133,67 +133,77 @@ $(document).ready(function() {
 		var origen = localStorage.id_origen;
 
 		db.transaction(function(tx) {
-			  console.log('select nombres,apellidos from publicinventario inv left join publicusuario usr on usr.cedula = inv.cc_responsable where (id_envio_art = "'+id_elemento[5]+'" and id_envio_art != "" and id_envio_art != "null") or (id_articulo = "'+id_elemento[0]+'" and id_articulo != "" and id_articulo != "null") order by inv.rowid desc limit 1'); 
-			tx.executeSql('select nombres,apellidos from publicinventario inv left join publicusuario usr on usr.cedula = inv.cc_responsable where (id_envio_art = "'+id_elemento[5]+'" and id_envio_art != "" and id_envio_art != "null") or (id_articulo = "'+id_elemento[0]+'" and id_articulo != "" and id_articulo != "null") order by inv.rowid desc limit 1', [],
+			  console.log('select nombres,apellidos,inv.cc_responsable from publicinventario inv left join publicusuario usr on usr.cedula = inv.cc_responsable where (id_envio_art = "'+id_elemento[5]+'" and id_envio_art != "" and id_envio_art != "null") or (id_articulo = "'+id_elemento[0]+'" and id_articulo != "" and id_articulo != "null") order by inv.rowid desc limit 1'); 
+			tx.executeSql('select nombres,apellidos,inv.cc_responsable from publicinventario inv left join publicusuario usr on usr.cedula = inv.cc_responsable where (id_envio_art = "'+id_elemento[5]+'" and id_envio_art != "" and id_envio_art != "null") or (id_articulo = "'+id_elemento[0]+'" and id_articulo != "" and id_articulo != "null") order by inv.rowid desc limit 1', [],
 				function consultaEle(tx, results) {
 					var encontrados = results.rows.length; console.log("Encontrados: " + encontrados);
-					if(encontrados>0) {
-				    	if (confirm("El elemento ya se encuentra asignado a "+results.rows.item(0).nombres+" "+results.rows.item(0).apellidos+" Desea Reasignarlo?") == false) {
-				    		console.log("NO GUARDAR");
-							return false;						    
-						}
-					}
-					console.log("GUARDAR");
-					db.transaction(function guardarInv(tx){
-						//INFO GENERAL DEL ELEMENTO		
-						  console.log('INSERT INTO publicinventario (id_origen,id_seccion,id_usuario,cc_responsable,id_envio,activo,id_articulo,observacion,asignacion,id_estado,id_envio_art,id_proyecto) values ("'+origen+'","'+seccion+'","'+id_usr+'","'+cc[0]+'","'+id_envio+'","1","'+id_elemento[0]+'","'+observaciones+'","R","'+id_elemento[4]+'","'+id_elemento[5]+'","'+localStorage.id_proyecto+'")');
-						tx.executeSql('INSERT INTO publicinventario (id_origen,id_seccion,id_usuario,cc_responsable,id_envio,activo,id_articulo,observacion,asignacion,id_estado,id_envio_art,id_proyecto) values ("'+origen+'","'+seccion+'","'+id_usr+'","'+cc[0]+'","'+id_envio+'","1","'+id_elemento[0]+'","'+observaciones+'","R","'+id_elemento[4]+'","'+id_elemento[5]+'","'+localStorage.id_proyecto+'")');
-						//DETALLE DEL ELMENTO
-/*						console.log('INSERT INTO publicinventario_det (id_articulo,observacion,asignacion,id_estado,id_envio,id_envio_art)' + 
-						'values ("'+id_elemento[0]+'","'+observaciones+'","R","'+id_elemento[4]+'","'+id_envio+'","'+id_elemento[5]+'")');
-						tx.executeSql('INSERT INTO publicinventario_det (id_articulo,observacion,asignacion,id_estado,id_envio,id_envio_art)' + 
-						'values ("'+id_elemento[0]+'","'+observaciones+'","R","'+id_elemento[4]+'","'+id_envio+'","'+id_elemento[5]+'")'); */
-						//ASIGNA RESPONSABLE AL articulo
-						if(id_elemento[0]!="" && id_elemento[0]!="null"){
-			                console.log('UPDATE publicarticulo set cc_responsable = "'+cc[0]+'" where id_articulo = "'+id_elemento[0]+'"');
-			              tx.executeSql('UPDATE publicarticulo set cc_responsable = "'+cc[0]+'" where id_articulo = "'+id_elemento[0]+'"');
+					var repetido = false;
+					if(encontrados>0) {	console.log(cc[0] + " " + results.rows.item(0).cc_responsable);
+						if (cc[0] == results.rows.item(0).cc_responsable){
+							repetido = true;
 						}else{
-			                console.log('UPDATE publicarticulo set cc_responsable = "'+cc[0]+'" where id_envio = "'+id_elemento[5]+'"');
-			              tx.executeSql('UPDATE publicarticulo set cc_responsable = "'+cc[0]+'" where id_envio = "'+id_elemento[5]+'"');
+					    	if (confirm("El elemento ya se encuentra asignado a "+results.rows.item(0).nombres+" "+results.rows.item(0).apellidos+" Desea Reasignarlo?") == false) {
+					    		console.log("NO GUARDAR");
+								return false;						    
+							}							
 						}
-						
-					});
-					setTimeout(function() {
-						localStorage.firma = "";
-						localStorage.elemento_valor = "";
-						localStorage.Fotos = "";
-						localStorage.busqueda = "";
-						db.transaction(function(tx) {
-							  console.log('select * from publicinventario where id_envio = "'+id_envio+'"');
-							tx.executeSql('select * from publicinventario where id_envio = "'+id_envio+'"', [],
-								function MuestraItems(tx, results) {
-									var encontrados = results.rows.length; console.log("Encontrados: " + encontrados);
-									if(encontrados>0) {
-										alerta (
-										    "Asignación exitosa",  		// message
-										    function(){ window.location = "p2_elemento_buscar.html"; },         	// callback
-										    'Activos',            	// title
-										    'Ok'                  	// buttonName
-										);
-									}else {
-										alerta (
-										    "Elemento NO Asignado",  		// message
-										    function(){ },         	// callback
-										    'Activos',            	// title
-										    'Ok'                  	// buttonName
-										);
-									}
-								}	
-							);
-						} /*, function errorCB(err) {	console.log("Error processing SQL: "+err.code); }
-						,function successCB() {	localStorage.firma = ""; }	*/
+
+					}
+					localStorage.firma = "";
+					localStorage.elemento_valor = "";
+					localStorage.Fotos = "";
+					localStorage.busqueda = "";
+					if(repetido){	console.log("REPETIDO");
+						alerta (
+						    "Asignación exitosa",  		// message
+						    function(){ window.location = "p2_elemento_buscar.html"; },         	// callback
+						    'Activos',            	// title
+						    'Ok'                  	// buttonName
 						);
-					}, 350);
+					}else{	console.log("GUARDAR");
+						db.transaction(function guardarInv(tx){
+							//INFO GENERAL DEL ELEMENTO		
+							  console.log('INSERT INTO publicinventario (id_origen,id_seccion,id_usuario,cc_responsable,id_envio,activo,id_articulo,observacion,asignacion,id_estado,id_envio_art,id_proyecto) values ("'+origen+'","'+seccion+'","'+id_usr+'","'+cc[0]+'","'+id_envio+'","1","'+id_elemento[0]+'","'+observaciones+'","R","'+id_elemento[4]+'","'+id_elemento[5]+'","'+localStorage.id_proyecto+'")');
+							tx.executeSql('INSERT INTO publicinventario (id_origen,id_seccion,id_usuario,cc_responsable,id_envio,activo,id_articulo,observacion,asignacion,id_estado,id_envio_art,id_proyecto) values ("'+origen+'","'+seccion+'","'+id_usr+'","'+cc[0]+'","'+id_envio+'","1","'+id_elemento[0]+'","'+observaciones+'","R","'+id_elemento[4]+'","'+id_elemento[5]+'","'+localStorage.id_proyecto+'")');
+							//ASIGNA RESPONSABLE AL articulo
+							if(id_elemento[0]!="" && id_elemento[0]!="null"){
+				                console.log('UPDATE publicarticulo set cc_responsable = "'+cc[0]+'" where id_articulo = "'+id_elemento[0]+'"');
+				              tx.executeSql('UPDATE publicarticulo set cc_responsable = "'+cc[0]+'" where id_articulo = "'+id_elemento[0]+'"');
+							}else{
+				                console.log('UPDATE publicarticulo set cc_responsable = "'+cc[0]+'" where id_envio = "'+id_elemento[5]+'"');
+				              tx.executeSql('UPDATE publicarticulo set cc_responsable = "'+cc[0]+'" where id_envio = "'+id_elemento[5]+'"');
+							}
+							
+						});
+						setTimeout(function() {
+							db.transaction(function(tx) {
+								  console.log('select * from publicinventario where id_envio = "'+id_envio+'"');
+								tx.executeSql('select * from publicinventario where id_envio = "'+id_envio+'"', [],
+									function MuestraItems(tx, results) {
+										var encontrados = results.rows.length; console.log("Encontrados: " + encontrados);
+										if(encontrados>0) {
+											alerta (
+											    "Asignación exitosa",  		// message
+											    function(){ window.location = "p2_elemento_buscar.html"; },         	// callback
+											    'Activos',            	// title
+											    'Ok'                  	// buttonName
+											);
+										}else {
+											alerta (
+											    "Elemento NO Asignado",  		// message
+											    function(){ },         	// callback
+											    'Activos',            	// title
+											    'Ok'                  	// buttonName
+											);
+										}
+									}	
+								);
+							} /*, function errorCB(err) {	console.log("Error processing SQL: "+err.code); }
+							,function successCB() {	localStorage.firma = ""; }	*/
+							);
+						}, 350);
+					}
+
 				}	
 			);	
 			return false;

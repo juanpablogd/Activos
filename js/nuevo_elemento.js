@@ -191,35 +191,42 @@ function GuardaElemento(tx) {
 		    'Ok'                  	// buttonName
 		);
 		return false;
-	}
-	if(localStorage.Fotos == "" || localStorage.Fotos == undefined){
-			alerta (
-			    "Mínimo de Fotos: "+minFotos,  		// message
-			    function(){ },         	// callback
-			    'Activos',            	// title
-			    'Ok'                  	// buttonName
-			);
-		return false;
-	}else{
-		dataf = JSON.parse(localStorage.getItem('Fotos')); console.log(dataf.length);
-		if(dataf.length<minFotos){
-			alerta (
-			    "Mínimo de Fotos: "+minFotos,  		// message
-			    function(){ },         	// callback
-			    'Activos',            	// title
-			    'Ok'                  	// buttonName
-			);
-			return false;
-		}else if(dataf.length>maxFotos){
-			alerta (
-			    "Máximo de Fotos: "+maxFotos +"\nFotos actuales: "+dataf.length,  		// message
-			    function(){ },         	// callback
-			    'Activos',            	// title
-			    'Ok'                  	// buttonName
-			);
-			return false;
-		}
-	}
+	}	console.log(minFotos);
+	
+		if(localStorage.Fotos == "" || localStorage.Fotos == undefined){
+			if(minFotos > 0 ){
+				alerta (
+				    "Mínimo de Fotos: "+minFotos,  		// message
+				    function(){ },         	// callback
+				    'Activos',            	// title
+				    'Ok'                  	// buttonName
+				);
+				return false;
+			}
+		}else{
+			dataf = JSON.parse(localStorage.getItem('Fotos')); console.log(dataf.length);
+			if(minFotos > 0 ){
+				if(dataf.length<minFotos){
+					alerta (
+					    "Mínimo de Fotos: "+minFotos,  		// message
+					    function(){ },         	// callback
+					    'Activos',            	// title
+					    'Ok'                  	// buttonName
+					);
+					return false;
+				}else if(dataf.length>maxFotos){
+					alerta (
+					    "Máximo de Fotos: "+maxFotos +"\nFotos actuales: "+dataf.length,  		// message
+					    function(){ },         	// callback
+					    'Activos',            	// title
+					    'Ok'                  	// buttonName
+					);
+					return false;
+				}
+			}
+		}		
+	
+
 	$.mobile.loading( 'show', { text: 'Guardando Información....', textVisible: true, theme: 'a', html: "" });
 	//FECHA - ID_ENVIO
 	var now = new Date();
@@ -237,33 +244,48 @@ function GuardaElemento(tx) {
 								//	console.log('UPDATE publicarticulos set idarticulo = rowid where idarticulo is null');
 								//tx.executeSql('UPDATE publicarticulos set idarticulo = rowid where idarticulo is null');
 								//GUARDA FOTOS
-								if(localStorage.Fotos != null && localStorage.Fotos != "" && localStorage.Fotos !== undefined && localStorage.Fotos != "undefined"){
-									//CARGA FOTOS
-									
-									$.each(dataf, function(i, item) {	
-										db.transaction(function(tx) {	//console.log(item);
-											//  console.log('INSERT INTO publicarticulos_fotos (url,id_envio) values ("'+item+'","'+id_envio+'")');
-											tx.executeSql('INSERT INTO publicarticulo_foto (url,id_envio) values ("'+item+'","'+id_envio+'")');
-										});	//console.log(i);
-										if((i+1)==dataf.length){
-											console.log("Elemento Guardado exitosamente");
-											setTimeout(function() { 
-												dataf.length=0;
-												localStorage.Fotos = "";
-												$.mobile.loading( 'hide' );
-												alerta (
-												    "Elemento Guardado exitosamente",  		// message
-												    function(){
-												    	localStorage.consulta = null; 
-												    	window.location = "p2_elemento_buscar.html";
-												    },         	// callback
-												    'Activos',            	// title
-												    'Ok'                  	// buttonName
-												);
-											}, dataf.length*130);
-										}
-									});
+						if(localStorage.Fotos != null && localStorage.Fotos != "" && localStorage.Fotos !== undefined && localStorage.Fotos != "undefined"){
+							//CARGA FOTOS
+							$.each(dataf, function(i, item) {	
+								db.transaction(function(tx) {	//console.log(item);
+									//  console.log('INSERT INTO publicarticulos_fotos (url,id_envio) values ("'+item+'","'+id_envio+'")');
+									tx.executeSql('INSERT INTO publicarticulo_foto (url,id_envio) values ("'+item+'","'+id_envio+'")');
+								});	//console.log(i);
+								if((i+1)==dataf.length){
+									console.log("Elemento Guardado exitosamente");
+									setTimeout(function() { 
+										dataf.length=0;
+										localStorage.Fotos = "";
+										$.mobile.loading( 'hide' );
+										alerta (
+										    "Elemento Guardado exitosamente",  		// message
+										    function(){
+										    	localStorage.consulta = null; 
+										    	window.location = "p2_elemento_buscar.html";
+										    },         	// callback
+										    'Activos',            	// title
+										    'Ok'                  	// buttonName
+										);
+									}, dataf.length*130);
 								}
+							});
+						}else{
+							console.log("Elemento Guardado exitosamente");
+							setTimeout(function() { 
+								localStorage.Fotos = "";
+								$.mobile.loading( 'hide' );
+								alerta (
+								    "Elemento Guardado exitosamente",  		// message
+								    function(){
+								    	localStorage.consulta = null; 
+								    	window.location = "p2_elemento_buscar.html";
+								    },         	// callback
+								    'Activos',            	// title
+								    'Ok'                  	// buttonName
+								);
+							}, 1*99);
+						}
+
 		           }
 		       ,errorCB);
 }

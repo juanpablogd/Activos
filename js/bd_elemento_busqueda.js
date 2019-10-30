@@ -86,22 +86,27 @@ function MuestraItems(tx, results) {
 					
 				}	console.log(results.rows.item(0).rowid);
 				$("#nf"+results.rows.item(0).rowid).html(numFotos);
-				if(numFotos>0){
+				if(minFotos>0){
+					if(numFotos>0){
+						$("#btn_ok").show();
+						$("#divObservaciones").show();
+					}else{
+						confirmar (
+						    "No hay fotos, desea adicionarlas?",  // message
+						    function(buttonIndex){	console.log(buttonIndex);
+						    	if(buttonIndex == undefined || buttonIndex =="2"){
+									console.log($("#btnEditar").attr("onclick"));
+									var par = $("#btnEditar").attr("onclick").split("'");
+									editarElemento(par[1]);
+						    	}
+						    },         				// callback
+						    'Activos',            	// title
+						    ['Si','No']           	// buttonName
+						);
+					}
+				}else{
 					$("#btn_ok").show();
 					$("#divObservaciones").show();
-				}else{
-					confirmar (
-					    "No hay fotos, desea adicionarlas?",  // message
-					    function(buttonIndex){	console.log(buttonIndex);
-					    	if(buttonIndex == undefined || buttonIndex =="2"){
-								console.log($("#btnEditar").attr("onclick"));
-								var par = $("#btnEditar").attr("onclick").split("'");
-								editarElemento(par[1]);
-					    	}
-					    },         				// callback
-					    'Activos',            	// title
-					    ['Si','No']           	// buttonName
-					);
 				}
     		}
     		,

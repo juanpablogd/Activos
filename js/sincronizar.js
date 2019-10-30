@@ -73,8 +73,8 @@ function ConsultaSincronizar(tx) {
 function ConsultaSincronizarElemento(tx, results) {
 	var lon = results.rows.length;		console.log("Rta Elemento: " + lon);		//console.log("Respuestas: "+lon);  //$("#resultado").before("<br>Cuestionarios encontrados: "+len+".<br>");	
 	if(lon==0){	
-		  console.log('SELECT cedula,nombres,apellidos,telefono,cargo,id_envio FROM publicusuario where id_envio != ""');
-	   	tx.executeSql('SELECT cedula,nombres,apellidos,telefono,cargo,id_envio FROM publicusuario where id_envio != ""', [],
+		  console.log('SELECT cedula,nombres,apellidos,telefono,cargo,id_envio,id_empresa,id_proyecto FROM publicusuario where id_envio != ""');
+	   	tx.executeSql('SELECT cedula,nombres,apellidos,telefono,cargo,id_envio,id_empresa,id_proyecto FROM publicusuario where id_envio != ""', [],
 	           ConsultaSincronizarPersonas,errorCB_Personas);
 	}else{
 		for (i = 0; i < lon; i++){
@@ -96,7 +96,7 @@ function ConsultaSincronizarElemento(tx, results) {
 			parametros['id_estado'] = results.rows.item(i).id_estado;
 			parametros['idusuario_envio'] = results.rows.item(i).idusuario_envio;
 			parametros['cc_responsable_af'] = results.rows.item(i).cc_responsable;
-			parametros['id_proyecto'] = results.rows.item(i).id_proyecto;
+			parametros['id_proyecto'] = results.rows.item(i).id_proyecto;	if(parametros['id_proyecto'] == "") parametros['id_proyecto'] = localStorage.id_proyecto;
 			parametros['id_empresa'] = localStorage.id_empresa;
 			$("#resultado").html("<br>Articulos restantes: "+(lon-i)+".<br>"); $("#resultado").trigger("create");
 			$.ajax({
@@ -125,8 +125,8 @@ function ConsultaSincronizarElemento(tx, results) {
 			    },
 			    complete: function(){	//CONTINUA CON LOS RESPONSABLES
 					if((i+1) == lon) {
-						  console.log('SELECT cedula,nombres,apellidos,telefono,cargo,id_envio FROM publicusuario where id_envio != ""');
-					   	tx.executeSql('SELECT cedula,nombres,apellidos,telefono,cargo,id_envio FROM publicusuario where id_envio != ""', [],
+						  console.log('SELECT cedula,nombres,apellidos,telefono,cargo,id_envio,id_empresa,id_proyecto FROM publicusuario where id_envio != ""');
+					   	tx.executeSql('SELECT cedula,nombres,apellidos,telefono,cargo,id_envio,id_empresa,id_proyecto FROM publicusuario where id_envio != ""', [],
 					           ConsultaSincronizarPersonas,errorCB_Personas);
 						$("#resultado").html('<br>Carga Articulos Completa....'+(lon-i)+'.<br>'); $("#resultado").trigger("create");
 					}
@@ -154,6 +154,8 @@ function ConsultaSincronizarPersonas(tx, results) {
 			parametros['cargo'] = results.rows.item(i).cargo;
 			parametros['id_envio'] = results.rows.item(i).id_envio;
 			parametros['id_empresa'] = localStorage.id_empresa;
+			parametros['id_proyecto'] = results.rows.item(i).id_proyecto;	if(parametros['id_proyecto'] == "") parametros['id_proyecto'] = localStorage.id_proyecto;
+
 
 			$("#resultado").html("<br>Cargando Empleados: "+(lon-i)+".<br>");		$("#resultado").trigger("create");
 			$.ajax({

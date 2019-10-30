@@ -156,7 +156,7 @@ function GuardaElemento(tx) {
 	var plaqueta = $("#plaqueta").val(); 	console.log(plaqueta);
 	var plaqueta_anterior = $("#plaqueta_anterior").val(); console.log(plaqueta_anterior);	
 
-	var id_estado = $("#id_estado").val();	console.log(id_estado);
+	var id_estado = $("#id_estado").val();	console.log("id_estado: "+id_estado);
 	var dataf;	//datos de fotos
 	
 	if(sublinea.trim() == ""){

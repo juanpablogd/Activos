@@ -119,7 +119,7 @@ function ConsultaSubLinea(tx) {	console.log('select id_sublinea,nom_sublinea fro
 function ConsultaSubLineaCarga(tx, results) {
 	var len = results.rows.length;	//console.log(len);
 	
-	$('#sublinea').empty();
+	$('#sublinea').empty().append('<option value="">Seleccione...</option>');
 	
 	for (i = 0; i < len; i++){
 		var nombre = results.rows.item(i).nom_sublinea;

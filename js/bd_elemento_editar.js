@@ -173,15 +173,15 @@ function MuestraItems(tx, results) {
 		    	"<div class='ui-block'>"+
 					'<div data-role="fieldcontain" class="ui-field-contain"><label for="li'+id+'" class="select">L&iacute;nea:</label><select name="li'+id+'" id="li'+id+'"><option value="">Seleccione...</option></select></div>'+
 					'<div data-role="fieldcontain" class="ui-field-contain"><label for="sb'+id+'" class="select">Sub L&iacute;nea:</label><select name="sb'+id+'" id="sb'+id+'" required><option value="">Seleccione...</option></select></div>'+
-					"<h3>Nombre</h3><input type='text' name='nb"+id+"' id='nb"+id+"' value='"+nombre+"' data-theme='a'>"+
 			        "<a href='#' id='btn_plaqueta' OnClick='leer(p"+id+")' class='ui-btn ui-btn-inline ui-btn-icon-left ui-icon-search'>Plaqueta Nueva</a>"+
 			        "<input type='text' name='p"+id+"' id='p"+id+"' value='"+plaqueta_af+"' data-theme='a'>"+
 			        "<a href='#' id='btn_plaqueta_anterior' OnClick='leer(pa"+id+")' class='ui-btn ui-btn-inline ui-btn-icon-left ui-icon-search'>Plaqueta Anterior</a>"+
 			        "<input type='text' name='pa"+id+"' id='pa"+id+"' value='"+plaqueta_anterior1_af+"' data-theme='a'>"+
-			        "<h3>Marca</h3><input type='text' name='mr"+id+"' id='mr"+id+"' value='"+marca_af+"' data-theme='a'>"+
-			        "<h3>Referencia</h3><input type='text' name='rf"+id+"' id='rf"+id+"' value='"+referencia+"' data-theme='a'>"+
-			        "<a href='#' id='btn_serie' OnClick='leer(ns"+id+")' class='ui-btn ui-btn-inline ui-btn-icon-left ui-icon-search'>N. Serie</a>"+
+					"<h3>Descripción</h3><input type='text' name='nb"+id+"' id='nb"+id+"' value='"+nombre+"' data-theme='a'>"+
+					"<h3>Modelo / Ref.:</h3><input type='text' name='rf"+id+"' id='rf"+id+"' value='"+referencia+"' data-theme='a'>"+
+					"<a href='#' id='btn_serie' OnClick='leer(ns"+id+")' class='ui-btn ui-btn-inline ui-btn-icon-left ui-icon-search'>N. Serie</a>"+
 			        "<input type='text' name='ns"+id+"' id='ns"+id+"' value='"+numero_serie_af+"' data-theme='a'>"+
+			        "<h3>Marca</h3><input type='text' name='mr"+id+"' id='mr"+id+"' value='"+marca_af+"' data-theme='a'>"+
 			        "<label for='ff'>F. Fabricación</label><input type='date' name='ff"+id+"' id='ff"+id+"' value='"+fecha_fabricacion+"' data-theme='a'>"+
 					'<div data-role="fieldcontain" class="ui-field-contain"><label for="es'+id+'" class="select">Estado:</label><select name="es'+id+'" id="es'+id+'"><option value="">Seleccione...</option></select></div>'+
 				"</div>"+  

@@ -354,6 +354,8 @@ $(document).ready(function() {
 				    'Activos',            	// title
 				    'Ok'                  	// buttonName
 				);
+			},{
+				showTorchButton : true,
 			}
 		);
 		return false;

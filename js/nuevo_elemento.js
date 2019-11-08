@@ -159,15 +159,7 @@ function GuardaElemento(tx) {
 	var id_estado = $("#id_estado").val();	console.log("id_estado: "+id_estado);
 	var dataf;	//datos de fotos
 	
-	if(sublinea.trim() == ""){
-		alerta (
-		    "Seleccione una Subclase",  		// message
-		    function(){ $("#sublinea").focus(); },         	// callback
-		    'Activos',            	// title
-		    'Ok'                  	// buttonName
-		);
-		return false;
-	}else if(nombre.trim() == ""){
+	if(nombre.trim() == ""){
 		alerta (
 		    "Digite la descripción",  		// message
 		    function(){ $("#name").focus(); },         	// callback
@@ -191,10 +183,30 @@ function GuardaElemento(tx) {
 		    'Ok'                  	// buttonName
 		);
 		return false;
-	}	console.log(minFotos);
+	}else if(sublinea.trim() == ""){
+		alerta (
+		    "Seleccione una Subclase",  		// message
+		    function(){ $("#sublinea").focus(); },         	// callback
+		    'Activos',            	// title
+		    'Ok'                  	// buttonName
+		);
+		return false;
+	} 	console.log(minFotos);
 	
-		if(localStorage.Fotos == "" || localStorage.Fotos == undefined){
-			if(minFotos > 0 ){
+	if(localStorage.Fotos == "" || localStorage.Fotos == undefined){
+		if(minFotos > 0 ){
+			alerta (
+			    "Mínimo de Fotos: "+minFotos,  		// message
+			    function(){ },         	// callback
+			    'Activos',            	// title
+			    'Ok'                  	// buttonName
+			);
+			return false;
+		}
+	}else{
+		dataf = JSON.parse(localStorage.getItem('Fotos')); console.log(dataf.length);
+		if(minFotos > 0 ){
+			if(dataf.length<minFotos){
 				alerta (
 				    "Mínimo de Fotos: "+minFotos,  		// message
 				    function(){ },         	// callback
@@ -202,29 +214,17 @@ function GuardaElemento(tx) {
 				    'Ok'                  	// buttonName
 				);
 				return false;
+			}else if(dataf.length>maxFotos){
+				alerta (
+				    "Máximo de Fotos: "+maxFotos +"\nFotos actuales: "+dataf.length,  		// message
+				    function(){ },         	// callback
+				    'Activos',            	// title
+				    'Ok'                  	// buttonName
+				);
+				return false;
 			}
-		}else{
-			dataf = JSON.parse(localStorage.getItem('Fotos')); console.log(dataf.length);
-			if(minFotos > 0 ){
-				if(dataf.length<minFotos){
-					alerta (
-					    "Mínimo de Fotos: "+minFotos,  		// message
-					    function(){ },         	// callback
-					    'Activos',            	// title
-					    'Ok'                  	// buttonName
-					);
-					return false;
-				}else if(dataf.length>maxFotos){
-					alerta (
-					    "Máximo de Fotos: "+maxFotos +"\nFotos actuales: "+dataf.length,  		// message
-					    function(){ },         	// callback
-					    'Activos',            	// title
-					    'Ok'                  	// buttonName
-					);
-					return false;
-				}
-			}
-		}		
+		}
+	}		
 	
 
 	$.mobile.loading( 'show', { text: 'Guardando Información....', textVisible: true, theme: 'a', html: "" });

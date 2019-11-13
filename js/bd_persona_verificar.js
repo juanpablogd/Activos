@@ -203,6 +203,7 @@ function MuestraItems(tx, results) {
 				}
 				console.log("GUARDAR");
 				$.mobile.loading( 'show', { text: 'Guardando Información....', textVisible: true, theme: 'a', html: "" });
+				//ACTUALIZA FIRMA SI ESTA DISPONIBLE
 				if($('#div_firma').is(':visible')){
 					db.transaction(function(tx) {
 						tx.executeSql('SELECT rowid,id_envio FROM publicinventario inv where inv.cc_responsable ="'+res[0]+'"', [], 
@@ -251,7 +252,8 @@ function MuestraItems(tx, results) {
 				var last_id;
 				var j =0;
 				var encontrados = $('li.ui-li-static').size();	//console.log(encontrados);
-			   $('li.ui-li-static').each(function () {			//console.log("valor:" + $(this).val() + " id: " + $(this).attr('value'));
+				//GUARDA TODAS LAS OBSERVACIONES
+			    $('li.ui-li-static').each(function () {			//console.log("valor:" + $(this).val() + " id: " + $(this).attr('value'));
 			   		var condicion,tmp_idenvio;
 					var id = $(this).attr('value');							//console.log("iD: " + id);
 					var tipo = id.split("_");						console.log(tipo.length); //return false;
@@ -264,7 +266,9 @@ function MuestraItems(tx, results) {
 			    		tmp_idenvio = id;
 			    		condicion = 'id_envio = "'+id+'"';
 			    	}
-			    	       console.log('UPDATE publicinventario SET observacion = "'+texto+'",asignacion = "'+seleccion+'",id_envio = "'+tmp_idenvio+'" WHERE '+condicion);
+			    	//Limpia la variable de la persona
+			    	localStorage.persona_valor = "";
+			    	///////console.log('UPDATE publicinventario SET observacion = "'+texto+'",asignacion = "'+seleccion+'",id_envio = "'+tmp_idenvio+'" WHERE '+condicion);
 			    	db.transaction(function(txu) {
 						txu.executeSql('UPDATE publicinventario SET observacion = "'+texto+'",asignacion = "'+seleccion+'",id_envio = "'+tmp_idenvio+'" WHERE '+condicion,[]
 							,function successCBU() { //console.log("Web SQL - update ok");
@@ -293,7 +297,7 @@ function MuestraItems(tx, results) {
 							}
 						)
 					});
-			   });
+			    });
 
 			}
 		});

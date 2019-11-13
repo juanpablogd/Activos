@@ -92,7 +92,7 @@ $(document).ready(function() {
 	// CARGAR ORIGEN DE LA BASE DE DATOS
 	db.transaction(ConsultaItems);
 	// CARGAR SECCIÓN DE LA BASE DE DATOS
-	db.transaction(ConsultaSecciones);
+	//db.transaction(ConsultaSecciones);
 
 	//GUARDAR FORMULARIO
 	$('#btn_ok').click(function() {
@@ -132,10 +132,11 @@ $(document).ready(function() {
 			);
 			return false;
 		}
-		localStorage.id_origen = $( "#origen" ).val(); 
+		localStorage.id_origen = $( "#origen" ).val();
+		localStorage.id_dependencia = $( "#dependencia" ).val(); 
 		localStorage.id_seccion = $( "#seccion" ).val();
 		console.log(localStorage.id_origen);
-		console.log(localStorage.id_seccion);
+		console.log(localStorage.id_dependencia);console.log(localStorage.id_seccion);
 		console.log(localStorage.persona_valor);
 		console.log("GUARDAR");
 		window.location = "p2_elemento_buscar.html";

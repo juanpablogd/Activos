@@ -77,7 +77,7 @@ function ConsultaSecciones(tx) {
 	if(InputBuscar=== null){
 		console.log("no existe");
 	}else{
-		where=where+ " and UPPER(nom_seccion) like '%"+InputBuscar.toUpperCase()+"%' ";	
+		where=where+ " and (UPPER(nom_seccion) like '%"+InputBuscar.toUpperCase()+"%' OR UPPER(nom_dependencia) like '%"+InputBuscar.toUpperCase()+"%')";	
 	}
 
 	  console.log('select id_seccion,nom_dependencia,nom_seccion from publicseccion s inner join publicdependencia d on s.id_dependencia = d.id_dependencia where id_empresa = "'+localStorage.id_empresa+'" '+where+' order by nom_dependencia,nom_seccion');

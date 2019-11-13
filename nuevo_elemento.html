@@ -35,7 +35,18 @@
 		<div id="container">
 
 				<div class="ui-body-b ui-body" align="center">Crear Elemento</div><!-- /container -->
-				
+				<div data-role="fieldcontain" class="ui-field-contain">
+					<label for="linea" class="select">Clase:</label>
+						<select name="linea" id="linea">
+						<option value="">Seleccione...</option>
+					</select>
+				</div>
+				<div data-role="fieldcontain" class="ui-field-contain">
+					<label for="sublinea" class="select">Sub clase:</label>
+						<select name="sublinea" id="sublinea" required>
+						<option value="">Seleccione...</option>
+					</select>
+				</div>
 				<div data-role="fieldcontain" class="ui-field-contain">
 					<a href="#" id="btn_plaqueta" class="ui-btn ui-btn-inline ui-btn-icon-left ui-icon-search">Plaqueta Nueva</a>
 					<input type="text" name="plaqueta" id="plaqueta" value="" data-theme="b" required>
@@ -68,18 +79,6 @@
 					        <option value="0" >Seleccione..</option>
 					    </select>
 					</div>
-				</div>
-				<div data-role="fieldcontain" class="ui-field-contain">
-					<label for="linea" class="select">Clase:</label>
-						<select name="linea" id="linea">
-						<option value="">Seleccione...</option>
-					</select>
-				</div>
-				<div data-role="fieldcontain" class="ui-field-contain">
-					<label for="sublinea" class="select">Sub clase:</label>
-						<select name="sublinea" id="sublinea" required>
-						<option value="">Seleccione...</option>
-					</select>
 				</div>
 				<!-- CAMARA-->
 				    <div class="api-div" id="api-camera">

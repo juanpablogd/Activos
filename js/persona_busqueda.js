@@ -79,7 +79,7 @@ $(document).ready(function() {
 		window.location= 'p2_elemento_buscar.html';
 	}); */
 	//EVENTO CUANDO SE SELECCIONA ALGUNA DEPENDENCIA
-/*	$("#dependencia").change(function() {
+	$("#dependencia").change(function() {
 		var nombre = $("#dependencia option:selected").text();
 		var id = $(this).val();
 		localStorage.busqueda = id;
@@ -88,7 +88,7 @@ $(document).ready(function() {
 
 		// CARGAR ITEMS SECCIONES SEGÚN DEPENDENCIAS
 		db.transaction(ConsultaSecciones);
-	});	*/
+	});
 	// CARGAR ORIGEN DE LA BASE DE DATOS
 	db.transaction(ConsultaItems);
 	// CARGAR SECCIÓN DE LA BASE DE DATOS

@@ -24,8 +24,23 @@ function editarPersona(cod){	console.log(cod);
 }
 /****************************************************************************************************************************************************************/
 /**CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS****CARGAR ITEMS**/ 
-/*function ConsultaItems(tx) {	//console.log('select id_dependencia,nom_dependencia from publicdependencia where id_empresa = '+localStorage.id_empresa+' order by nom_dependencia');
+function ConsultaItems(tx) {	//console.log('select id_dependencia,nom_dependencia from publicdependencia where id_empresa = '+localStorage.id_empresa+' order by nom_dependencia');
+		tx.executeSql('select id,nom_origen from publicorigen where id_empresa = "'+localStorage.id_empresa+'" order by nom_origen', [], ConsultaItemsOrigenCarga,errorCB);
 		tx.executeSql('select id_dependencia,nom_dependencia from publicdependencia where id_empresa = "'+localStorage.id_empresa+'" order by nom_dependencia', [], ConsultaItemsCarga,errorCB);
+}
+function ConsultaItemsOrigenCarga(tx, results) {
+	var len = results.rows.length;	//console.log(len);
+	var vidorigen = localStorage.id_origen;
+	var seleccionado;
+	for (i = 0; i < len; i++){
+		seleccionado = ""; 
+		var nombre = results.rows.item(i).nom_origen;
+		var id = results.rows.item(i).id;
+		if(vidorigen == id) seleccionado = "selected";
+		$('#origen').append('<option value="'+id+'" '+seleccionado+'>'+nombre+'</option>');
+   	}
+	//Refresca estilo para cada uno de los controles
+	$("#origen").selectmenu('refresh'); //console.log(viddependencia);
 }
 function ConsultaItemsCarga(tx, results) {
 	var len = results.rows.length;	//console.log(len);
@@ -44,9 +59,9 @@ function ConsultaItemsCarga(tx, results) {
 		localStorage.busqueda = viddependencia;
 		db.transaction(ConsultaSecciones);
 	}
-} */
+}
 /**CARGAR ORIGEN****CARGAR ORIGEN****CARGAR ORIGEN****CARGAR ORIGEN****CARGAR ORIGEN****CARGAR ORIGEN****CARGAR ORIGEN****CARGAR ORIGEN**/ 
-function ConsultaItems(tx) {	console.log('select id,nom_origen from publicorigen where id_empresa = "'+localStorage.id_empresa+'" order by nom_origen');
+/*function ConsultaItems(tx) {	console.log('select id,nom_origen from publicorigen where id_empresa = "'+localStorage.id_empresa+'" order by nom_origen');
 		tx.executeSql('select id,nom_origen from publicorigen where id_empresa = "'+localStorage.id_empresa+'" order by nom_origen', [], ConsultaItemsCarga,errorCB);
 }
 function ConsultaItemsCarga(tx, results) {
@@ -62,11 +77,11 @@ function ConsultaItemsCarga(tx, results) {
    	}
 	//Refresca estilo para cada uno de los controles
 	$("#origen").selectmenu('refresh'); //console.log(viddependencia);
-/*	if(vidorigen != "" && vidorigen != undefined){
-		localStorage.busqueda = vidorigen;
-		db.transaction(ConsultaSecciones);
-	} */
-}
+	//if(vidorigen != "" && vidorigen != undefined){
+	//	localStorage.busqueda = vidorigen;
+	//	db.transaction(ConsultaSecciones);
+	//}
+}	*/
 /****************************************************************************************************************************************************************/
 /**CARGAR SECCIONES****CARGAR SECCIONES****CARGAR SECCIONES****CARGAR SECCIONES****CARGAR SECCIONES****CARGAR SECCIONES****CARGAR SECCIONES****CARGAR SECCIONES**/ 
 function ConsultaSecciones(tx) {
@@ -80,8 +95,8 @@ function ConsultaSecciones(tx) {
 		where=where+ " and (UPPER(nom_seccion) like '%"+InputBuscar.toUpperCase()+"%' OR UPPER(nom_dependencia) like '%"+InputBuscar.toUpperCase()+"%')";	
 	}
 
-	  console.log('select id_seccion,nom_dependencia,nom_seccion from publicseccion s inner join publicdependencia d on s.id_dependencia = d.id_dependencia where id_empresa = "'+localStorage.id_empresa+'" '+where+' order by nom_dependencia,nom_seccion');
-	tx.executeSql('select id_seccion,nom_dependencia,nom_seccion from publicseccion s inner join publicdependencia d on s.id_dependencia = d.id_dependencia where id_empresa = "'+localStorage.id_empresa+'" '+where+' order by nom_dependencia,nom_seccion', [], ConsultaSeccionesCarga,errorCB);
+	  console.log('select id_seccion,nom_dependencia,nom_seccion from publicseccion s inner join publicdependencia d on s.id_dependencia = d.id_dependencia where d.id_dependencia = "'+localStorage.busqueda+'" '+where+' order by nom_dependencia,nom_seccion');
+	tx.executeSql('select id_seccion,nom_dependencia,nom_seccion from publicseccion s inner join publicdependencia d on s.id_dependencia = d.id_dependencia where d.id_dependencia = "'+localStorage.busqueda+'" '+where+' order by nom_dependencia,nom_seccion', [], ConsultaSeccionesCarga,errorCB);
 }
 function ConsultaSeccionesCarga(tx, results) {
 	var len = results.rows.length;	//console.log(len);

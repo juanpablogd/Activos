@@ -1,6 +1,5 @@
 var db = window.openDatabase("bdactivos", "1.0", "Proyecto SFK Activos", 33554432);
 //VALIDA SI NO HAY EMPRESA CREADA
-
 if (localStorage.id_empresa == "" || localStorage.id_empresa === undefined){
 	alerta (
 	    "No hay empresa seleccionada, creela y sincronice de nuevo",  		// message
@@ -9,6 +8,14 @@ if (localStorage.id_empresa == "" || localStorage.id_empresa === undefined){
 	    'Ok'                  	// buttonName
 	);
 } 
+
+var delay = (function(){
+  var timer = 0;
+  return function(callback, ms){
+    clearTimeout (timer);
+    timer = setTimeout(callback, ms);
+  };
+})();
 
 function errorCB(err) {
 	// Esto se puede ir a un Log de Error dir�a el purista de la oficina, pero como este es un ejemplo pongo el MessageBox.Show :P
@@ -51,6 +58,9 @@ function ConsultaItemsCarga(tx, results) {
 	$("#dependencia").selectmenu('refresh'); //console.log(viddependencia);
 	if(viddependencia != ""){
 		localStorage.busqueda = viddependencia;
+		//Si tiene Filtro
+		var valTXTsub = $("#txtBuscarSublinea").val(); console.log (valTXTsub);
+		if(valTXTsub.trim() == "")	sessionStorage.removeItem("txtBuscarSublinea");
 		db.transaction(ConsultaSecciones);
 	}
 }
@@ -113,8 +123,17 @@ function ConsultaLineaCarga(tx, results) {
 
 /****************************************************************************************************************************************************************/
 /**CARGAR SUBLÍNEA****CARGAR SUBLÍNEA****CARGAR SUBLÍNEA****CARGAR SUBLÍNEA****CARGAR SUBLÍNEA****CARGAR SUBLÍNEA****CARGAR SUBLÍNEA****CARGAR SUBLÍNEA**/ 
-function ConsultaSubLinea(tx) {	console.log('select id_sublinea,nom_sublinea from publicsublinea where id_linea = "'+localStorage.busqueda+'" order by nom_sublinea');
-		tx.executeSql('select id_sublinea,nom_sublinea from publicsublinea where id_linea = "'+localStorage.busqueda+'" order by nom_sublinea', [], ConsultaSubLineaCarga,errorCB);
+function ConsultaSubLinea(tx) {	
+	var InputBuscar=sessionStorage.getItem("txtBuscarSublinea");
+	var where=' ';
+
+	if(InputBuscar=== null){
+		console.log("no existe");
+	}else{
+		where=where+ " and (UPPER(nom_sublinea) like '%"+InputBuscar.toUpperCase()+"%')";	
+	}
+      console.log('select id_sublinea,nom_sublinea from publicsublinea where id_linea = "'+localStorage.busqueda+'" '+where+' order by nom_sublinea');
+	tx.executeSql('select id_sublinea,nom_sublinea from publicsublinea where id_linea = "'+localStorage.busqueda+'" '+where+' order by nom_sublinea', [], ConsultaSubLineaCarga,errorCB);
 }
 function ConsultaSubLineaCarga(tx, results) {
 	var len = results.rows.length;	//console.log(len);
@@ -127,6 +146,17 @@ function ConsultaSubLineaCarga(tx, results) {
 		$('#sublinea').append('<option value="'+id+'">'+nombre+'</option>');
    	}
    	$('#sublinea').selectmenu('refresh');
+   	if(len>0){ //pone foco indicando que ya cargó las secciones
+		var InputBuscar=sessionStorage.getItem("txtBuscarSublinea");
+		var where=' ';
+
+		if(InputBuscar=== null){
+			console.log("no existe");
+		}else{
+			$("#sublinea").trigger('mousedown');
+		}
+   	}
+
 	/*Refresca estilo para cada uno de los controles*/
     //$("#items").trigger("create");
 }
@@ -292,6 +322,7 @@ function GuardaElemento(tx) {
 
 $(document).ready(function() {
 	$("#titulo").html(localStorage.nom_empresa);
+	sessionStorage.removeItem("txtBuscarSublinea");
 
 	if(localStorage.consulta != null && localStorage.consulta != ""){
 		$("#plaqueta").val(localStorage.consulta);
@@ -364,5 +395,27 @@ $(document).ready(function() {
 	// CARGAR ITEMS DE LA BASE DE DATOS
 	db.transaction(ConsultaItems);
 	db.transaction(ConsultaLinea);
+
+	$('#txtBuscarSublinea').on('keyup', function() {
+		var valor=this.value;
+		 delay(function(){
+			//var nombre = $("#dependencia option:selected").text();
+			var id = $("#linea option:selected").val();
+			localStorage.busqueda = id;
+	      	if (valor.length > 3) {		console.log("Buscaaaa:"+valor);
+				sessionStorage.setItem("txtBuscarSublinea", valor);
+		     	db.transaction(ConsultaSubLinea);
+		    }else{
+		     	sessionStorage.removeItem("txtBuscarSublinea");
+		     	db.transaction(ConsultaSubLinea);
+		    }
+		    // console.log("ole papa");
+    	}, 100 );
+	});
+
+	$(".ui-icon-delete").click(function(){
+     	sessionStorage.removeItem("txtBuscarSublinea");
+     	db.transaction(ConsultaSubLinea);
+	})
 	
 });

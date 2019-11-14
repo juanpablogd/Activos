@@ -159,6 +159,11 @@ $(document).ready(function() {
     	}, 100 );
 	});
 
+	$(".ui-icon-delete").click(function(){
+     	sessionStorage.removeItem("txtBuscarSeccion");
+     	db.transaction(ConsultaSecciones);
+	})
+
 	
 });
 

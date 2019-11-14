@@ -107,6 +107,8 @@ function ConsultaSeccionesCarga(tx, results) {
 	for (i = 0; i < len; i++){
 		seleccionado = "";
 		var nombre = results.rows.item(i).nom_dependencia + " - " + results.rows.item(i).nom_seccion;
+		if($('#dependencia').is(':visible')) nombre = results.rows.item(i).nom_seccion;
+		
 		var id = results.rows.item(i).id_seccion;
 		if(vidseccion == id) seleccionado = "selected";
 		$('#seccion').append('<option value="'+id+'" '+seleccionado+'>'+nombre+'</option>');
@@ -122,9 +124,8 @@ function ConsultaSeccionesCarga(tx, results) {
 		}else{
 			$("#seccion").trigger('mousedown');
 		}
-
    	}
-   	localStorage.busqueda = "";
+   	//localStorage.busqueda = "";
 }
 /****************************************************************************************************************************************************************/
 /* BUSQUEDA EN LA TABLA PERSONA*/

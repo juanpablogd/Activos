@@ -167,11 +167,11 @@ $(document).ready(function() {
 							tx.executeSql('INSERT INTO publicinventario (id_origen,id_seccion,id_usuario,cc_responsable,id_envio,activo,id_articulo,observacion,asignacion,id_estado,id_envio_art,id_proyecto) values ("'+origen+'","'+seccion+'","'+id_usr+'","'+cc[0]+'","'+id_envio+'","1","'+id_elemento[0]+'","'+observaciones+'","R","'+id_elemento[4]+'","'+id_elemento[5]+'","'+localStorage.id_proyecto+'")');
 							//ASIGNA RESPONSABLE AL articulo
 							if(id_elemento[0]!="" && id_elemento[0]!="null"){
-				                console.log('UPDATE publicarticulo set cc_responsable = "'+cc[0]+'" where id_articulo = "'+id_elemento[0]+'"');
-				              tx.executeSql('UPDATE publicarticulo set cc_responsable = "'+cc[0]+'" where id_articulo = "'+id_elemento[0]+'"');
+				                console.log("UPDATE publicarticulo set cc_responsable = '"+cc[0]+"' where id_articulo = '"+id_elemento[0]+"'");
+				              tx.executeSql("UPDATE publicarticulo set cc_responsable = '"+cc[0]+"' where id_articulo = '"+id_elemento[0]+"'");
 							}else{
-				                console.log('UPDATE publicarticulo set cc_responsable = "'+cc[0]+'" where id_envio = "'+id_elemento[5]+'"');
-				              tx.executeSql('UPDATE publicarticulo set cc_responsable = "'+cc[0]+'" where id_envio = "'+id_elemento[5]+'"');
+				                console.log("UPDATE publicarticulo set cc_responsable = '"+cc[0]+"' where id_envio = '"+id_elemento[5]+"'");
+				              tx.executeSql("UPDATE publicarticulo set cc_responsable = '"+cc[0]+"' where id_envio = '"+id_elemento[5]+"'");
 							}
 							
 						});

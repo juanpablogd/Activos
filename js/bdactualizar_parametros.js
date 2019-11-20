@@ -30,11 +30,9 @@ function TablaGuardarExe(tx) {
 		tx.executeSql('DROP TABLE IF EXISTS '+arr_ListaTabla[fil][0]);														//console.log('CREATE TABLE IF NOT EXISTS '+arr_ListaTabla[fil][0]+' ('+arr_ListaTabla[fil][1]+')');
 		tx.executeSql('CREATE TABLE IF NOT EXISTS '+arr_ListaTabla[fil][0]+' ('+arr_ListaTabla[fil][1]+')');
 		if(arr_ListaTabla[fil][0] == "publicinventario"){
-			tx.executeSql('CREATE INDEX idx_inv_publicinventarioo_cc_responsable ON publicinventario (cc_responsable);');	
-		}
-		if(arr_ListaTabla[fil][0] == "publicinventario_det"){
-			tx.executeSql('CREATE INDEX idx_inv_publicinventariodet_id_envio_art ON publicinventario_det (id_envio_art);');
-			tx.executeSql('CREATE INDEX idx_inv_publicinventariodet_idarticulo ON publicinventario_det (id_articulo);');
+			tx.executeSql('CREATE INDEX idx_inv_publicinventario_cc_responsable ON publicinventario (cc_responsable);');
+			tx.executeSql('CREATE INDEX idx_inv_publicinventario_idarticulo ON publicinventario (id_articulo);');
+			tx.executeSql('CREATE INDEX idx_inv_publicinventario_id_envio_art ON publicinventario (id_envio_art);');
 		}
 	}
 

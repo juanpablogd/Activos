@@ -240,54 +240,6 @@ function ConsultaSincronizarInventario(tx, results) {
 	}
 }
 
-/*function ConsultaSincronizarInventarioDetalle(tx, results) {
-	var lon = results.rows.length;	console.log("InventarioDetalle: " + lon);		//console.log("Respuestas: "+lon);  //$("#resultado").before("<br>Cuestionarios encontrados: "+len+".<br>");
-	if(lon==0){ //SI NO HAY INVENTARIO NOTIFICA AL USUARIO
-		  console.log('SELECT rowid,url,id_envio,id_articulo FROM publicarticulo_foto');
-		tx.executeSql('SELECT rowid,url,id_envio,id_articulo FROM publicarticulo_foto', [], ConsultaSincronizarFotos,errorCB_Fotos);
-		
-	}else{
-		for (i = 0; i < lon; i++){
-			var parametros = new Object();
-			
-			parametros['tabla'] = 't_inventario_detalle';
-			
-			parametros['idinventario'] = results.rows.item(i).id_inventario;
-			parametros['idinventariodet'] = results.rows.item(i).id_inventariodet;
-			parametros['idarticulo'] = results.rows.item(i).id_articulo;
-			parametros['id_estado'] = results.rows.item(i).id_estado;
-			parametros['id_envio'] = results.rows.item(i).id_envio;
-			parametros['id_envio_art'] = results.rows.item(i).id_envio_art;
-			parametros['observacion'] = results.rows.item(i).observacion;
-			parametros['asignacion'] = results.rows.item(i).asignacion;
-			
-			$("#resultado").html("<br>Asignación restante: "+(lon-i)+".<br>");	$("#resultado").trigger("create");
-			$.ajax({
-				data:  parametros,
-				url:'http://'+localStorage.url_servidor+'/SIG/servicios/activos_sincronizar.php',
-				type:  'post',
-				async: false,		//timeout: 30000,
-				success: function(responser){	console.log("Inv detalle: "+responser);
-					var respr = responser.trim();		//console.log("Inv Detalle: "+respr);	//var res=respr.split("|");	console.log('delete from publicinventario_det where id_envio = "'+respr+'"');
-					var res=respr.split("|");
-					tx.executeSql('UPDATE publicinventario_det SET id_inventario = "'+res[1]+'",id_inventariodet = "'+res[2]+'" where id_envio = "'+res[0]+'"');		//tx.executeSql('DELETE from publicp_elemento where id_envio = "'+res+'"');
-					tx.executeSql('UPDATE publicinventario_det SET id_envio = "" where id_envio = "'+res[0]+'"');
-				},
-				error: function (error) {
-					$("#resultado").text('Error en ingreso de Respuestas');	$("#resultado").trigger("create");
-			    },
-			    complete: function (){
-					if((i+1) == lon) { //console.log("continue a rtas");
-						  console.log('SELECT rowid,url,id_envio,id_articulo FROM publicarticulo_foto');
-					   	tx.executeSql('SELECT rowid,url,id_envio,id_articulo FROM publicarticulo_foto', [], ConsultaSincronizarFotos,errorCB_Fotos);
-					   	$("#resultado").html('<br>Carga completa de asignaciones....'+(lon-i)+'.<br>'); $("#resultado").trigger("create"); 
-					}
-			    }
-			});
-	   	}
-	}
-}*/
-
 //SINCRONIZAR FOTOS
 function ConsultaSincronizarFotos(tx, results) {	
 	var len = results.rows.length;	//console.log("Fotos: " + len);

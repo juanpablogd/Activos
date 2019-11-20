@@ -82,9 +82,36 @@ function descargar()
 }
 
 function Consulta(tx) {
-	tx.executeSql('SELECT count(*) nreg FROM publicinventario_det where id_envio != ""', [], ConsultaCarga);
+	tx.executeSql('SELECT count(*) nreg FROM publicarticulo where id_envio != ""', [], ConsultaCarga);
+	tx.executeSql('SELECT count(*) nreg FROM publicarticulo_foto where id_envio != ""', [], ConsultaCargaFoto);	
+	tx.executeSql('SELECT count(*) nreg FROM publicusuario where id_envio != ""', [], ConsultaCargaUsuario);
+
 }
 function ConsultaCarga(tx, results) {	console.log(results.rows.item(0).nreg);
+	if(results.rows.item(0).nreg != 0){
+		alerta (
+		    'Debe Enviar la información Pendiente antes de Descargar!',  // message
+		    function(){
+				window.location = "cargar.html";
+		    },         // callback
+		    'Activos',            // title
+		    'Ok'                  // buttonName
+		);
+	}
+}
+function ConsultaCargaFoto(tx, results) {	console.log(results.rows.item(0).nreg);
+	if(results.rows.item(0).nreg != 0){
+		alerta (
+		    'Debe Enviar la información Pendiente antes de Descargar!',  // message
+		    function(){
+				window.location = "cargar.html";
+		    },         // callback
+		    'Activos',            // title
+		    'Ok'                  // buttonName
+		);
+	}
+}
+function ConsultaCargaUsuario(tx, results) {	console.log(results.rows.item(0).nreg);
 	if(results.rows.item(0).nreg != 0){
 		alerta (
 		    'Debe Enviar la información Pendiente antes de Descargar!',  // message

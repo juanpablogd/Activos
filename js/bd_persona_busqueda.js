@@ -125,18 +125,19 @@ function ConsultaSeccionesCarga(tx, results) {
 			$("#seccion").trigger('mousedown');
 		}
    	}else{
-   		var txtBuscarSeccion = $("#txtBuscarSeccion").val().length;
-   		console.log(txtBuscarSeccion);
-		confirmar (
-		    "No se encontró la Sección!! Desea crear una nueva SECCIÓN",  // message
-		    function(buttonIndex){	console.log(buttonIndex);
-		    	if(buttonIndex == undefined || buttonIndex =="2"){
-		    		window.location="nuevo_seccion.html"; 	
-		    	}
-		    },         				// callback
-		    'Activos',            	// title
-		    ['Si','No']           	// buttonName
-		);
+   		var txtBuscarSeccion = $("#txtBuscarSeccion").val().length;	console.log(txtBuscarSeccion);
+   		if(txtBuscarSeccion > 4){
+			confirmar (
+			    "No se encontró la Sección!! Desea crear una nueva SECCIÓN",  // message
+			    function(buttonIndex){	console.log(buttonIndex);
+			    	if(buttonIndex == undefined || buttonIndex =="2"){
+			    		window.location="nuevo_seccion.html"; 	
+			    	}
+			    },         				// callback
+			    'Activos',            	// title
+			    ['Si','No']           	// buttonName
+			);
+   		}
    	}
    	//localStorage.busqueda = "";
 }

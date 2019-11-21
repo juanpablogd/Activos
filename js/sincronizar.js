@@ -33,16 +33,21 @@ $(document).ready(function(){
 		db.transaction(ConsultaSincronizar);
 	});
 	
-	db.transaction(Cono_elementos);
+	db.transaction(Cono_secciones);
 	
 	 setInterval(function(){	//console.log("Buscar pendientes");
-	 	db.transaction(Cono_elementos);
+	 	db.transaction(Cono_secciones);
 	}, 2000);
 	
 });
 
 //CONSULTA SI HAY INFORMACIÓN PENDIENTE DE ENVÍO---------------------------------------------------------------
-function Cono_elementos(tx) {
+function Cono_secciones(tx) {
+	tx.executeSql('SELECT count(*) nreg FROM publicseccion where sec_id_envio != ""', [],
+		           Cono_elementos,errorCB_Elemento);
+}
+function Cono_elementos(tx, results) {
+	$("#no_secciones").html(results.rows.item(0).nreg);
 	tx.executeSql('SELECT count(*) nreg FROM publicarticulo where id_envio != ""', [],
 		           Cono_elementosResp,errorCB_Elemento);
 }
@@ -65,9 +70,63 @@ function Cono_fotosResp(tx, results) {
 //--------------------------------------------------------------------------------------------------------------
 
 function ConsultaSincronizar(tx) {
-	  console.log('SELECT id_articulo,id_origen,id_seccion,id_sublinea,marca,nom_articulo,referencia,serie,placa_nueva,placa_anterior,id_envio,id_estado,idusuario_envio,cc_responsable,id_proyecto FROM publicarticulo where id_envio != ""');
-	tx.executeSql('SELECT id_articulo,id_origen,id_seccion,id_sublinea,marca,nom_articulo,referencia,serie,placa_nueva,placa_anterior,id_envio,id_estado,idusuario_envio,cc_responsable,id_proyecto FROM publicarticulo where id_envio != ""', [],
-		           ConsultaSincronizarElemento,errorCB_Elemento);
+	  console.log('SELECT id_seccion,id_dependencia,nom_seccion,sec_id_envio FROM publicseccion where sec_id_envio != ""');
+	tx.executeSql('SELECT id_seccion,id_dependencia,nom_seccion,sec_id_envio FROM publicseccion where sec_id_envio != ""', [],
+		           ConsultaSincronizarSeccion,errorCB_Seccion);
+}
+function ConsultaSincronizarSeccion(tx, results) {
+	var lon = results.rows.length;		console.log("Rta Elemento: " + lon);		//console.log("Respuestas: "+lon);  //$("#resultado").before("<br>Cuestionarios encontrados: "+len+".<br>");	
+	if(lon==0){	
+		  console.log('SELECT id_articulo,id_origen,id_seccion,id_sublinea,marca,nom_articulo,referencia,serie,placa_nueva,placa_anterior,id_envio,id_estado,idusuario_envio,cc_responsable,id_proyecto FROM publicarticulo where id_envio != ""');
+		tx.executeSql('SELECT id_articulo,id_origen,id_seccion,id_sublinea,marca,nom_articulo,referencia,serie,placa_nueva,placa_anterior,id_envio,id_estado,idusuario_envio,cc_responsable,id_proyecto FROM publicarticulo where id_envio != ""', [],
+			           ConsultaSincronizarElemento,errorCB_Elemento);
+	}else{
+		for (i = 0; i < lon; i++){
+			var parametros = new Object();
+			
+			parametros['tabla'] = 'p_seccion';
+			parametros['id_seccion'] = results.rows.item(i).id_seccion;
+			parametros['id_dependencia'] = results.rows.item(i).id_dependencia;
+			parametros['nom_seccion'] = results.rows.item(i).nom_seccion;
+			parametros['sec_id_envio'] = results.rows.item(i).sec_id_envio;
+
+			$("#resultado").html("<br>Cargando Secciones: "+(lon-i)+".<br>");		$("#resultado").trigger("create");
+			$.ajax({
+				data:  parametros,
+				url:'http://'+localStorage.url_servidor+'/SIG/servicios/activos_sincronizar.php',
+				type:  'post',
+				async: false,
+				success: function(responsea){				console.log("Funcionarios: "+responsea);
+					db.transaction(function(tx) {
+						var respr = responsea.trim();		//console.log(respr);	
+						var res=respr.split("|");	//res[0]=>Id del Elemento en el servidor	res[1]=>Id Envío	res[2]=>Id temporal en la base de datos Local
+						if($.isNumeric(res[0])){
+							  console.log('update publicseccion set id_seccion = "'+res[0]+'",sec_id_envio = "" where sec_id_envio = "'+res[1]+'"');
+			          		tx.executeSql('update publicseccion set id_seccion = "'+res[0]+'",sec_id_envio = "" where sec_id_envio = "'+res[1]+'"');
+			          		tx.executeSql('update publicarticulo set id_seccion = "'+res[0]+'" where id_seccion = "'+res[1]+'"');
+			          		tx.executeSql('update publicinventario set id_seccion = "'+res[0]+'" where id_seccion = "'+res[1]+'"');
+						}
+			        });
+				},
+				error: function (error) {
+					$("#resultado").text('Error en ingreso de Secciones');			$("#resultado").trigger("create");
+
+			    },
+            	complete: function() { console.log("Complete"); 
+					if((i+1) == lon) { //console.log("continue a rtas");
+						$("#resultado").html('<br>Carga completa de Seccion....'+(lon-i)+'.<br>'); $("#resultado").trigger("create"); 
+						setTimeout(function() { 
+							  console.log('SELECT id_articulo,id_origen,id_seccion,id_sublinea,marca,nom_articulo,referencia,serie,placa_nueva,placa_anterior,id_envio,id_estado,idusuario_envio,cc_responsable,id_proyecto FROM publicarticulo where id_envio != ""');
+							tx.executeSql('SELECT id_articulo,id_origen,id_seccion,id_sublinea,marca,nom_articulo,referencia,serie,placa_nueva,placa_anterior,id_envio,id_estado,idusuario_envio,cc_responsable,id_proyecto FROM publicarticulo where id_envio != ""', [],
+							           ConsultaSincronizarElemento,errorCB_Elemento);
+						}, (i+1)*150);
+					}
+            	},
+			});
+	   	}
+	}
+
+
 }
 
 function ConsultaSincronizarElemento(tx, results) {
@@ -427,6 +486,19 @@ function errorCB_Personas(err) {
 function errorCB_Elemento(err) {
 	if (err.code === undefined || err.message === undefined){
 		$("#resultado").before("<br>Error al buscar los Elementos<br>");
+	}else
+	{ 
+		alerta (
+		    "Error procesando SQL: Codigo: " + err.code + " Mensaje: "+err.message,  // message
+		    function(){},         // callback
+		    'Activos',            // title
+		    'Ok'                  // buttonName
+		);
+	}
+}
+function errorCB_Seccion(err) {
+	if (err.code === undefined || err.message === undefined){
+		$("#resultado").before("<br>Error al buscar las Secciones<br>");
 	}else
 	{ 
 		alerta (

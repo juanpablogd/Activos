@@ -175,7 +175,7 @@ function GuardaElemento(tx) {
 	var seccion = $("#seccion").val(); console.log(seccion);
 	//var linea = $("#linea").val(); console.log(linea);
 	var sublinea = $("#sublinea").val();		 console.log("sublinea" + sublinea);
-	var marca = $("#marca").val(); console.log(marca);
+	var marca = $("#marca").val(); console.log(marca);	if (marca == "null" || marca == null) marca = "";
 	//OBTIENE EL ID DE LA DEPENDENCIA O AREA
 	var referencia = $( "#ref" ).val();	console.log(referencia);
 	//OBTIENE EL ID DE LA DEPENDENCIA O AREA

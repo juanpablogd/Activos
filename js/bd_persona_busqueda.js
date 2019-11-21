@@ -110,7 +110,7 @@ function ConsultaSeccionesCarga(tx, results) {
 		if($('#dependencia').is(':visible')) nombre = results.rows.item(i).nom_seccion;
 		
 		var id = results.rows.item(i).id_seccion;
-		if(vidseccion == id) seleccionado = "selected";
+		if(vidseccion == id || len == 1) seleccionado = "selected";
 		$('#seccion').append('<option value="'+id+'" '+seleccionado+'>'+nombre+'</option>');
 
    	}

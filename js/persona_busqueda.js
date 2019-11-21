@@ -19,7 +19,6 @@ $(window).load(function () {
 
 $(document).ready(function() {
 	$("#titulo").html(localStorage.nom_empresa);
-	sessionStorage.removeItem("txtBuscarSeccion");
 	//SI YA ESTÁ REGISTRADO EL ELEMENTO Y LA PERSONA ENTONCES HABILITA LA OPCIÓN DE LA FIRMA
 	$val = localStorage.persona_valor;	console.log($val);
 	if($val != "" && $val != undefined && $val != null && $val != "null"){
@@ -135,6 +134,7 @@ $(document).ready(function() {
 		localStorage.id_origen = $( "#origen" ).val();
 		localStorage.id_dependencia = $( "#dependencia" ).val(); 
 		localStorage.id_seccion = $( "#seccion" ).val();
+		sessionStorage.removeItem("txtBuscarSeccion");
 		console.log(localStorage.id_origen);
 		console.log(localStorage.id_dependencia);console.log(localStorage.id_seccion);
 		console.log(localStorage.persona_valor);
@@ -142,7 +142,7 @@ $(document).ready(function() {
 		window.location = "p2_elemento_buscar.html";
 	});
 
-	$('#txtBuscarSeccion').on('keyup', function() {
+	$('#txtBuscarSeccion').on('keyup', function() {	console.log("keyup");
 		var valor=this.value;
 		 delay(function(){
 			//var nombre = $("#dependencia option:selected").text();

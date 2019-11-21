@@ -210,7 +210,7 @@ function MuestraItems(tx, results) {
 			    			var marca_af = txtOk($("#mr"+id).val());
 			    			var referencia = txtOk($("#rf"+id).val());
 			    			var numero_serie_af = txtOk($("#ns"+id).val());
-			    			var fecha_fabricacion = txtOk($("#ff"+id).val());
+			    			var fecha_fabricacion = txtOk($("#ff"+id).val()); if (fecha_fabricacion == undefined) fecha_fabricacion = "";
 			    			var id_estado = $("#es"+id).val();					//console.log(JSON.stringify(res));
 			    			if(texto_plaqueta != undefined && texto_plaquetanterior != undefined){
 								function errorCBU(err) {

@@ -96,7 +96,7 @@ function GuardaElemento(tx) {
 	var id_usr = localStorage.id_usr; 
 	
 	var dependencia = $("#dependencia").val(); console.log(dependencia);
-	var nom_seccion = $("#nom_seccion").val();		 console.log("nom_seccion" + nom_seccion);
+	var nom_seccion = $("#nom_seccion").val();	nom_seccion = txtOk(nom_seccion);		 console.log("nom_seccion" + nom_seccion);
 	
 	if(dependencia.trim() == 0){
 		alerta (
@@ -121,13 +121,14 @@ function GuardaElemento(tx) {
 	var now = new Date();
 	var fecha_captura = now.getFullYear()+'-'+(1+now.getMonth())+'-'+now.getDate()+'-'+now.getHours()+'_'+now.getMinutes()+'_'+now.getSeconds();
 	var id_envio = fecha_captura+'-'+id_usr;
-	
-	  console.log('INSERT INTO publicseccion (id_dependencia,nom_seccion,sec_id_envio) values ("'+dependencia+'","'+nom_seccion+'","'+id_envio+'")');
-	tx.executeSql('INSERT INTO publicseccion (id_dependencia,nom_seccion,sec_id_envio) values ("'+dependencia+'","'+nom_seccion+'","'+id_envio+'")');
 
+	  console.log("INSERT INTO publicseccion (id_seccion,id_dependencia,nom_seccion,sec_id_envio) values ('"+id_envio+"','"+dependencia+"','"+nom_seccion+"','"+id_envio+"');");
+	tx.executeSql("INSERT INTO publicseccion (id_seccion,id_dependencia,nom_seccion,sec_id_envio) values ('"+id_envio+"','"+dependencia+"','"+nom_seccion+"','"+id_envio+"');");
 	console.log("Elemento Guardado exitosamente");
+
 	setTimeout(function() { 
-		localStorage.Fotos = "";
+		localStorage.id_dependencia = $( "#dependencia" ).val();
+		sessionStorage.setItem("txtBuscarSeccion", nom_seccion);
 		$.mobile.loading( 'hide' );
 		alerta (
 		    "Elemento Guardado exitosamente",  		// message
@@ -138,7 +139,7 @@ function GuardaElemento(tx) {
 		    'Activos',	// title
 		    'Ok'        // buttonName
 		);
-	}, 1*99);	
+	}, 1.5*99);	
 
 }
 

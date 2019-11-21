@@ -82,10 +82,21 @@ function descargar()
 }
 
 function Consulta(tx) {
-	tx.executeSql('SELECT count(*) nreg FROM publicarticulo where id_envio != ""', [], ConsultaCarga);
-	tx.executeSql('SELECT count(*) nreg FROM publicarticulo_foto where id_envio != ""', [], ConsultaCargaFoto);	
-	tx.executeSql('SELECT count(*) nreg FROM publicusuario where id_envio != ""', [], ConsultaCargaUsuario);
-
+	tx.executeSql('SELECT count(*) nreg FROM publicseccion where sec_id_envio != ""', [], ConsultaSeccion);
+}
+function ConsultaSeccion(tx, results) {	console.log(results.rows.item(0).nreg);
+	if(results.rows.item(0).nreg != 0){
+		alerta (
+		    'Debe Enviar la información Pendiente antes de Descargar!',  // message
+		    function(){
+				window.location = "cargar.html";
+		    },         // callback
+		    'Activos',            // title
+		    'Ok'                  // buttonName
+		);
+	}else{
+		tx.executeSql('SELECT count(*) nreg FROM publicarticulo where id_envio != ""', [], ConsultaCarga);
+	}
 }
 function ConsultaCarga(tx, results) {	console.log(results.rows.item(0).nreg);
 	if(results.rows.item(0).nreg != 0){
@@ -97,9 +108,11 @@ function ConsultaCarga(tx, results) {	console.log(results.rows.item(0).nreg);
 		    'Activos',            // title
 		    'Ok'                  // buttonName
 		);
+	}else{
+		tx.executeSql('SELECT count(*) nreg FROM publicusuario where id_envio != ""', [], ConsultaCargaUsuario);
 	}
 }
-function ConsultaCargaFoto(tx, results) {	console.log(results.rows.item(0).nreg);
+function ConsultaCargaUsuario(tx, results) {	console.log(results.rows.item(0).nreg);
 	if(results.rows.item(0).nreg != 0){
 		alerta (
 		    'Debe Enviar la información Pendiente antes de Descargar!',  // message
@@ -109,9 +122,11 @@ function ConsultaCargaFoto(tx, results) {	console.log(results.rows.item(0).nreg)
 		    'Activos',            // title
 		    'Ok'                  // buttonName
 		);
+	}else{
+		tx.executeSql('SELECT count(*) nreg FROM publicarticulo_foto where id_envio != ""', [], ConsultaCargaFoto);
 	}
 }
-function ConsultaCargaUsuario(tx, results) {	console.log(results.rows.item(0).nreg);
+function ConsultaCargaFoto(tx, results) {	console.log(results.rows.item(0).nreg);
 	if(results.rows.item(0).nreg != 0){
 		alerta (
 		    'Debe Enviar la información Pendiente antes de Descargar!',  // message

@@ -36,7 +36,7 @@ function ConsultaItemsOrigenCarga(tx, results) {
 		seleccionado = ""; 
 		var nombre = results.rows.item(i).nom_origen;
 		var id = results.rows.item(i).id;
-		if(vidorigen == id) seleccionado = "selected";
+		if(vidorigen == id || len == 1) seleccionado = "selected";
 		$('#origen').append('<option value="'+id+'" '+seleccionado+'>'+nombre+'</option>');
    	}
 	//Refresca estilo para cada uno de los controles
@@ -50,7 +50,7 @@ function ConsultaItemsCarga(tx, results) {
 		seleccionado = ""; 
 		var nombre = results.rows.item(i).nom_dependencia;
 		var id = results.rows.item(i).id_dependencia;
-		if(viddependencia == id) seleccionado = "selected";
+		if(viddependencia == id || len == 1) seleccionado = "selected";
 		$('#dependencia').append('<option value="'+id+'" '+seleccionado+'>'+nombre+'</option>');
    	}
 	//Refresca estilo para cada uno de los controles

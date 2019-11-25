@@ -274,7 +274,8 @@ function GuardaElemento(tx) {
 								//	console.log('UPDATE publicarticulos set idarticulo = rowid where idarticulo is null');
 								//tx.executeSql('UPDATE publicarticulos set idarticulo = rowid where idarticulo is null');
 								//GUARDA FOTOS
-						if(localStorage.Fotos != null && localStorage.Fotos != "" && localStorage.Fotos !== undefined && localStorage.Fotos != "undefined"){
+						console.log(localStorage.Fotos);
+						if(localStorage.Fotos != null && localStorage.Fotos != "" && localStorage.Fotos !== undefined && localStorage.Fotos != "undefined" && localStorage.Fotos != "[]"){
 							//CARGA FOTOS
 							$.each(dataf, function(i, item) {	
 								db.transaction(function(tx) {	//console.log(item);

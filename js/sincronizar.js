@@ -116,9 +116,11 @@ function ConsultaSincronizarSeccion(tx, results) {
 					if((i+1) == lon) { //console.log("continue a rtas");
 						$("#resultado").html('<br>Carga completa de Seccion....'+(lon-i)+'.<br>'); $("#resultado").trigger("create"); 
 						setTimeout(function() { 
-							  console.log('SELECT id_articulo,id_origen,id_seccion,id_sublinea,marca,nom_articulo,referencia,serie,placa_nueva,placa_anterior,id_envio,id_estado,idusuario_envio,cc_responsable,id_proyecto FROM publicarticulo where id_envio != ""');
-							tx.executeSql('SELECT id_articulo,id_origen,id_seccion,id_sublinea,marca,nom_articulo,referencia,serie,placa_nueva,placa_anterior,id_envio,id_estado,idusuario_envio,cc_responsable,id_proyecto FROM publicarticulo where id_envio != ""', [],
-							           ConsultaSincronizarElemento,errorCB_Elemento);
+							db.transaction(function(tx) {
+								  console.log('SELECT id_articulo,id_origen,id_seccion,id_sublinea,marca,nom_articulo,referencia,serie,placa_nueva,placa_anterior,id_envio,id_estado,idusuario_envio,cc_responsable,id_proyecto FROM publicarticulo where id_envio != ""');
+								tx.executeSql('SELECT id_articulo,id_origen,id_seccion,id_sublinea,marca,nom_articulo,referencia,serie,placa_nueva,placa_anterior,id_envio,id_estado,idusuario_envio,cc_responsable,id_proyecto FROM publicarticulo where id_envio != ""', [],
+								           ConsultaSincronizarElemento,errorCB_Elemento);
+							});
 						}, (i+1)*150);
 					}
             	},
@@ -307,7 +309,7 @@ function ConsultaSincronizarFotos(tx, results) {
 	}else{
 		for (i = 0; i < len; i++){
 
-			var url_imagen = results.rows.item(i).url; console.log(url_imagen);	console.log(typeof cordova);
+			var url_imagen = results.rows.item(i).url; //console.log(url_imagen);	console.log(typeof cordova);
 			if (typeof cordova !== 'undefined'){
 	          	var options = new FileUploadOptions();
 	            options.fileName=url_imagen;

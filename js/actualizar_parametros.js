@@ -127,7 +127,7 @@ function ConsultaCargaUsuario(tx, results) {	console.log(results.rows.item(0).nr
 	}
 }
 function ConsultaCargaFoto(tx, results) {	console.log(results.rows.item(0).nreg);
-	if(results.rows.item(0).nreg != 0){
+	if(results.rows.item(0).nreg > 1){
 		alerta (
 		    'Debe Enviar la información Pendiente antes de Descargar!',  // message
 		    function(){

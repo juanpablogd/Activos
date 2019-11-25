@@ -12,7 +12,7 @@ function LimpiarUsuario(tx) {
 function descargar()
 {
 	localStorage.clear();
-	db.transaction(LimpiarUsuario);
+	setTimeout(function(){ db.transaction(LimpiarUsuario); }, 99);
 }
 
 

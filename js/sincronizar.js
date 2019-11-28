@@ -385,6 +385,16 @@ function ConsultaSincronizarFotos(tx, results) {
 		            	var txtServidor = "";
 	                	if(error.code == 1){
 	                		txtServidor = "No se encontró el archivo, pudo haber sido Eliminado: " + url_imagen.substr(26);
+			            	//REMOVER ARCHIVO DEL DISPOSITIVO Ejemplo:	null|1|1538173185696.jpg|282513
+			            	function eliminafotodb(tx) { //console.log('DELETE from publicarticulos_fotos where id_envio = "'+n[0]+'" and rowid = "'+n[1]+'"');
+								if(n[0]!="null" && n[0] !=""){
+									  console.log('DELETE from publicarticulo_foto where id_envio = "'+n[0]+'" and rowid = "'+n[1]+'"');
+									tx.executeSql('DELETE from publicarticulo_foto where id_envio = "'+n[0]+'" and rowid = "'+n[1]+'"');
+								}else if(n[3]!="null" && n[3] !=""){
+									  console.log('DELETE from publicarticulo_foto where id_articulo = "'+n[3]+'" and rowid = "'+n[1]+'"');
+									tx.executeSql('DELETE from publicarticulo_foto where id_articulo = "'+n[3]+'" and rowid = "'+n[1]+'"');
+								}
+							}
                         }else if(error.code == 2){
 	                		txtServidor = "Error en la Url del servidor";
 	                	}else if(error.code == 3){

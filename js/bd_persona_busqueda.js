@@ -146,8 +146,8 @@ function ConsultaSeccionesCarga(tx, results) {
 function CargarListado(tx) {
 	var busqueda=localStorage.busqueda;
 	console.log("Busqueda: "+busqueda+"!"); //console.log("Busqueda: "+busqueda);
-	if(busqueda!=null && busqueda.trim() != ""){	console.log("SELECT cedula,nombres,apellidos,telefono,cargo,rowid FROM publicusuario where cedula = '"+busqueda+"' and id_proyecto = '"+localStorage.id_proyecto+"' limit 1");
-	    tx.executeSql("SELECT cedula,nombres,apellidos,telefono,cargo,rowid FROM publicusuario where cedula = '"+busqueda+"' and id_proyecto = '"+localStorage.id_proyecto+"' limit 1", [], MuestraItems);
+	if(busqueda!=null && busqueda.trim() != ""){	console.log("SELECT cedula,nombres,apellidos,telefono,cargo,correo,rowid FROM publicusuario where cedula = '"+busqueda+"' and id_proyecto = '"+localStorage.id_proyecto+"' limit 1");
+	    tx.executeSql("SELECT cedula,nombres,apellidos,telefono,cargo,correo,rowid FROM publicusuario where cedula = '"+busqueda+"' and id_proyecto = '"+localStorage.id_proyecto+"' limit 1", [], MuestraItems);
    }
 }
 /* RESULTADO DE LA TABLA PERSONA*/
@@ -162,7 +162,7 @@ function MuestraItems(tx, results) {
 	 	var apellidos = results.rows.item(i).apellidos;
 	 	var cargo = results.rows.item(i).cargo;
 	 	var telefono = results.rows.item(i).telefono;
-	 	var correo;
+	 	var correo = results.rows.item(i).correo;
 /*	 	var correo = results.rows.item(i).correo;*/
 	 	var rowid = results.rows.item(i).rowid;
 	 	//li += "<li value='"+id+"|"+nombres+"|"+apellidos+"|"+telefono+"|"+correo+"|"+rowid+"'>"+

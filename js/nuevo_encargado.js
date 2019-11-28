@@ -11,19 +11,19 @@ function errorInsertp(err) {
 		);
 	}
 }
-function validateEmail(email) {
-    var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return re.test(String(email).toLowerCase());
-}
+
 function GuardaElemento(tx) {
 	tipo = 'guarda';
-	
-	var id_usr = localStorage.id_usr; //OBTIENE EL ID DEL USUARIO
-	var cc = $( "#cc" ).val();//OBTIENE EL ID DE LA CEDULA
-	var nombres = $( "#nombres" ).val();//OBTIENE EL ID DE LOS NOMBRES
-	var apellidos = $( "#apellidos" ).val();//OBTIENE EL ID DE LOS APELLIDOS
-	var cargo = $( "#cargo" ).val();//OBTIENE EL ID DE LOS APELLIDOS
-	var correo = $( "#correo" ).val();
+	//OBTIENE EL ID DEL USUARIO
+	var id_usr = localStorage.id_usr; 
+	//OBTIENE EL ID DE LA CEDULA
+	var cc = $( "#cc" ).val();
+	//OBTIENE EL ID DE LOS NOMBRES
+	var nombres = $( "#nombres" ).val();
+	//OBTIENE EL ID DE LOS APELLIDOS
+	var apellidos = $( "#apellidos" ).val();
+	//OBTIENE EL ID DE LOS APELLIDOS
+	var cargo = $( "#cargo" ).val();
 
 	if(cc.trim() == ""){
 		alerta (
@@ -65,24 +65,6 @@ function GuardaElemento(tx) {
 		alerta (
 		    "Digite Cargo",  		// message
 		    function(){ $("#cargo").focus(); },         	// callback
-		    'Activos',            	// title
-		    'Ok'                  	// buttonName
-		);
-		$.mobile.loading( 'hide' );
-		return false;
-	}else if(correo.trim() == ""){
-		alerta (
-		    "Digite Correo",  		// message
-		    function(){ $("#Correo").focus(); },         	// callback
-		    'Activos',            	// title
-		    'Ok'                  	// buttonName
-		);
-		$.mobile.loading( 'hide' );
-		return false;
-	}else if(!validateEmail(correo)){
-		alerta (
-		    "Correo no valido",  		// message
-		    function(){ $("#correo").focus(); },         	// callback
 		    'Activos',            	// title
 		    'Ok'                  	// buttonName
 		);
@@ -133,16 +115,16 @@ function resultadoCC(tx, results) { console.log('MuestraItems');
 			//CARGO DEL ENCARGAO
 			var cargo = txtOk($( "#cargo" ).val());
 /*			//OBTIENE EL ID DE LOS TELEFONOS
-			var telefonos = txtOk($( "#telefonos" ).val()); */
+			var telefonos = txtOk($( "#telefonos" ).val());
 			//OBTIENE EL ID DEL CORREO
-			var correo = txtOk($( "#correo" ).val()); 	
+			var correo = txtOk($( "#correo" ).val()); 	*/
 			//FECHA - ID_ENVIO
 			var now = new Date();
 			var fecha_captura = now.getFullYear()+'-'+(1+now.getMonth())+'-'+now.getDate()+'-'+now.getHours()+'_'+now.getMinutes()+'_'+now.getSeconds();
 			var id_envio = fecha_captura+'-'+id_usr;
 			db.transaction(function(tx) {
-				  console.log('INSERT INTO publicusuario (cedula,nombres,apellidos,cargo,correo,id_envio,id_empresa,id_proyecto) values ("'+cc+'","'+nombres+'","'+apellidos+'","'+cargo+'","'+correo+'","'+id_envio+'","'+localStorage.id_empresa+'","'+localStorage.id_proyecto+'")');
-				tx.executeSql('INSERT INTO publicusuario (cedula,nombres,apellidos,cargo,correo,id_envio,id_empresa,id_proyecto) values ("'+cc+'","'+nombres+'","'+apellidos+'","'+cargo+'","'+correo+'","'+id_envio+'","'+localStorage.id_empresa+'","'+localStorage.id_proyecto+'")');
+				  console.log('INSERT INTO publicusuario (cedula,nombres,apellidos,cargo,id_envio,id_empresa,id_proyecto) values ("'+cc+'","'+nombres+'","'+apellidos+'","'+cargo+'","'+id_envio+'","'+localStorage.id_empresa+'","'+localStorage.id_proyecto+'")');
+				tx.executeSql('INSERT INTO publicusuario (cedula,nombres,apellidos,cargo,id_envio,id_empresa,id_proyecto) values ("'+cc+'","'+nombres+'","'+apellidos+'","'+cargo+'","'+id_envio+'","'+localStorage.id_empresa+'","'+localStorage.id_proyecto+'")');
 			},errorInsertp,
 				function successInsertp() {
 					localStorage.persona_valor = cc+"|"+nombres+"|"+apellidos;

@@ -133,8 +133,8 @@ $(document).ready(function() {
 		var origen = localStorage.id_origen;
 
 		db.transaction(function(tx) {
-			  console.log('select nombres,apellidos,inv.cc_responsable from publicinventario inv left join publicusuario usr on usr.cedula = inv.cc_responsable where (id_envio_art = "'+id_elemento[5]+'" and id_envio_art != "" and id_envio_art != "null") or (id_articulo = "'+id_elemento[0]+'" and id_articulo != "" and id_articulo != "null") order by inv.rowid desc limit 1'); 
-			tx.executeSql('select nombres,apellidos,inv.cc_responsable from publicinventario inv left join publicusuario usr on usr.cedula = inv.cc_responsable where (id_envio_art = "'+id_elemento[5]+'" and id_envio_art != "" and id_envio_art != "null") or (id_articulo = "'+id_elemento[0]+'" and id_articulo != "" and id_articulo != "null") order by inv.rowid desc limit 1', [],
+			  console.log('select nombres,apellidos,inv.cc_responsable,id_seccion,id_origen from publicinventario inv left join publicusuario usr on usr.cedula = inv.cc_responsable where (id_envio_art = "'+id_elemento[5]+'" and id_envio_art != "" and id_envio_art != "null") or (id_articulo = "'+id_elemento[0]+'" and id_articulo != "" and id_articulo != "null") order by inv.rowid desc limit 1'); 
+			tx.executeSql('select nombres,apellidos,inv.cc_responsable,id_seccion,id_origen from publicinventario inv left join publicusuario usr on usr.cedula = inv.cc_responsable where (id_envio_art = "'+id_elemento[5]+'" and id_envio_art != "" and id_envio_art != "null") or (id_articulo = "'+id_elemento[0]+'" and id_articulo != "" and id_articulo != "null") order by inv.rowid desc limit 1', [],
 				function consultaEle(tx, results) {
 					var encontrados = results.rows.length; console.log("Encontrados: " + encontrados);
 					var repetido = false;
@@ -147,7 +147,12 @@ $(document).ready(function() {
 								return false;						    
 							}							
 						}
-
+						if(results.rows.item(0).id_seccion != seccion){
+							repetido = false;
+						}
+						if(results.rows.item(0).id_origen != origen){
+							repetido = false;
+						}
 					}
 					localStorage.firma = "";
 					localStorage.elemento_valor = "";

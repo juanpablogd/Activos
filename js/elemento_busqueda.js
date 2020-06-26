@@ -133,8 +133,8 @@ $(document).ready(function() {
 		var origen = localStorage.id_origen;
 
 		db.transaction(function(tx) {
-			  console.log('select nombres,apellidos,inv.cc_responsable,id_seccion,id_origen from publicinventario inv left join publicusuario usr on usr.cedula = inv.cc_responsable where (id_envio_art = "'+id_elemento[5]+'" and id_envio_art != "" and id_envio_art != "null") or (id_articulo = "'+id_elemento[0]+'" and id_articulo != "" and id_articulo != "null") order by inv.rowid desc limit 1'); 
-			tx.executeSql('select nombres,apellidos,inv.cc_responsable,id_seccion,id_origen from publicinventario inv left join publicusuario usr on usr.cedula = inv.cc_responsable where (id_envio_art = "'+id_elemento[5]+'" and id_envio_art != "" and id_envio_art != "null") or (id_articulo = "'+id_elemento[0]+'" and id_articulo != "" and id_articulo != "null") order by inv.rowid desc limit 1', [],
+			  console.log('select nombres,apellidos,inv.cc_responsable,id_seccion,id_origen from publicarticulo inv left join publicusuario usr on usr.cedula = inv.cc_responsable where (inv.id_envio = "'+id_elemento[5]+'" and inv.id_envio != "" and inv.id_envio != "null") or (id_articulo = "'+id_elemento[0]+'" and id_articulo != "" and id_articulo != "null") order by inv.rowid desc limit 1'); 
+			tx.executeSql('select nombres,apellidos,inv.cc_responsable,id_seccion,id_origen from publicarticulo inv left join publicusuario usr on usr.cedula = inv.cc_responsable where (inv.id_envio = "'+id_elemento[5]+'" and inv.id_envio != "" and inv.id_envio != "null") or (id_articulo = "'+id_elemento[0]+'" and id_articulo != "" and id_articulo != "null") order by inv.rowid desc limit 1', [],
 				function consultaEle(tx, results) {
 					var encontrados = results.rows.length; console.log("Encontrados: " + encontrados);
 					var repetido = false;
@@ -147,9 +147,11 @@ $(document).ready(function() {
 								return false;						    
 							}							
 						}
+						console.log(seccion + " " + results.rows.item(0).id_seccion);
 						if(results.rows.item(0).id_seccion != seccion){
 							repetido = false;
 						}
+						console.log(origen + " " + results.rows.item(0).id_origen);
 						if(results.rows.item(0).id_origen != origen){
 							repetido = false;
 						}
@@ -172,13 +174,12 @@ $(document).ready(function() {
 							tx.executeSql('INSERT INTO publicinventario (id_origen,id_seccion,id_usuario,cc_responsable,id_envio,activo,id_articulo,observacion,asignacion,id_estado,id_envio_art,id_proyecto) values ("'+origen+'","'+seccion+'","'+id_usr+'","'+cc[0]+'","'+id_envio+'","1","'+id_elemento[0]+'","'+observaciones+'","R","'+id_elemento[4]+'","'+id_elemento[5]+'","'+localStorage.id_proyecto+'")');
 							//ASIGNA RESPONSABLE AL articulo
 							if(id_elemento[0]!="" && id_elemento[0]!="null"){
-				                console.log("UPDATE publicarticulo set cc_responsable = '"+cc[0]+"' where id_articulo = '"+id_elemento[0]+"'");
-				              tx.executeSql("UPDATE publicarticulo set cc_responsable = '"+cc[0]+"' where id_articulo = '"+id_elemento[0]+"'");
+				                console.log("UPDATE publicarticulo set cc_responsable = '"+cc[0]+"',id_origen='"+origen+"',id_seccion='"+seccion+"' where id_articulo = '"+id_elemento[0]+"'");
+				              tx.executeSql("UPDATE publicarticulo set cc_responsable = '"+cc[0]+"',id_origen='"+origen+"',id_seccion='"+seccion+"' where id_articulo = '"+id_elemento[0]+"'");
 							}else{
-				                console.log("UPDATE publicarticulo set cc_responsable = '"+cc[0]+"' where id_envio = '"+id_elemento[5]+"'");
-				              tx.executeSql("UPDATE publicarticulo set cc_responsable = '"+cc[0]+"' where id_envio = '"+id_elemento[5]+"'");
+				                console.log("UPDATE publicarticulo set cc_responsable = '"+cc[0]+"',id_origen='"+origen+"',id_seccion='"+seccion+"' where id_envio = '"+id_elemento[5]+"'");
+				              tx.executeSql("UPDATE publicarticulo set cc_responsable = '"+cc[0]+"',id_origen='"+origen+"',id_seccion='"+seccion+"' where id_envio = '"+id_elemento[5]+"'");
 							}
-							
 						});
 						setTimeout(function() {
 							db.transaction(function(tx) {
